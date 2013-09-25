@@ -100,7 +100,10 @@
 		"label": "Preferences",
 		"lang-label": "Select preferred language",
 		"lang-change": "Change Language",
-		"page-reload": "The page will be refreshed to apply the change."
+		"page-reload": "The page will be refreshed to apply the change.",
+		"comp-label": "Select preferred compression level",
+		"comp-change": "Change Compression",
+		"comp-set": "The compression has been set"
 	},
 	"core-index-parser":{
 		"ignore-first": "Ignore first",

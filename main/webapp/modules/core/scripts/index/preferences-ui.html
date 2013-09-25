@@ -1,19 +1,35 @@
-
 <div class="grid-layout layout-normal" id="project-upload-form">
-	<table>
+	<table style="border-bottom: 1px solid #BBCCFF;width:100%">
 		<tr>
 			<td colspan="2" bind="or_lang_label"></td>
 		</tr>
-		<tr></tr>
+		<tr />
 		<tr>
-			<td></td>
+			<td />
 			<td><select id="langDD">
 			</select></td>
 		</tr>
 		<tr>
-			<td></td>
+			<td />
 			<td><input type="submit" id="set-lang-button" bind="set_lan_btn"
 				class="button button-primary" /></td>
+		</tr>
+	</table>
+	<br/>
+	<table>
+		<tr>
+			<td colspan="2" bind="or_comp_label"></td>
+		</tr>
+		<tr />
+		<tr>
+			<td />
+			<td><select id="compDD">
+			</select></td>
+		</tr>
+		<tr>
+			<td />
+			<td><input type="submit" id="set-comp-button"
+				bind="set_comp_btn" class="button button-primary" /></td>
 		</tr>
 	</table>
 </div>

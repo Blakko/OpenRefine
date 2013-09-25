@@ -99,8 +99,11 @@
 	"core-index-pref": {
 		"label": "Impostazioni",
 		"lang-label": "Seleziona la lingua preferita",
-		"lang-change": "Invia Richiesta",
-		"page-reload": "Attenzione, la pagina verrà ricaricata per applicare la modifica"
+		"lang-change": "Cambia Lingua",
+		"page-reload": "Attenzione, la pagina verrà ricaricata per applicare la modifica",
+		"comp-label": "Seleziona il livello di compressione preferito",
+		"comp-change": "Cambia Compressione",
+		"comp-set": "La compressione è stata configurata"
 	},
 	"core-index-parser":{
 		"ignore-first": "Ignora la/e prima/e",
