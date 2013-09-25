@@ -60,7 +60,13 @@ public class Cell implements HasFields, Jsonizable {
         this.value = value;
         this.recon = recon;
     }
-    
+
+    // TEST
+    public Cell() {
+        this.value = null;
+        this.recon = null;
+    }
+
     @Override
     public Object getField(String name, Properties bindings) {
         if ("value".equals(name)) {

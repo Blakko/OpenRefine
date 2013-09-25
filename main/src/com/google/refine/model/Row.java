@@ -46,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONWriter;
 
 import com.google.refine.Jsonizable;
+import com.google.refine.compression.RowManager;
 import com.google.refine.expr.CellTuple;
 import com.google.refine.expr.HasFields;
 import com.google.refine.util.Pool;
@@ -59,6 +60,9 @@ public class Row implements HasFields, Jsonizable {
     public boolean             starred;
     final public List<Cell>    cells;
     
+    private byte[]      serializedCells;
+    private static      RowManager manager = new RowManager();
+    
     private static final String FLAGGED = "flagged";
     private static final String STARRED = "starred";
     
@@ -69,10 +73,12 @@ public class Row implements HasFields, Jsonizable {
      */
     public Row(int cellCount) {
         cells = new ArrayList<Cell>(cellCount);
+        serializedCells = manager.serialize(new ArrayList<Cell>(cellCount));
     }
     
     protected Row(List<Cell> cells, boolean flagged, boolean starred) {
-        this.cells = cells;
+        this.serializedCells = manager.serialize(cells);
+        this.cells = manager.deserialize(this.serializedCells);
         this.flagged = flagged;
         this.starred = starred;
     }

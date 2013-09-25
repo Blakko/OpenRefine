@@ -58,7 +58,15 @@ public class ReconCandidate implements HasFields, Jsonizable {
         this.types = typeIDs;
         this.score = score;
     }
-    
+
+    // TEST
+    public ReconCandidate() {
+        id = null;
+        name = null;
+        types = null;
+        score = 0;
+    }
+
     @Override
     public Object getField(String name, Properties bindings) {
         if ("id".equals(name)) {

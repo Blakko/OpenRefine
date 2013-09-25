@@ -118,6 +118,11 @@ public class Recon implements HasFields, Jsonizable {
             FREEBASE_IDENTIFIER_SPACE,
             FREEBASE_SCHEMA_SPACE);
     }
+
+    // TEST
+    public Recon() {
+        id = System.currentTimeMillis() * 1000000 + Math.round(Math.random() * 1000000);
+    }
     
     public Recon(long judgmentHistoryEntry, String identifierSpace, String schemaSpace) {
         id = System.currentTimeMillis() * 1000000 + Math.round(Math.random() * 1000000);
