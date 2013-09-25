@@ -103,7 +103,12 @@
 		"page-reload": "Attenzione, la pagina verrà ricaricata per applicare la modifica",
 		"comp-label": "Seleziona il livello di compressione preferito",
 		"comp-change": "Cambia Compressione",
-		"comp-set": "La compressione è stata configurata"
+		"comp-set": "La compressione è stata configurata",
+		"comp-lvl-0": "Nessuna",
+		"comp-lvl-1": "Minima",
+		"comp-lvl-2": "Media",
+		"comp-lvl-3": "Massima",
+		"comp-current": "Attualmente impostata a"
 	},
 	"core-index-parser":{
 		"ignore-first": "Ignora la/e prima/e",

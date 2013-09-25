@@ -8,7 +8,8 @@ Refine.SetLanguageUI = function(elmt) {
 			+ ":");
 	this._elmts.set_lan_btn.attr("value",
 			$.i18n._('core-index-pref')["lang-change"]);
-	this._elmts.or_comp_label.text($.i18n._('core-index-pref')["comp-label"]);
+	this._elmts.or_comp_label.text($.i18n._('core-index-pref')["comp-label"]
+			+ ":");
 	this._elmts.set_comp_btn.attr("value",
 			$.i18n._('core-index-pref')["comp-change"]);
 
@@ -28,11 +29,26 @@ Refine.SetLanguageUI = function(elmt) {
 		}
 
 	});
-	
+
+	$.ajax({
+		url : "/command/core/get-preference?",
+		type : "GET",
+		async : false,
+		data : {
+			name : "compression"
+		},
+		success : function(data) {
+			$("#or-comp-current").text(
+					$.i18n._('core-index-pref')["comp-current"] + ": "
+							+ data.value);
+		}
+	});
+
 	// Adding compression levels
-	var levels = [ "No", "Min", "Average", "Max" ];
 	for ( var i = 0; i < 4; i++) {
-		$('<option>').val(i).text(levels[i]).appendTo('#compDD');
+		$('<option>').val(i).text(
+				i + " - " + $.i18n._('core-index-pref')["comp-lvl-" + i])
+				.appendTo('#compDD');
 	}
 
 	this._elmts.set_lan_btn.bind('click', function(e) {
@@ -50,17 +66,21 @@ Refine.SetLanguageUI = function(elmt) {
 			}
 		});
 	});
-	
+
 	this._elmts.set_comp_btn.bind('click', function(e) {
+		var val = $("#compDD option:selected").val();
 		$.ajax({
 			url : "/command/core/set-preference?",
 			type : "POST",
 			async : false,
 			data : {
 				name : "compression",
-				value : $("#compDD option:selected").val()
+				value : val
 			},
 			success : function(data) {
+				$("#or-comp-current").text(
+						$.i18n._('core-index-pref')["comp-current"] + ": "
+								+ val);
 				alert($.i18n._('core-index-pref')["comp-set"]);
 			}
 		});
