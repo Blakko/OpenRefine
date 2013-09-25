@@ -331,7 +331,7 @@ function init() {
       "scripts/index/create-project-ui.js",
       "scripts/index/open-project-ui.js",
       "scripts/index/import-project-ui.js",
-      "scripts/index/lang-settings-ui.js",
+      "scripts/index/preferences-ui.js",
 
       "scripts/index/default-importing-controller/controller.js",
       "scripts/index/default-importing-controller/file-selection-panel.js",
