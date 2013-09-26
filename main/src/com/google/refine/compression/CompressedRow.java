@@ -2,6 +2,7 @@
 package com.google.refine.compression;
 
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -179,8 +180,16 @@ public class CompressedRow {
     public boolean getStarred() {
         return getRow().starred;
     }
-    
-    public int getCellCount(){
+
+    public int getCellCount() {
         return this.cellCount;
+    }
+
+    public static List<CompressedRow> toCompressedList(List<Row> list) {
+        List<CompressedRow> retList = new ArrayList<CompressedRow>();
+        for (Row row : list) {
+            retList.add(new CompressedRow(row));
+        }
+        return retList;
     }
 }

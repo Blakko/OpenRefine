@@ -48,6 +48,7 @@ import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
+import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowChange;
 import com.google.refine.operations.OperationRegistry;
 
@@ -115,9 +116,9 @@ public class MultiValuedCellSplitOperation extends AbstractOperation {
         
         int oldRowCount = project.rows.size();
         for (int r = 0; r < oldRowCount; r++) {
-            CompressedRow oldRow = project.rows.get(r);
+            Row oldRow = project.rows.get(r).getRow();
             if (oldRow.isCellBlank(cellIndex)) {
-                newRows.add(oldRow.dup());
+                newRows.add(new CompressedRow(oldRow.dup()));
                 continue;
             }
             
@@ -131,16 +132,16 @@ public class MultiValuedCellSplitOperation extends AbstractOperation {
             }
             
             if (values.length < 2) {
-                newRows.add(oldRow.dup());
+                newRows.add(new CompressedRow(oldRow.dup()));
                 continue;
             }
             
             // First value goes into the same row
             {
-                CompressedRow firstNewRow = oldRow.dup();
+                Row firstNewRow = oldRow.dup();
                 firstNewRow.setCell(cellIndex, new Cell(values[0].trim(), null));
                 
-                newRows.add(firstNewRow);
+                newRows.add(new CompressedRow(firstNewRow));
             }
             
             int r2 = r + 1;
@@ -148,24 +149,24 @@ public class MultiValuedCellSplitOperation extends AbstractOperation {
                 Cell newCell = new Cell(values[v].trim(), null);
                 
                 if (r2 < project.rows.size()) {
-                    CompressedRow oldRow2 = project.rows.get(r2);
+                    Row oldRow2 = project.rows.get(r2).getRow();
                     if (oldRow2.isCellBlank(cellIndex) && 
                         oldRow2.isCellBlank(keyCellIndex)) {
                         
-                        CompressedRow newRow = oldRow2.dup();
+                        Row newRow = oldRow2.dup();
                         newRow.setCell(cellIndex, newCell);
                         
-                        newRows.add(newRow);
+                        newRows.add(new CompressedRow(newRow));
                         r2++;
                         
                         continue;
                     }
                 }
                 
-                CompressedRow newRow = new CompressedRow(cellIndex + 1);
+                Row newRow = new Row(cellIndex + 1);
                 newRow.setCell(cellIndex, newCell);
                 
-                newRows.add(newRow);
+                newRows.add(new CompressedRow(newRow));
             }
             
             r = r2 - 1; // r will be incremented by the for loop anyway

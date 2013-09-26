@@ -53,6 +53,7 @@ import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon.Judgment;
+import com.google.refine.model.Row;
 
 public class Transposer {
     static public void transpose(
@@ -171,12 +172,13 @@ public class Transposer {
     private static boolean descendCellNode(Project project, TransposedNodeFactory nodeFactory, int rowIndex, CompressedRow row,
             Node node, Context context, List<TransposedNode> tnodes, Link link) {
         CellNode node2 = (CellNode) node;
+        Row tmprow = row.getRow();
         for (String columnName : node2.columnNames) {
             Column column = project.columnModel.getColumnByName(columnName);
             if (column != null) {
                 int cellIndex = column.getCellIndex();
                 
-                Cell cell = row.getCell(cellIndex);
+                Cell cell = tmprow.getCell(cellIndex);
                 if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
                     if (node2 instanceof CellTopicNode &&
                         (cell.recon == null || cell.recon.judgment == Judgment.None)) {

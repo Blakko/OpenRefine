@@ -47,6 +47,7 @@ import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
+import com.google.refine.model.Row;
 import com.google.refine.model.changes.CellChange;
 import com.google.refine.operations.EngineDependentMassCellOperation;
 import com.google.refine.operations.OperationRegistry;
@@ -121,9 +122,10 @@ public class BlankDownOperation extends EngineDependentMassCellOperation {
             
             @Override
             public boolean visit(Project project, int rowIndex, CompressedRow row) {
-                Object value = row.getCellValue(cellIndex);
+                Row tmpRow = row.getRow();
+                Object value = tmpRow.getCellValue(cellIndex);
                 if (ExpressionUtils.isNonBlankData(value)) {
-                    Cell cell = row.getCell(cellIndex);
+                    Cell cell = tmpRow.getCell(cellIndex);
                     if (previousCell != null && cell.value.equals(previousCell.value)) {
                         CellChange cellChange = new CellChange(rowIndex, cellIndex, cell, null);
                         cellChanges.add(cellChange);

@@ -48,6 +48,7 @@ import com.google.refine.history.Change;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
+import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class MassReconChange implements Change {
@@ -74,13 +75,14 @@ public class MassReconChange implements Change {
             for (int r = 0; r < project.rows.size(); r++) {
                 CompressedRow row = project.rows.get(r);
                 
+                Row tmprow = row.getRow();
                 for (int c = 0; c < row.getCellCount(); c++) {
-                    Cell cell = row.getCell(c);
+                    Cell cell = tmprow.getCell(c);
                     if (cell != null && cell.recon != null) {
                         Recon recon = cell.recon;
                         
                         if (reconMap.containsKey(recon.id)) {
-                            row.setCell(c, new Cell(cell.value, reconMap.get(recon.id)));
+                            tmprow.setCell(c, new Cell(cell.value, reconMap.get(recon.id)));
                         }
                     }
                 }

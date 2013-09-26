@@ -45,12 +45,12 @@ import java.util.Properties;
 
 import org.json.JSONObject;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.importing.ImportingJob;
 import com.google.refine.importing.ImportingUtilities;
 import com.google.refine.model.Column;
 import com.google.refine.model.ModelException;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.util.TrackingInputStream;
 
 public class ImporterUtilities {
@@ -118,8 +118,8 @@ public class ImporterUtilities {
         }
     }
 
-    static public void ensureColumnsInRowExist(List<String> columnNames, Row row) {
-        int count = row.cells.size();
+    static public void ensureColumnsInRowExist(List<String> columnNames, CompressedRow row) {
+        int count = row.getCellCount();
         while (count > columnNames.size()) {
             columnNames.add("");
         }

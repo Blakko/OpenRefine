@@ -48,6 +48,7 @@ import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.RecordModel.CellDependency;
 import com.google.refine.model.RecordModel.RowDependency;
+import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowChange;
 import com.google.refine.operations.OperationRegistry;
 
@@ -82,11 +83,11 @@ public class DenormalizeOperation extends AbstractOperation {
         List<CompressedRow> oldRows = project.rows;
         for (int r = 0; r < oldRows.size(); r++) {
             CompressedRow oldRow = oldRows.get(r);
-            CompressedRow newRow = null;
+            Row newRow = null;
             
             RowDependency rd = project.recordModel.getRowDependency(r);
             if (rd.cellDependencies != null) {
-                newRow = oldRow.dup();
+                newRow = oldRow.getRow().dup();
 
                 for (CellDependency cd : rd.cellDependencies) {
                     if (cd != null) {
@@ -103,7 +104,7 @@ public class DenormalizeOperation extends AbstractOperation {
                 }
             }
             
-            newRows.add(newRow != null ? newRow : oldRow);
+            newRows.add(newRow != null ? new CompressedRow(newRow) : oldRow);
         }
         
         return new HistoryEntry(

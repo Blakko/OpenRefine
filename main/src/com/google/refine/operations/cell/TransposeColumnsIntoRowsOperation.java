@@ -47,6 +47,7 @@ import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
+import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowColumnChange;
 import com.google.refine.operations.OperationRegistry;
 import com.google.refine.util.JSONUtilities;
@@ -270,10 +271,10 @@ public class TransposeColumnsIntoRowsOperation extends AbstractOperation {
         }
         
         List<CompressedRow> oldRows = project.rows;
-        List<CompressedRow> newRows = new ArrayList<CompressedRow>(oldRows.size() * columnCount);
+        List<Row> newRows = new ArrayList<Row>(oldRows.size() * columnCount);
         for (int r = 0; r < oldRows.size(); r++) {
-            CompressedRow oldRow = project.rows.get(r);
-            CompressedRow firstNewRow = new CompressedRow(newColumns.size());
+            Row oldRow = project.rows.get(r).getRow();
+            Row firstNewRow = new Row(newColumns.size());
             int firstNewRowIndex = newRows.size();
             
             newRows.add(firstNewRow);
@@ -300,11 +301,11 @@ public class TransposeColumnsIntoRowsOperation extends AbstractOperation {
                             newCell = cell;
                         }
                         
-                        CompressedRow rowToModify;
+                        Row rowToModify;
                         if (transposedCells == 0) {
                             rowToModify = firstNewRow;
                         } else {
-                            rowToModify = new CompressedRow(newColumns.size());
+                            rowToModify = new Row(newColumns.size());
                             newRows.add(rowToModify);
                         }
                         rowToModify.setCell(startColumnIndex, newCell);
@@ -315,11 +316,11 @@ public class TransposeColumnsIntoRowsOperation extends AbstractOperation {
                             continue;
                         }
                         
-                        CompressedRow rowToModify;
+                        Row rowToModify;
                         if (transposedCells == 0) {
                             rowToModify = firstNewRow;
                         } else {
-                            rowToModify = new CompressedRow(newColumns.size());
+                            rowToModify = new Row(newColumns.size());
                             newRows.add(rowToModify);
                         }
                         rowToModify.setCell(startColumnIndex, new Cell(column.getName(), null));
@@ -337,7 +338,7 @@ public class TransposeColumnsIntoRowsOperation extends AbstractOperation {
             
             if (_fillDown) {
                 for (int r2 = firstNewRowIndex + 1; r2 < newRows.size(); r2++) {
-                    CompressedRow newRow = newRows.get(r2);
+                    Row newRow = newRows.get(r2);
                     for (int c = 0; c < newColumns.size(); c++) {
                         if (c < startColumnIndex ||
                             (_combinedColumnName != null ?
@@ -361,7 +362,7 @@ public class TransposeColumnsIntoRowsOperation extends AbstractOperation {
             project, 
             getBriefDescription(), 
             this, 
-            new MassRowColumnChange(newColumns, newRows)
+            new MassRowColumnChange(newColumns, CompressedRow.toCompressedList(newRows))
         );
     }
 }

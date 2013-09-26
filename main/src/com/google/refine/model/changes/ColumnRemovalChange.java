@@ -41,12 +41,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.ColumnGroup;
 import com.google.refine.model.Project;
+import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class ColumnRemovalChange extends ColumnChange {
@@ -102,11 +102,11 @@ public class ColumnRemovalChange extends ColumnChange {
             _oldCells = new CellAtRow[project.rows.size()];
             int cellIndex = _oldColumn.getCellIndex();
             for (int i = 0; i < _oldCells.length; i++) {
-                CompressedRow row = project.rows.get(i);
+                Row row = project.rows.get(i).getRow();
                 
                 Cell oldCell = null;
-                if (cellIndex < row.getCellCount()) {
-                    oldCell = row.getCells().get(cellIndex);
+                if (cellIndex < row.cells.size()) {
+                    oldCell = row.cells.get(cellIndex);
                 }
                 _oldCells[i] = new CellAtRow(i, oldCell);
                 

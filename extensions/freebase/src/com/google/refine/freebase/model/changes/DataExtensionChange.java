@@ -161,31 +161,31 @@ public class DataExtensionChange implements Change {
                     if (dataExtension == null || dataExtension.data.length == 0) {
                         _newRows.add(oldRow);
                     } else {
-                        CompressedRow firstNewRow = oldRow.dup();
+                        Row firstNewRow = oldRow.getRow().dup();
                         extendRow(firstNewRow, dataExtension, 0, reconMap);
-                        _newRows.add(firstNewRow);
+                        _newRows.add(new CompressedRow(firstNewRow));
                         
                         int r2 = r + 1;
                         for (int subR = 1; subR < dataExtension.data.length; subR++) {
                             if (r2 < project.rows.size()) {
-                                CompressedRow oldRow2 = project.rows.get(r2);
+                                Row oldRow2 = project.rows.get(r2).getRow();
                                 if (oldRow2.isCellBlank(cellIndex) && 
                                     oldRow2.isCellBlank(keyCellIndex)) {
                                     
-                                    CompressedRow newRow = oldRow2.dup();
+                                    Row newRow = oldRow2.dup();
                                     extendRow(newRow, dataExtension, subR, reconMap);
                                     
-                                    _newRows.add(newRow);
+                                    _newRows.add(new CompressedRow(newRow));
                                     r2++;
                                     
                                     continue;
                                 }
                             }
                             
-                            CompressedRow newRow = new CompressedRow(cellIndex + _columnNames.size());
+                            Row newRow = new Row(cellIndex + _columnNames.size());
                             extendRow(newRow, dataExtension, subR, reconMap);
                             
-                            _newRows.add(newRow);
+                            _newRows.add(new CompressedRow(newRow));
                         }
                         
                         r = r2 - 1; // r will be incremented by the for loop anyway
@@ -223,7 +223,7 @@ public class DataExtensionChange implements Change {
     }
     
     protected void extendRow(
-        CompressedRow row, 
+        Row row, 
         DataExtension dataExtension, 
         int extensionRowIndex,
         Map<String, Recon> reconMap

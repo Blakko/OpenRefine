@@ -47,10 +47,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.importers.ImporterUtilities;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.tests.RefineTest;
 
 public class ImporterUtilitiesTests extends RefineTest {
@@ -116,7 +116,7 @@ public class ImporterUtilitiesTests extends RefineTest {
     public void ensureColumnsInRowExist(){
         String VALUE_1 = "value1";
         String VALUE_2 = "value2";
-        Row row = new Row(2);
+        CompressedRow row = new CompressedRow(2);
         ArrayList<String> columnNames = new ArrayList<String>(2);
         columnNames.add(VALUE_1);
         columnNames.add(VALUE_2);
@@ -130,9 +130,9 @@ public class ImporterUtilitiesTests extends RefineTest {
 
     @Test
     public void ensureColumnsInRowExistDoesExpand(){
-        Row row = new Row(4);
+        CompressedRow row = new CompressedRow(4);
         for(int i = 1; i < 5; i++) {
-            row.cells.add(new Cell("value" + i, null));
+            row.addCell(new Cell("value" + i, null));
         }
 
         ArrayList<String> columnNames = new ArrayList<String>(2);
@@ -140,7 +140,7 @@ public class ImporterUtilitiesTests extends RefineTest {
 
         ImporterUtilities.ensureColumnsInRowExist(columnNames, row);
 
-        Assert.assertEquals(row.cells.size(), 4);
+        Assert.assertEquals(row.getCellCount(), 4);
         Assert.assertEquals(columnNames.size(), 4);
     }
 

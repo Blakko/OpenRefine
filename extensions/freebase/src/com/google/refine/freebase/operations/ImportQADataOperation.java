@@ -52,6 +52,7 @@ import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
+import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassReconChange;
 import com.google.refine.operations.OperationRegistry;
 import com.google.refine.util.ParsingUtilities;
@@ -110,9 +111,9 @@ public class ImportQADataOperation extends AbstractOperation {
         
         for (int r = 0; r < project.rows.size(); r++) {
             CompressedRow row = project.rows.get(r);
-            
+            Row tmprow = row.getRow();
             for (int c = 0; c < row.getCellCount(); c++) {
-                Cell cell = row.getCell(c);
+                Cell cell = tmprow.getCell(c);
                 if (cell != null && cell.recon != null) {
                     Recon oldRecon = cell.recon;
                     

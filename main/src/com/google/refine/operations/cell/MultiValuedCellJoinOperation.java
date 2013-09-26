@@ -48,6 +48,7 @@ import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
+import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowChange;
 import com.google.refine.operations.OperationRegistry;
 
@@ -110,10 +111,10 @@ public class MultiValuedCellJoinOperation extends AbstractOperation {
         
         int oldRowCount = project.rows.size();
         for (int r = 0; r < oldRowCount; r++) {
-            CompressedRow oldRow = project.rows.get(r);
+            Row oldRow = project.rows.get(r).getRow();
             
             if (oldRow.isCellBlank(keyCellIndex)) {
-                newRows.add(oldRow.dup());
+                newRows.add(new CompressedRow(oldRow.dup()));
                 continue;
             }
             
@@ -123,7 +124,7 @@ public class MultiValuedCellJoinOperation extends AbstractOperation {
             }
             
             if (r2 == r + 1) {
-                newRows.add(oldRow.dup());
+                newRows.add(new CompressedRow(oldRow.dup()));
                 continue;
             }
             
@@ -139,7 +140,7 @@ public class MultiValuedCellJoinOperation extends AbstractOperation {
             }
             
             for (int r3 = r; r3 < r2; r3++) {
-                CompressedRow newRow = project.rows.get(r3).dup();
+                Row newRow = project.rows.get(r3).getRow().dup();
                 if (r3 == r) {
                     newRow.setCell(cellIndex, new Cell(sb.toString(), null));
                 } else {
@@ -147,7 +148,7 @@ public class MultiValuedCellJoinOperation extends AbstractOperation {
                 }
                 
                 if (!newRow.isEmpty()) {
-                    newRows.add(newRow);
+                    newRows.add(new CompressedRow(newRow));
                 }
             }
             

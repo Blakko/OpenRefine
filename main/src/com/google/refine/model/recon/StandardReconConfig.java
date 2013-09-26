@@ -62,6 +62,7 @@ import com.google.refine.model.Recon;
 import com.google.refine.model.Recon.Judgment;
 import com.google.refine.model.ReconCandidate;
 import com.google.refine.model.RecordModel.RowDependency;
+import com.google.refine.model.Row;
 import com.google.refine.util.ParsingUtilities;
 
 public class StandardReconConfig extends ReconConfig {
@@ -254,10 +255,11 @@ public class StandardReconConfig extends ReconConfig {
                     jsonWriter.key("properties");
                     jsonWriter.array();
                     
+                    Row tmpRow = row.getRow();
                     for (ColumnDetail c : columnDetails) {
                         int detailCellIndex = project.columnModel.getColumnByName(c.columnName).getCellIndex();
                         
-                        Cell cell2 = row.getCell(detailCellIndex);
+                        Cell cell2 = tmpRow.getCell(detailCellIndex);
                         if (cell2 == null || !ExpressionUtils.isNonBlankData(cell2.value)) {
                             int cellIndex = project.columnModel.getColumnByName(columnName).getCellIndex();
                             

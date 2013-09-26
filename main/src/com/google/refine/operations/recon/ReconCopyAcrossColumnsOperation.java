@@ -57,6 +57,7 @@ import com.google.refine.model.Column;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
 import com.google.refine.model.Recon.Judgment;
+import com.google.refine.model.Row;
 import com.google.refine.model.changes.CellChange;
 import com.google.refine.model.changes.MassChange;
 import com.google.refine.operations.EngineDependentOperation;
@@ -180,9 +181,10 @@ public class ReconCopyAcrossColumnsOperation extends EngineDependentOperation {
                     
                     @Override
                     public boolean visit(Project project, int rowIndex, CompressedRow row) {
+                        Row tmprow = row.getRow();
                         for (Column column : toColumns) {
                             int cellIndex = column.getCellIndex();
-                            Cell cell = row.getCell(cellIndex);
+                            Cell cell = tmprow.getCell(cellIndex);
                             if (cell != null && cell.value != null) {
                                 Recon reconToCopy = cellValueToRecon.get(cell.value);
                                 boolean judged = cell.recon != null && cell.recon.judgment != Judgment.None;

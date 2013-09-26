@@ -42,6 +42,7 @@ import com.google.refine.expr.Evaluable;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
+import com.google.refine.model.Row;
 
 /**
  * Judge if a row matches by evaluating two given expressions on the row, based on two different columns
@@ -74,12 +75,13 @@ abstract public class DualExpressionsNumberComparisonRowFilter implements RowFil
 
     @Override
     public boolean filterRow(Project project, int rowIndex, CompressedRow row) {
-        Cell x_cell = _x_cellIndex < 0 ? null : row.getCell(_x_cellIndex);
+        Row tmprow = row.getRow();
+        Cell x_cell = _x_cellIndex < 0 ? null : tmprow.getCell(_x_cellIndex);
         Properties x_bindings = ExpressionUtils.createBindings(project);
         ExpressionUtils.bind(x_bindings, row, rowIndex, _x_columnName, x_cell);
         Object x_value = _x_evaluable.evaluate(x_bindings);
         
-        Cell y_cell = _y_cellIndex < 0 ? null : row.getCell(_y_cellIndex);
+        Cell y_cell = _y_cellIndex < 0 ? null : tmprow.getCell(_y_cellIndex);
         Properties y_bindings = ExpressionUtils.createBindings(project);
         ExpressionUtils.bind(y_bindings, row, rowIndex, _y_columnName, y_cell);
         Object y_value = _y_evaluable.evaluate(y_bindings);

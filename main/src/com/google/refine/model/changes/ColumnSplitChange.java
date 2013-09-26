@@ -142,10 +142,7 @@ public class ColumnSplitChange implements Change {
                     List<Serializable> tuple = _tuples.get(i);
                 
                     CompressedRow oldRow = project.rows.get(r);
-                    CompressedRow newRow = oldRow.dup();
-                    
-                    _oldRows.add(oldRow);
-                    _newRows.add(newRow);
+                    Row newRow = oldRow.getRow().dup();
                     
                     for (int c = 0; c < tuple.size(); c++) {
                         Serializable value = tuple.get(c);
@@ -157,6 +154,9 @@ public class ColumnSplitChange implements Change {
                     if (_removeOriginalColumn) {
                         newRow.setCell(cellIndex, null);
                     }
+                    
+                    _oldRows.add(oldRow);
+                    _newRows.add(new CompressedRow(newRow));
                 }
             }
             

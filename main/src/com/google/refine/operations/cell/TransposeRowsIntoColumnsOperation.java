@@ -47,6 +47,7 @@ import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
+import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowColumnChange;
 import com.google.refine.operations.OperationRegistry;
 
@@ -117,11 +118,11 @@ public class TransposeRowsIntoColumnsOperation extends AbstractOperation {
         List<CompressedRow> oldRows = project.rows;
         List<CompressedRow> newRows = new ArrayList<CompressedRow>(oldRows.size() / _rowCount);
         for (int r = 0; r < oldRows.size(); r += _rowCount) {
-            CompressedRow firstNewRow = new CompressedRow(newColumns.size());
+            Row firstNewRow = new Row(newColumns.size());
             
             for (int r2 = 0; r2 < _rowCount && r + r2 < oldRows.size(); r2++) {
-                CompressedRow oldRow = oldRows.get(r + r2);
-                CompressedRow newRow = r2 == 0 ? firstNewRow : new CompressedRow(newColumns.size());
+                Row oldRow = oldRows.get(r + r2).getRow();
+                Row newRow = r2 == 0 ? firstNewRow : new Row(newColumns.size());
                 boolean hasData = r2 == 0;
                 
                 for (int c = 0; c < oldColumns.size(); c++) {
@@ -142,7 +143,7 @@ public class TransposeRowsIntoColumnsOperation extends AbstractOperation {
                 }
                 
                 if (hasData) {
-                    newRows.add(newRow);
+                    newRows.add(new CompressedRow(newRow));
                 }
             }
         }
