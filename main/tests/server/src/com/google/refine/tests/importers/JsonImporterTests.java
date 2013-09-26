@@ -113,7 +113,7 @@ public class JsonImporterTests extends ImporterTest {
 
         CompressedRow row = project.rows.get(0);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(), 4);
+        Assert.assertEquals(row.getCellCount(), 4);
         Assert.assertNotNull(row.getCell(1));
         Assert.assertEquals(row.getCell(1).value, "Author 1, The");
         Assert.assertEquals(project.rows.get(1).getCell(1).value, "Author 1, Another");
@@ -129,7 +129,7 @@ public class JsonImporterTests extends ImporterTest {
 
         CompressedRow row = project.rows.get(3);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(), 4);
+        Assert.assertEquals(row.getCellCount(), 4);
         Assert.assertNotNull(row.getCell(1));
         Assert.assertEquals(row.getCell(1).value, "With line\n break");
     }
@@ -145,11 +145,11 @@ public class JsonImporterTests extends ImporterTest {
 
         CompressedRow row0 = project.rows.get(0);
         Assert.assertNotNull(row0);
-        Assert.assertEquals(row0.getCells().size(),4);
+        Assert.assertEquals(row0.getCellCount(),4);
 
         CompressedRow row5  = project.rows.get(5);
         Assert.assertNotNull(row5);
-        Assert.assertEquals(row5.getCells().size(),5);
+        Assert.assertEquals(row5.getCellCount(),5);
     }
 
     @Test
@@ -306,54 +306,54 @@ public class JsonImporterTests extends ImporterTest {
 
         CompressedRow row = project.rows.get(8);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertEquals(row.getCell(1).value,""); // Make sure empty strings are preserved
 
         // null, true, false 0,1,-2.1,0.23,-0.24,3.14e100
 
         row = project.rows.get(12);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertNull(row.getCell(1).value); 
 
         row = project.rows.get(13);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertEquals(row.getCell(1).value,Boolean.TRUE); 
         
         row = project.rows.get(14);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertEquals(row.getCell(1).value,Boolean.FALSE); 
         
         row = project.rows.get(15);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertEquals(row.getCell(1).value,Long.valueOf(0)); 
 
         row = project.rows.get(16);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertEquals(row.getCell(1).value,Long.valueOf(1)); 
 
         row = project.rows.get(17);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertEquals(row.getCell(1).value,Double.parseDouble("-2.1")); 
 
         row = project.rows.get(18);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertEquals(row.getCell(1).value,Double.valueOf((double)0.23)); 
         
         row = project.rows.get(19);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertEquals(row.getCell(1).value,Double.valueOf((double)-0.24)); 
         
         row = project.rows.get(20);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(),2);
+        Assert.assertEquals(row.getCellCount(),2);
         Assert.assertFalse(Double.isNaN((Double) row.getCell(1).value)); 
         Assert.assertEquals(row.getCell(1).value,Double.valueOf((double)3.14e100)); 
         

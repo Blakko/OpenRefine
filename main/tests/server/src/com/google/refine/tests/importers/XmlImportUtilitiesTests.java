@@ -214,7 +214,7 @@ public class XmlImportUtilitiesTests extends RefineTest {
         log(project);
         assertProjectCreated(project, 0, 6);
 
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 4);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 4);
 
         Assert.assertEquals(columnGroup.subgroups.size(), 1);
         Assert.assertNotNull(columnGroup.subgroups.get("book"));
@@ -234,8 +234,8 @@ public class XmlImportUtilitiesTests extends RefineTest {
 
         log(project);
         assertProjectCreated(project, 0, 6);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 4);
-        Assert.assertEquals(project.rows.get(5).getCells().size(), 5);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 4);
+        Assert.assertEquals(project.rows.get(5).getCellCount(), 5);
 
         Assert.assertEquals(columnGroup.subgroups.size(), 1);
         Assert.assertEquals(columnGroup.name, "");
@@ -291,7 +291,7 @@ public class XmlImportUtilitiesTests extends RefineTest {
         log(project);
         assertProjectCreated(project, 0, 6);
 
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 4);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 4);
         //TODO
     }
 
@@ -333,7 +333,7 @@ public class XmlImportUtilitiesTests extends RefineTest {
 
         CompressedRow row = project.rows.get(0);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(), 3);
+        Assert.assertEquals(row.getCellCount(), 3);
         Assert.assertNotNull(row.getCell(1));
         Assert.assertEquals(row.getCell(1).value, "author1");
 
@@ -357,7 +357,7 @@ public class XmlImportUtilitiesTests extends RefineTest {
         Assert.assertEquals(project.rows.size(), 1);
         CompressedRow row = project.rows.get(0);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(), 4);
+        Assert.assertEquals(row.getCellCount(), 4);
         Assert.assertNotNull(row.getCell(1));
         Assert.assertEquals(row.getCell(1).value, "author1");
         Assert.assertNotNull(row.getCell(2));

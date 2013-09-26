@@ -232,7 +232,7 @@ public class ReconOperation extends EngineDependentOperation {
                 
                 @Override
                 public boolean visit(Project project, int rowIndex, CompressedRow row) {
-                    if (_cellIndex < row.getCells().size()) {
+                    if (_cellIndex < row.getCellCount()) {
                         Cell cell = row.getCell(_cellIndex);
                         if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
                             _entries.add(new ReconEntry(rowIndex, cell));

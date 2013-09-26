@@ -115,7 +115,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, "data3");
@@ -139,7 +139,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data1");
         Assert.assertTrue(project.rows.get(0).getCell(1).value instanceof Long);
         Assert.assertEquals(project.rows.get(0).getCell(1).value, Long.parseLong("234"));
@@ -163,7 +163,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "Column 2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "Column 3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, "data3");
@@ -183,7 +183,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         }
         Assert.assertEquals(project.columnModel.columns.size(), 3);
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, " data1 ");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, " 3.4 ");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, " data3 ");
@@ -203,7 +203,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         }
         Assert.assertEquals(project.columnModel.columns.size(), 3);
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, " data1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, 12L);
         Assert.assertEquals(project.rows.get(0).getCell(2).value, " data3");
@@ -223,7 +223,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         }
         Assert.assertEquals(project.columnModel.columns.size(), 3);
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, " data1");
         Assert.assertNull(project.rows.get(0).getCell(1));
         Assert.assertEquals(project.rows.get(0).getCell(2).value, " data3");
@@ -248,7 +248,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2 sub2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3 sub3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, "data3");
@@ -275,7 +275,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(4).getName(), "Column 5");
         Assert.assertEquals(project.columnModel.columns.get(5).getName(), "Column 6");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 6);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 6);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, "data3");
@@ -302,7 +302,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 2);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 2);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "\"To Be\" is often followed by \"or not To Be\"");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
     }
@@ -326,7 +326,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, "data3");
@@ -351,7 +351,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, "data3");
@@ -380,7 +380,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2 sub2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3 sub3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, "data3");
@@ -412,11 +412,11 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2 sub2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3 sub3");
         Assert.assertEquals(project.rows.size(), 2);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data-row1-cell1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data-row1-cell2");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, "data-row1-cell3");
-        Assert.assertEquals(project.rows.get(1).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(1).getCellCount(), 3);
         Assert.assertEquals(project.rows.get(1).getCell(0).value, "data-row2-cell1");
         Assert.assertEquals(project.rows.get(1).getCell(1).value, "data-row2-cell2");
         Assert.assertNull(project.rows.get(1).getCell(2));
@@ -435,7 +435,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         }
         Assert.assertEquals(project.columnModel.columns.size(), 4);
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 4);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 4);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "data1");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
         Assert.assertEquals(project.rows.get(0).getCell(2).value, "data3");
@@ -459,7 +459,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 2);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 2);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "\"To\n Be\" is often followed by \"or not To\n Be\"");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
     }
@@ -482,7 +482,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         Assert.assertEquals(project.columnModel.columns.get(1).getName(), "col2");
         Assert.assertEquals(project.columnModel.columns.get(2).getName(), "col3");
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 2);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 2);
         Assert.assertEquals(project.rows.get(0).getCell(0).value, "A line with many \n\n\n\n\n empty lines");
         Assert.assertEquals(project.rows.get(0).getCell(1).value, "data2");
     }
@@ -501,7 +501,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         }
         
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 3);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 3);
         Assert.assertEquals((String)project.rows.get(0).getCell(0).value, "NDB_No");
         Assert.assertEquals((String)project.rows.get(0).getCell(1).value, "Shrt_Desc");
         Assert.assertEquals((String)project.rows.get(0).getCell(2).value, "Water");
@@ -523,7 +523,7 @@ public class TsvCsvImporterTests extends ImporterTest {
         }
         
         Assert.assertEquals(project.rows.size(), 1);
-        Assert.assertEquals(project.rows.get(0).getCells().size(), 4);
+        Assert.assertEquals(project.rows.get(0).getCellCount(), 4);
         Assert.assertEquals((String)project.rows.get(0).getCell(0).value, "data1");
         Assert.assertEquals((String)project.rows.get(0).getCell(1).value, "data2");
         Assert.assertEquals((String)project.rows.get(0).getCell(2).value, "data3");

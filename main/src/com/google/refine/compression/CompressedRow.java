@@ -19,7 +19,9 @@ public class CompressedRow {
     private byte[] compressedRow;
     private Row row;
     private final static RowCompressionManager manager = new RowCompressionManager();
-    
+
+    private int cellCount;
+
     private static final String FLAGGED = "flagged";
     private static final String STARRED = "starred";
 
@@ -29,6 +31,7 @@ public class CompressedRow {
         COMPRESSION_LEVEL = (Integer) (ProjectManager.singleton.getPreferenceStore().get("compression") == null ? 0
                 : ProjectManager.singleton.getPreferenceStore().get("compression"));
         Row tmprow = new Row(cellCount);
+        this.cellCount = tmprow.cells.size();
         if (COMPRESSION_LEVEL == 0)
             row = tmprow;
         else
@@ -38,6 +41,7 @@ public class CompressedRow {
     public CompressedRow(Row row) {
         COMPRESSION_LEVEL = (Integer) (ProjectManager.singleton.getPreferenceStore().get("compression") == null ? 0
                 : ProjectManager.singleton.getPreferenceStore().get("compression"));
+        this.cellCount = row.cells.size();
         if (COMPRESSION_LEVEL == 0)
             this.row = row;
         else
@@ -106,13 +110,15 @@ public class CompressedRow {
             compressedRow = manager.serialize(tmprow, COMPRESSION_LEVEL);
         }
     }
-    
-    public void addCell(Cell cell){
-        if (COMPRESSION_LEVEL == 0)
+
+    public void addCell(Cell cell) {
+        if (COMPRESSION_LEVEL == 0) {
             row.cells.add(cell);
-        else {
+            this.cellCount = row.cells.size();
+        } else {
             Row tmprow = getRow();
             tmprow.cells.add(cell);
+            this.cellCount = tmprow.cells.size();
             compressedRow = manager.serialize(tmprow, COMPRESSION_LEVEL);
         }
     }
@@ -172,5 +178,9 @@ public class CompressedRow {
 
     public boolean getStarred() {
         return getRow().starred;
+    }
+    
+    public int getCellCount(){
+        return this.cellCount;
     }
 }

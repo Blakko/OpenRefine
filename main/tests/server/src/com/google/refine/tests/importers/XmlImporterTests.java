@@ -139,7 +139,7 @@ public class XmlImporterTests extends ImporterTest {
 
         CompressedRow row = project.rows.get(0);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(), 4);
+        Assert.assertEquals(row.getCellCount(), 4);
         Assert.assertNotNull(row.getCell(1));
         Assert.assertEquals(row.getCell(1).value, "Author 1, The");
         Assert.assertEquals(project.rows.get(1).getCell(1).value, "Author 1, Another");
@@ -155,7 +155,7 @@ public class XmlImporterTests extends ImporterTest {
 
         CompressedRow row = project.rows.get(3);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.getCells().size(), 4);
+        Assert.assertEquals(row.getCellCount(), 4);
         Assert.assertNotNull(row.getCell(1));
         Assert.assertEquals(row.getCell(1).value, "With line\n break");
     }
@@ -171,11 +171,11 @@ public class XmlImporterTests extends ImporterTest {
 
         CompressedRow row0 = project.rows.get(0);
         Assert.assertNotNull(row0);
-        Assert.assertEquals(row0.getCells().size(),4);
+        Assert.assertEquals(row0.getCellCount(),4);
 
         CompressedRow row5  = project.rows.get(5);
         Assert.assertNotNull(row5);
-        Assert.assertEquals(row5.getCells().size(),5);
+        Assert.assertEquals(row5.getCellCount(),5);
     }
 
     @Test

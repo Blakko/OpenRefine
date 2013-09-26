@@ -105,7 +105,7 @@ public class ColumnRemovalChange extends ColumnChange {
                 CompressedRow row = project.rows.get(i);
                 
                 Cell oldCell = null;
-                if (cellIndex < row.getCells().size()) {
+                if (cellIndex < row.getCellCount()) {
                     oldCell = row.getCells().get(cellIndex);
                 }
                 _oldCells[i] = new CellAtRow(i, oldCell);

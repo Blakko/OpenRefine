@@ -99,7 +99,7 @@ public class RefineTest {
         logger.info(sb.toString());
         for(CompressedRow r : project.rows){
             sb = new StringBuilder();
-            for(int i = 0; i < r.getCells().size(); i++){
+            for(int i = 0; i < r.getCellCount(); i++){
                 Cell c = r.getCell(i);
                 if(c != null){
                    sb.append(c.value);

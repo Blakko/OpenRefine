@@ -74,7 +74,7 @@ public class MassReconChange implements Change {
             for (int r = 0; r < project.rows.size(); r++) {
                 CompressedRow row = project.rows.get(r);
                 
-                for (int c = 0; c < row.getCells().size(); c++) {
+                for (int c = 0; c < row.getCellCount(); c++) {
                     Cell cell = row.getCell(c);
                     if (cell != null && cell.recon != null) {
                         Recon recon = cell.recon;
