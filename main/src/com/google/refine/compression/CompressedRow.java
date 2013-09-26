@@ -41,7 +41,7 @@ public class CompressedRow {
         else if (COMPRESSION_LEVEL == 2) {
             byte[] raw = manager.serialize(tmprow);
             byte[] ret = manager.compressFast(raw);
-            this.rawSize = ret.length;
+            this.rawSize = raw.length;
             this.compressedRow = ret;
         }
     }
@@ -97,10 +97,7 @@ public class CompressedRow {
     }
 
     public boolean isEmpty() {
-        if (COMPRESSION_LEVEL == 0)
-            return row.isEmpty();
-        else
-            return getRow().isEmpty();
+        return getRow().isEmpty();
     }
 
     public Cell getCell(int cellIndex) {
