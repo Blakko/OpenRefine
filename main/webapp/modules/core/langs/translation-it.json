@@ -104,10 +104,9 @@
 		"comp-label": "Seleziona il livello di compressione preferito",
 		"comp-change": "Cambia Compressione",
 		"comp-set": "La compressione è stata configurata",
-		"comp-lvl-0": "Nessuna",
+		"comp-lvl-0": "Nessuna (veloce)",
 		"comp-lvl-1": "Minima",
-		"comp-lvl-2": "Media",
-		"comp-lvl-3": "Massima",
+		"comp-lvl-2": "Massima (lento)",
 		"comp-current": "Attualmente impostata a"
 	},
 	"core-index-parser":{

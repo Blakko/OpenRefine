@@ -45,7 +45,7 @@ Refine.SetLanguageUI = function(elmt) {
 	});
 
 	// Adding compression levels
-	for ( var i = 0; i < 4; i++) {
+	for ( var i = 0; i < 3; i++) {
 		$('<option>').val(i).text(
 				i + " - " + $.i18n._('core-index-pref')["comp-lvl-" + i])
 				.appendTo('#compDD');

@@ -104,10 +104,9 @@
 		"comp-label": "Select preferred compression level",
 		"comp-change": "Change Compression",
 		"comp-set": "The compression has been set",
-		"comp-lvl-0": "None",
+		"comp-lvl-0": "None (fast)",
 		"comp-lvl-1": "Minimum",
-		"comp-lvl-2": "Average",
-		"comp-lvl-3": "Maximum",
+		"comp-lvl-2": "Maximum (slow)",
 		"comp-current": "Currently set to"
 	},
 	"core-index-parser":{
