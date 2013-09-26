@@ -27,6 +27,7 @@ public class CompressedRow {
     private static final String STARRED = "starred";
 
     private final int COMPRESSION_LEVEL;
+    private int rawSize;
 
     public CompressedRow(int cellCount) {
         COMPRESSION_LEVEL = (Integer) (ProjectManager.singleton.getPreferenceStore().get("compression") == null ? 0
@@ -35,8 +36,14 @@ public class CompressedRow {
         this.cellCount = tmprow.cells.size();
         if (COMPRESSION_LEVEL == 0)
             row = tmprow;
-        else
-            compressedRow = manager.serialize(tmprow, COMPRESSION_LEVEL);
+        else if (COMPRESSION_LEVEL == 1)
+            this.compressedRow = manager.serialize(tmprow);
+        else if (COMPRESSION_LEVEL == 2) {
+            byte[] raw = manager.serialize(tmprow);
+            byte[] ret = manager.compressFast(raw);
+            this.rawSize = ret.length;
+            this.compressedRow = ret;
+        }
     }
 
     public CompressedRow(Row row) {
@@ -45,15 +52,31 @@ public class CompressedRow {
         this.cellCount = row.cells.size();
         if (COMPRESSION_LEVEL == 0)
             this.row = row;
-        else
-            this.compressedRow = manager.serialize(row, COMPRESSION_LEVEL);
+
+        else if (COMPRESSION_LEVEL == 1)
+            this.compressedRow = manager.serialize(row);
+
+        else if (COMPRESSION_LEVEL == 2) {
+            byte[] raw = manager.serialize(row);
+            byte[] ret = manager.compressFast(raw);
+            System.out.println("Raw/Fast:   " + raw.length + " - " + ret.length);
+            this.rawSize = raw.length;
+            this.compressedRow = ret;
+        }
     }
 
     public Row getRow() {
         if (COMPRESSION_LEVEL == 0)
             return row;
-        else
-            return manager.deserialize(compressedRow, COMPRESSION_LEVEL);
+
+        else if (COMPRESSION_LEVEL == 1)
+            return manager.deserialize(compressedRow);
+
+        else if (COMPRESSION_LEVEL == 2) {
+            byte[] raw = manager.decompressFast(compressedRow, rawSize);
+            return manager.deserialize(raw);
+        } else
+            return null;
     }
 
     public CompressedRow dup() {
@@ -81,17 +104,11 @@ public class CompressedRow {
     }
 
     public Cell getCell(int cellIndex) {
-        if (COMPRESSION_LEVEL == 0)
-            return row.getCell(cellIndex);
-        else
-            return getRow().getCell(cellIndex);
+        return getRow().getCell(cellIndex);
     }
 
     public Object getCellValue(int cellIndex) {
-        if (COMPRESSION_LEVEL == 0)
-            return row.getCellValue(cellIndex);
-        else
-            return getRow().getCellValue(cellIndex);
+        return getRow().getCellValue(cellIndex);
     }
 
     public boolean isCellBlank(int cellIndex) {
@@ -108,7 +125,14 @@ public class CompressedRow {
         else {
             Row tmprow = getRow();
             tmprow.cells.set(cellIndex, cell);
-            compressedRow = manager.serialize(tmprow, COMPRESSION_LEVEL);
+            byte[] tmp = manager.serialize(tmprow);
+            if (COMPRESSION_LEVEL == 1)
+                compressedRow = tmp;
+            else if (COMPRESSION_LEVEL == 2) {
+                byte[] comp = manager.compressFast(tmp);
+                rawSize = tmp.length;
+                compressedRow = comp;
+            }
         }
     }
 
@@ -119,8 +143,15 @@ public class CompressedRow {
         } else {
             Row tmprow = getRow();
             tmprow.cells.add(cell);
+            byte[] tmp = manager.serialize(tmprow);
             this.cellCount = tmprow.cells.size();
-            compressedRow = manager.serialize(tmprow, COMPRESSION_LEVEL);
+            if (COMPRESSION_LEVEL == 1)
+                compressedRow = tmp;
+            else if (COMPRESSION_LEVEL == 2) {
+                byte[] comp = manager.compressFast(tmp);
+                rawSize = tmp.length;
+                compressedRow = comp;
+            }
         }
     }
 
@@ -130,26 +161,16 @@ public class CompressedRow {
 
     public void write(JSONWriter writer, Properties options)
             throws JSONException {
-        if (COMPRESSION_LEVEL == 0)
-            row.write(writer, options);
-        else
-            getRow().write(writer, options);
+        getRow().write(writer, options);
     }
 
     public void save(Writer writer, Properties options) {
-        if (COMPRESSION_LEVEL == 0)
-            row.save(writer, options);
-        else
-            getRow().save(writer, options);
+        getRow().save(writer, options);
     }
 
     public String toString() {
         StringBuffer result = new StringBuffer();
-        List<Cell> tmpcell;
-        if (COMPRESSION_LEVEL == 0)
-            tmpcell = row.cells;
-        else
-            tmpcell = getRow().cells;
+        List<Cell> tmpcell = getRow().cells;
         for (Cell cell : tmpcell) {
             result.append(cell == null ? "null" : cell.toString());
             result.append(',');
@@ -162,9 +183,20 @@ public class CompressedRow {
     }
 
     public void setFlagged(boolean flagged) {
-        Row row = getRow();
-        row.flagged = flagged;
-        compressedRow = manager.serialize(row, COMPRESSION_LEVEL);
+        Row tmprow = getRow();
+        tmprow.flagged = flagged;
+        if (COMPRESSION_LEVEL == 0)
+            this.row = tmprow;
+        else {
+            byte[] tmp = manager.serialize(row);
+            if (COMPRESSION_LEVEL == 1)
+                compressedRow = tmp;
+            else if (COMPRESSION_LEVEL == 2) {
+                byte[] comp = manager.compressFast(tmp);
+                rawSize = tmp.length;
+                compressedRow = comp;
+            }
+        }
     }
 
     public boolean getFlagged() {
@@ -172,9 +204,20 @@ public class CompressedRow {
     }
 
     public void setStarred(boolean starred) {
-        Row row = getRow();
+        Row tmprow = getRow();
         row.starred = starred;
-        compressedRow = manager.serialize(row, COMPRESSION_LEVEL);
+        if (COMPRESSION_LEVEL == 0)
+            this.row = tmprow;
+        else {
+            byte[] tmp = manager.serialize(row);
+            if (COMPRESSION_LEVEL == 1)
+                compressedRow = tmp;
+            else if (COMPRESSION_LEVEL == 2) {
+                byte[] comp = manager.compressFast(tmp);
+                rawSize = tmp.length;
+                compressedRow = comp;
+            }
+        }
     }
 
     public boolean getStarred() {
