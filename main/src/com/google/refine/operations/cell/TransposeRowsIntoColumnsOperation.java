@@ -41,12 +41,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.HistoryEntry;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowColumnChange;
 import com.google.refine.operations.OperationRegistry;
 
@@ -114,14 +114,14 @@ public class TransposeRowsIntoColumnsOperation extends AbstractOperation {
             }
         }
         
-        List<Row> oldRows = project.rows;
-        List<Row> newRows = new ArrayList<Row>(oldRows.size() / _rowCount);
+        List<CompressedRow> oldRows = project.rows;
+        List<CompressedRow> newRows = new ArrayList<CompressedRow>(oldRows.size() / _rowCount);
         for (int r = 0; r < oldRows.size(); r += _rowCount) {
-            Row firstNewRow = new Row(newColumns.size());
+            CompressedRow firstNewRow = new CompressedRow(newColumns.size());
             
             for (int r2 = 0; r2 < _rowCount && r + r2 < oldRows.size(); r2++) {
-                Row oldRow = oldRows.get(r + r2);
-                Row newRow = r2 == 0 ? firstNewRow : new Row(newColumns.size());
+                CompressedRow oldRow = oldRows.get(r + r2);
+                CompressedRow newRow = r2 == 0 ? firstNewRow : new CompressedRow(newColumns.size());
                 boolean hasData = r2 == 0;
                 
                 for (int c = 0; c < oldColumns.size(); c++) {

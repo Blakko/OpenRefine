@@ -51,6 +51,7 @@ import org.json.JSONWriter;
 import com.google.refine.browsing.Engine;
 import com.google.refine.browsing.FilteredRows;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.EvalError;
 import com.google.refine.expr.Evaluable;
 import com.google.refine.expr.ExpressionUtils;
@@ -61,7 +62,6 @@ import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.CellAtRow;
 import com.google.refine.model.changes.ColumnAdditionChange;
 import com.google.refine.operations.EngineDependentOperation;
@@ -347,7 +347,7 @@ public class ColumnAdditionByFetchingURLsOperation extends EngineDependentOperat
                 }
                 
                 @Override
-                public boolean visit(Project project, int rowIndex, Row row) {
+                public boolean visit(Project project, int rowIndex, CompressedRow row) {
                     Cell cell = row.getCell(cellIndex);
                     Cell newCell = null;
                     

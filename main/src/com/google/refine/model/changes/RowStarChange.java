@@ -38,9 +38,9 @@ import java.io.LineNumberReader;
 import java.io.Writer;
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class RowStarChange implements Change {
@@ -55,18 +55,18 @@ public class RowStarChange implements Change {
 
     @Override
     public void apply(Project project) {
-        Row row = project.rows.get(rowIndex);
+        CompressedRow row = project.rows.get(rowIndex);
         if (oldStarred == null) {
-            oldStarred = row.starred;
+            oldStarred = row.getStarred();
         }
-        row.starred = newStarred;
+        row.setStarred(newStarred);
     }
 
     @Override
     public void revert(Project project) {
-        Row row = project.rows.get(rowIndex);
+        CompressedRow row = project.rows.get(rowIndex);
         
-        row.starred = oldStarred;
+        row.setStarred(oldStarred);
     }
     
     @Override

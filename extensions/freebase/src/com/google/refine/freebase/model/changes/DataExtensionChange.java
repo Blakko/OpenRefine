@@ -47,6 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.freebase.FreebaseType;
 import com.google.refine.freebase.model.recon.DataExtensionReconConfig;
 import com.google.refine.freebase.util.FreebaseDataExtensionJob.DataExtension;
@@ -75,8 +76,8 @@ public class DataExtensionChange implements Change {
     
     protected long                      _historyEntryID;
     protected int                       _firstNewCellIndex = -1;
-    protected List<Row>                 _oldRows;
-    protected List<Row>                 _newRows;
+    protected List<CompressedRow>                 _oldRows;
+    protected List<CompressedRow>                 _newRows;
     
     public DataExtensionChange(
         String baseColumnName, 
@@ -109,8 +110,8 @@ public class DataExtensionChange implements Change {
         List<Integer>       rowIndices,
         List<DataExtension> dataExtensions,
         int                 firstNewCellIndex,
-        List<Row>           oldRows,
-        List<Row>           newRows
+        List<CompressedRow>           oldRows,
+        List<CompressedRow>           newRows
     ) {
         _baseColumnName = baseColumnName;
         _columnInsertIndex = columnInsertIndex;
@@ -135,9 +136,9 @@ public class DataExtensionChange implements Change {
                     project.columnModel.allocateNewCellIndex();
                 }
                 
-                _oldRows = new ArrayList<Row>(project.rows);
+                _oldRows = new ArrayList<CompressedRow>(project.rows);
                 
-                _newRows = new ArrayList<Row>(project.rows.size());
+                _newRows = new ArrayList<CompressedRow>(project.rows.size());
                 
                 int cellIndex = project.columnModel.getColumnByName(_baseColumnName).getCellIndex();
                 int keyCellIndex = project.columnModel.columns.get(project.columnModel.getKeyColumnIndex()).getCellIndex();
@@ -151,7 +152,7 @@ public class DataExtensionChange implements Change {
                 Map<String, Recon> reconMap = new HashMap<String, Recon>();
                 
                 for (int r = 0; r < _oldRows.size(); r++) {
-                    Row oldRow = _oldRows.get(r);
+                    CompressedRow oldRow = _oldRows.get(r);
                     if (r < rowIndex) {
                         _newRows.add(oldRow.dup());
                         continue;
@@ -160,18 +161,18 @@ public class DataExtensionChange implements Change {
                     if (dataExtension == null || dataExtension.data.length == 0) {
                         _newRows.add(oldRow);
                     } else {
-                        Row firstNewRow = oldRow.dup();
+                        CompressedRow firstNewRow = oldRow.dup();
                         extendRow(firstNewRow, dataExtension, 0, reconMap);
                         _newRows.add(firstNewRow);
                         
                         int r2 = r + 1;
                         for (int subR = 1; subR < dataExtension.data.length; subR++) {
                             if (r2 < project.rows.size()) {
-                                Row oldRow2 = project.rows.get(r2);
+                                CompressedRow oldRow2 = project.rows.get(r2);
                                 if (oldRow2.isCellBlank(cellIndex) && 
                                     oldRow2.isCellBlank(keyCellIndex)) {
                                     
-                                    Row newRow = oldRow2.dup();
+                                    CompressedRow newRow = oldRow2.dup();
                                     extendRow(newRow, dataExtension, subR, reconMap);
                                     
                                     _newRows.add(newRow);
@@ -181,7 +182,7 @@ public class DataExtensionChange implements Change {
                                 }
                             }
                             
-                            Row newRow = new Row(cellIndex + _columnNames.size());
+                            CompressedRow newRow = new CompressedRow(cellIndex + _columnNames.size());
                             extendRow(newRow, dataExtension, subR, reconMap);
                             
                             _newRows.add(newRow);
@@ -222,7 +223,7 @@ public class DataExtensionChange implements Change {
     }
     
     protected void extendRow(
-        Row row, 
+        CompressedRow row, 
         DataExtension dataExtension, 
         int extensionRowIndex,
         Map<String, Recon> reconMap
@@ -328,12 +329,12 @@ public class DataExtensionChange implements Change {
         writer.write("firstNewCellIndex="); writer.write(Integer.toString(_firstNewCellIndex)); writer.write('\n');
         
         writer.write("newRowCount="); writer.write(Integer.toString(_newRows.size())); writer.write('\n');
-        for (Row row : _newRows) {
+        for (CompressedRow row : _newRows) {
             row.save(writer, options);
             writer.write('\n');
         }
         writer.write("oldRowCount="); writer.write(Integer.toString(_oldRows.size())); writer.write('\n');
-        for (Row row : _oldRows) {
+        for (CompressedRow row : _oldRows) {
             row.save(writer, options);
             writer.write('\n');
         }
@@ -350,8 +351,8 @@ public class DataExtensionChange implements Change {
         List<Integer> rowIndices = null;
         List<DataExtension> dataExtensions = null;
         
-        List<Row> oldRows = null;
-        List<Row> newRows = null;
+        List<CompressedRow> oldRows = null;
+        List<CompressedRow> newRows = null;
         
         int firstNewCellIndex = -1;
         
@@ -430,21 +431,21 @@ public class DataExtensionChange implements Change {
             } else if ("oldRowCount".equals(field)) {
                 int count = Integer.parseInt(value);
                 
-                oldRows = new ArrayList<Row>(count);
+                oldRows = new ArrayList<CompressedRow>(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {
-                        oldRows.add(Row.load(line, pool));
+                        oldRows.add(new CompressedRow(Row.load(line, pool)));
                     }
                 }
             } else if ("newRowCount".equals(field)) {
                 int count = Integer.parseInt(value);
                 
-                newRows = new ArrayList<Row>(count);
+                newRows = new ArrayList<CompressedRow>(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {
-                        newRows.add(Row.load(line, pool));
+                        newRows.add(new CompressedRow(Row.load(line, pool)));
                     }
                 }
             }

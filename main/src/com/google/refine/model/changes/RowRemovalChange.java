@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.google.refine.ProjectManager;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Project;
 import com.google.refine.model.Row;
@@ -48,7 +49,7 @@ import com.google.refine.util.Pool;
 
 public class RowRemovalChange implements Change {
     final protected List<Integer> _rowIndices;
-    protected List<Row> _rows;
+    protected List<CompressedRow> _rows;
     
     public RowRemovalChange(List<Integer> rowIndices) {
         _rowIndices = rowIndices;
@@ -59,13 +60,13 @@ public class RowRemovalChange implements Change {
         synchronized (project) {
             int count = _rowIndices.size();
             
-            _rows = new ArrayList<Row>(count);
+            _rows = new ArrayList<CompressedRow>(count);
             
             int offset = 0;
             for (int i = 0; i < count; i++) {
                 int index = _rowIndices.get(i);
                 
-                Row row = project.rows.remove(index + offset);
+                CompressedRow row = project.rows.remove(index + offset);
                 _rows.add(row);
                 
                 offset--;
@@ -85,7 +86,7 @@ public class RowRemovalChange implements Change {
             
             for (int i = 0; i < count; i++) {
                 int index = _rowIndices.get(i);
-                Row row = _rows.get(i);
+                CompressedRow row = _rows.get(i);
                 
                 project.rows.add(index, row);
             }
@@ -102,7 +103,7 @@ public class RowRemovalChange implements Change {
             writer.write('\n');
         }
         writer.write("rowCount="); writer.write(Integer.toString(_rows.size())); writer.write('\n');
-        for (Row row : _rows) {
+        for (CompressedRow row : _rows) {
             row.save(writer, options);
             writer.write('\n');
         }
@@ -111,7 +112,7 @@ public class RowRemovalChange implements Change {
     
     static public Change load(LineNumberReader reader, Pool pool) throws Exception {
         List<Integer> rowIndices = null;
-        List<Row> rows = null;
+        List<CompressedRow> rows = null;
         
         String line;
         while ((line = reader.readLine()) != null && !"/ec/".equals(line)) {
@@ -131,11 +132,11 @@ public class RowRemovalChange implements Change {
             } else if ("rowCount".equals(field)) {
                 int count = Integer.parseInt(line.substring(equal + 1));
                 
-                rows = new ArrayList<Row>(count);
+                rows = new ArrayList<CompressedRow>(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {
-                        rows.add(Row.load(line, pool));
+                        rows.add(new CompressedRow(Row.load(line, pool)));
                     }
                 }
             }

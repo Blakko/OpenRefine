@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.refine.ProjectMetadata;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.importing.ImportingJob;
 import com.google.refine.model.Cell;
@@ -199,7 +200,7 @@ abstract public class TabularImportingParserBase extends ImportingParserBase {
                                     project.columnModel.getColumnByName(fileNameColumnName).getCellIndex(),
                                     new Cell(fileSource, null));
                             }
-                            project.rows.add(row);
+                            project.rows.add(new CompressedRow(row));
                         }
                         
                         if (limit2 > 0 && project.rows.size() >= limit2) {

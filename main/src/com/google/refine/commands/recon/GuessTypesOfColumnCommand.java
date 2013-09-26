@@ -58,10 +58,10 @@ import org.json.JSONObject;
 import org.json.JSONWriter;
 
 import com.google.refine.commands.Command;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.util.ParsingUtilities;
 
 public class GuessTypesOfColumnCommand extends Command {
@@ -130,7 +130,7 @@ public class GuessTypesOfColumnCommand extends Command {
         List<String> samples = new ArrayList<String>(SAMPLE_SIZE);
         Set<String> sampleSet = new HashSet<String>();
         
-        for (Row row : project.rows) {
+        for (CompressedRow row : project.rows) {
             Object value = row.getCellValue(cellIndex);
             if (ExpressionUtils.isNonBlankData(value)) {
                 String s = value.toString().trim();

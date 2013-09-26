@@ -41,10 +41,10 @@ import java.util.Properties;
 
 import com.google.refine.browsing.RecordVisitor;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Project;
 import com.google.refine.model.Record;
-import com.google.refine.model.Row;
 
 public class Template {
     protected String _prefix;
@@ -118,7 +118,7 @@ public class Template {
         }
 
         @Override
-        public boolean visit(Project project, int rowIndex, Row row) {
+        public boolean visit(Project project, int rowIndex, CompressedRow row) {
             if (limit <= 0 || total < limit) {
                 internalVisit(project, rowIndex, row);
             }
@@ -150,7 +150,7 @@ public class Template {
             }
         }
 
-        public boolean internalVisit(Project project, int rowIndex, Row row) {
+        public boolean internalVisit(Project project, int rowIndex, CompressedRow row) {
             try {
                 if (total > 0 && _separator != null) {
                     writer.write(_separator);
@@ -192,7 +192,7 @@ public class Template {
             bindings.put("recordIndex", record.recordIndex);
 
             for (int r = record.fromRowIndex; r < record.toRowIndex; r++) {
-                Row row = project.rows.get(r);
+                CompressedRow row = project.rows.get(r);
 
                 bindings.put("rowIndex", r);
 

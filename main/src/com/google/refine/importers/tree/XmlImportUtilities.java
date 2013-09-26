@@ -47,6 +47,7 @@ import javax.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.importers.tree.TreeReader.Token;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
@@ -481,7 +482,7 @@ public class XmlImportUtilities extends TreeImportUtilities {
                     }
                 }
                 if (realRow != null) {
-                    project.rows.add(realRow);
+                    project.rows.add(new CompressedRow(realRow));
                 }
             }
         }

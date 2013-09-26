@@ -52,8 +52,8 @@ import com.google.refine.browsing.facets.TimeRangeFacet;
 import com.google.refine.browsing.util.ConjunctiveFilteredRecords;
 import com.google.refine.browsing.util.ConjunctiveFilteredRows;
 import com.google.refine.browsing.util.FilteredRecordsAsFilteredRows;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 /**
  * Faceted browsing engine.
@@ -100,7 +100,7 @@ public class Engine implements Jsonizable {
 
                     int c = project.rows.size();
                     for (int rowIndex = 0; rowIndex < c; rowIndex++) {
-                        Row row = project.rows.get(rowIndex);
+                        CompressedRow row = project.rows.get(rowIndex);
                         if (visitor.visit(project, rowIndex, row)) {
                             break;
                         }

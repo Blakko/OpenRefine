@@ -39,8 +39,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.sorting.Criterion.KeyMaker;
 
 public class SortingRowVisitor extends BaseSorter implements RowVisitor {
@@ -49,9 +49,9 @@ public class SortingRowVisitor extends BaseSorter implements RowVisitor {
 
     static protected class IndexedRow {
         final int index;
-        final Row row;
+        final CompressedRow row;
 
-        IndexedRow(int index, Row row) {
+        IndexedRow(int index, CompressedRow row) {
             this.index = index;
             this.row = row;
         }
@@ -94,7 +94,7 @@ public class SortingRowVisitor extends BaseSorter implements RowVisitor {
     }
 
     @Override
-    public boolean visit(Project project, int rowIndex, Row row) {
+    public boolean visit(Project project, int rowIndex, CompressedRow row) {
         _indexedRows.add(new IndexedRow(rowIndex, row));
         return false;
     }
@@ -103,6 +103,6 @@ public class SortingRowVisitor extends BaseSorter implements RowVisitor {
     protected Object makeKey(
             Project project, KeyMaker keyMaker, Criterion c, Object o, int index) {
 
-        return keyMaker.makeKey(project, (Row) o, index);
+        return keyMaker.makeKey(project, (CompressedRow) o, index);
     }
 }

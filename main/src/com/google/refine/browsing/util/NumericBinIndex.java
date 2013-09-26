@@ -38,9 +38,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 /**
  * A utility class for computing the base bins that form the base histograms of 
@@ -169,7 +169,7 @@ abstract public class NumericBinIndex {
         RowEvaluable    rowEvaluable,
         List<Double>     allValues,
         int             rowIndex,
-        Row             row,
+        CompressedRow   row,
         Properties         bindings
     ) {
         Object value = rowEvaluable.eval(project, rowIndex, row, bindings);

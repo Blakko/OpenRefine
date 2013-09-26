@@ -43,11 +43,11 @@ import java.util.Properties;
 import org.json.JSONException;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
-import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class MassReconChange implements Change {
@@ -72,10 +72,10 @@ public class MassReconChange implements Change {
     protected void switchRecons(Project project, Map<Long, Recon> reconMap) {
         synchronized (project) {
             for (int r = 0; r < project.rows.size(); r++) {
-                Row row = project.rows.get(r);
+                CompressedRow row = project.rows.get(r);
                 
-                for (int c = 0; c < row.cells.size(); c++) {
-                    Cell cell = row.cells.get(c);
+                for (int c = 0; c < row.getCells().size(); c++) {
+                    Cell cell = row.getCell(c);
                     if (cell != null && cell.recon != null) {
                         Recon recon = cell.recon;
                         

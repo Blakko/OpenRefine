@@ -41,11 +41,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Column;
 import com.google.refine.model.ColumnGroup;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class ColumnAdditionChange extends ColumnChange {
@@ -115,7 +115,7 @@ public class ColumnAdditionChange extends ColumnChange {
     public void revert(Project project) {
         synchronized (project) {
             for (CellAtRow cell : _newCells) {
-                Row row = project.rows.get(cell.row);
+                CompressedRow row = project.rows.get(cell.row);
                 row.setCell(_newCellIndex, null);
             }
             

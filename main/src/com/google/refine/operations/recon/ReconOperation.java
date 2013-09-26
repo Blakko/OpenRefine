@@ -48,6 +48,7 @@ import org.slf4j.LoggerFactory;
 import com.google.refine.browsing.Engine;
 import com.google.refine.browsing.FilteredRows;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.history.Change;
 import com.google.refine.history.HistoryEntry;
@@ -56,7 +57,6 @@ import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.CellChange;
 import com.google.refine.model.changes.ReconChange;
 import com.google.refine.model.recon.ReconConfig;
@@ -231,9 +231,9 @@ public class ReconOperation extends EngineDependentOperation {
                 }
                 
                 @Override
-                public boolean visit(Project project, int rowIndex, Row row) {
-                    if (_cellIndex < row.cells.size()) {
-                        Cell cell = row.cells.get(_cellIndex);
+                public boolean visit(Project project, int rowIndex, CompressedRow row) {
+                    if (_cellIndex < row.getCells().size()) {
+                        Cell cell = row.getCell(_cellIndex);
                         if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
                             _entries.add(new ReconEntry(rowIndex, cell));
                         }

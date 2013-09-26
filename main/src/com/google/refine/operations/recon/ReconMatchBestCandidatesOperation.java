@@ -43,6 +43,7 @@ import org.json.JSONObject;
 import org.json.JSONWriter;
 
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
@@ -51,7 +52,6 @@ import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
 import com.google.refine.model.Recon.Judgment;
 import com.google.refine.model.ReconCandidate;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.CellChange;
 import com.google.refine.model.changes.ReconChange;
 import com.google.refine.operations.EngineDependentMassCellOperation;
@@ -125,9 +125,9 @@ public class ReconMatchBestCandidatesOperation extends EngineDependentMassCellOp
             }
 
             @Override
-            public boolean visit(Project project, int rowIndex, Row row) {
-                if (cellIndex < row.cells.size()) {
-                    Cell cell = row.cells.get(cellIndex);
+            public boolean visit(Project project, int rowIndex, CompressedRow row) {
+                if (cellIndex < row.getCells().size()) {
+                    Cell cell = row.getCell(cellIndex);
                     if (cell != null && cell.recon != null) {
                         ReconCandidate candidate = cell.recon.getBestCandidate();
                         if (candidate != null) {

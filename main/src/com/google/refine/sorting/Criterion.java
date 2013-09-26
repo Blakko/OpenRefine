@@ -36,11 +36,11 @@ package com.google.refine.sorting;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
 import com.google.refine.model.Record;
-import com.google.refine.model.Row;
 
 abstract public class Criterion {
     public String columnName;
@@ -118,7 +118,7 @@ abstract public class Criterion {
             }
         }
 
-        public Object makeKey(Project project, Row row, int rowIndex) {
+        public Object makeKey(Project project, CompressedRow row, int rowIndex) {
             if (cellIndex < 0) {
                 return null;
             } else {

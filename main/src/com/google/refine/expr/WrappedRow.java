@@ -35,18 +35,18 @@ package com.google.refine.expr;
 
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
 import com.google.refine.model.Record;
-import com.google.refine.model.Row;
 
 public class WrappedRow implements HasFields {
     final public Project project;
     final public int rowIndex;
-    final public Row row;
+    final public CompressedRow row;
     
-    public WrappedRow(Project project, int rowIndex, Row row) {
+    public WrappedRow(Project project, int rowIndex, CompressedRow row) {
         this.project = project;
         this.rowIndex = rowIndex;
         this.row = row;
@@ -120,7 +120,7 @@ public class WrappedRow implements HasFields {
                 
                 HasFieldsListImpl cells = new HasFieldsListImpl();
                 for (int r = _record.fromRowIndex; r < _record.toRowIndex; r++) {
-                    Row row = project.rows.get(r);
+                    CompressedRow row = project.rows.get(r);
                     Cell cell = row.getCell(cellIndex);
                     if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
                         cells.add(new WrappedCell(project, name, cell));

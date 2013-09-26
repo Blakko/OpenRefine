@@ -36,10 +36,10 @@ package com.google.refine.browsing.util;
 import java.util.List;
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Project;
 import com.google.refine.model.Record;
-import com.google.refine.model.Row;
 
 public class TimeBinRecordIndex extends TimeBinIndex {
 
@@ -59,7 +59,7 @@ public class TimeBinRecordIndex extends TimeBinIndex {
             preprocessing();
             
             for (int i = record.fromRowIndex; i < record.toRowIndex; i++) {
-                Row row = project.rows.get(i);
+                CompressedRow row = project.rows.get(i);
                 
                 processRow(project, rowEvaluable, allValues, i, row, bindings);
             }

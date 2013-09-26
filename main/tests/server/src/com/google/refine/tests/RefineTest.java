@@ -44,10 +44,10 @@ import org.slf4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.util.JSONUtilities;
 
 public class RefineTest {
@@ -97,9 +97,9 @@ public class RefineTest {
             sb.append("; ");
         }
         logger.info(sb.toString());
-        for(Row r : project.rows){
+        for(CompressedRow r : project.rows){
             sb = new StringBuilder();
-            for(int i = 0; i < r.cells.size(); i++){
+            for(int i = 0; i < r.getCells().size(); i++){
                 Cell c = r.getCell(i);
                 if(c != null){
                    sb.append(c.value);

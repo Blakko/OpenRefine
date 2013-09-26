@@ -40,9 +40,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 /**
  * A utility class for computing the base bins that form the base histograms of 
@@ -165,7 +165,7 @@ abstract public class TimeBinIndex {
         RowEvaluable    rowEvaluable,
         List<Long>     allValues,
         int             rowIndex,
-        Row             row,
+        CompressedRow             row,
         Properties         bindings
     ) {
         Object value = rowEvaluable.eval(project, rowIndex, row, bindings);

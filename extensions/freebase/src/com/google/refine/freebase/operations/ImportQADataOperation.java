@@ -45,13 +45,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.freebase.commands.UploadDataCommand;
 import com.google.refine.history.HistoryEntry;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassReconChange;
 import com.google.refine.operations.OperationRegistry;
 import com.google.refine.util.ParsingUtilities;
@@ -109,10 +109,10 @@ public class ImportQADataOperation extends AbstractOperation {
         Map<Long, Recon> newRecons = new HashMap<Long, Recon>();
         
         for (int r = 0; r < project.rows.size(); r++) {
-            Row row = project.rows.get(r);
+            CompressedRow row = project.rows.get(r);
             
-            for (int c = 0; c < row.cells.size(); c++) {
-                Cell cell = row.cells.get(c);
+            for (int c = 0; c < row.getCells().size(); c++) {
+                Cell cell = row.getCell(c);
                 if (cell != null && cell.recon != null) {
                     Recon oldRecon = cell.recon;
                     

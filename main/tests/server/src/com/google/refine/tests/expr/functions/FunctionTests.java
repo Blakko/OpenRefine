@@ -50,6 +50,7 @@ import org.testng.annotations.Test;
 import com.google.refine.ProjectManager;
 import com.google.refine.ProjectMetadata;
 import com.google.refine.browsing.Engine;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.EvalError;
 import com.google.refine.grel.ControlFunctionRegistry;
 import com.google.refine.grel.Function;
@@ -58,7 +59,6 @@ import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.ModelException;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.tests.RefineTest;
 import com.google.refine.tests.util.TestUtils;
 
@@ -99,7 +99,7 @@ public class FunctionTests extends RefineTest {
         
         // Five rows of a's and five of 1s
         for (int i = 0; i < 10; i++) {
-            Row row = new Row(1);
+            CompressedRow row = new CompressedRow(1);
             row.setCell(0, new Cell(i < 5 ? "a":new Integer(1), null));
             project.rows.add(row);
         }

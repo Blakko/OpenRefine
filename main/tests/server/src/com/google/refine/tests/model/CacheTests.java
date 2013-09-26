@@ -52,6 +52,7 @@ import com.google.refine.ProjectManager;
 import com.google.refine.ProjectMetadata;
 import com.google.refine.browsing.Engine;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.functions.FacetCount;
 import com.google.refine.grel.Function;
 import com.google.refine.io.FileProjectManager;
@@ -59,7 +60,6 @@ import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.ModelException;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.operations.EngineDependentOperation;
 import com.google.refine.operations.row.RowRemovalOperation;
 import com.google.refine.tests.RefineTest;
@@ -133,7 +133,7 @@ public class CacheTests extends RefineTest {
     @Test
     public void testIssue567() throws Exception {
         for (int i = 0; i < 5; i++) {
-            Row row = new Row(5);
+            CompressedRow row = new CompressedRow(5);
             row.setCell(0, new Cell(i < 4 ? "a":"b", null));
             project.rows.add(row);
         }
@@ -160,7 +160,7 @@ public class CacheTests extends RefineTest {
         }
 
         @Override
-        public boolean visit(Project project, int rowIndex, Row row) {
+        public boolean visit(Project project, int rowIndex, CompressedRow row) {
             count++;
             return false;
         }

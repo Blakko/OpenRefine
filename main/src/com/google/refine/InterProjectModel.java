@@ -40,12 +40,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.expr.HasFieldsListImpl;
 import com.google.refine.expr.WrappedRow;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 public class InterProjectModel {
     static public class ProjectJoin {
@@ -75,7 +75,7 @@ public class InterProjectModel {
                 if (toProject != null) {
                     HasFieldsListImpl rows = new HasFieldsListImpl();
                     for (Integer r : valueToRowIndices.get(value)) {
-                        Row row = toProject.rows.get(r);
+                        CompressedRow row = toProject.rows.get(r);
                         rows.add(new WrappedRow(toProject, r, row));
                     }
                     
@@ -150,7 +150,7 @@ public class InterProjectModel {
             return;
         }
         
-        for (Row fromRow : fromProject.rows) {
+        for (CompressedRow fromRow : fromProject.rows) {
             Object value = fromRow.getCellValue(fromColumn.getCellIndex());
             if (ExpressionUtils.isNonBlankData(value) && !join.valueToRowIndices.containsKey(value)) {
                 join.valueToRowIndices.put(value, new ArrayList<Integer>());
@@ -159,7 +159,7 @@ public class InterProjectModel {
         
         int count = toProject.rows.size();
         for (int r = 0; r < count; r++) {
-            Row toRow = toProject.rows.get(r);
+            CompressedRow toRow = toProject.rows.get(r);
             
             Object value = toRow.getCellValue(toColumn.getCellIndex());
             if (ExpressionUtils.isNonBlankData(value) && join.valueToRowIndices.containsKey(value)) {

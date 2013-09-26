@@ -57,6 +57,7 @@ import org.slf4j.LoggerFactory;
 import com.google.refine.ProjectManager;
 import com.google.refine.ProjectMetadata;
 import com.google.refine.RefineServlet;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.History;
 import com.google.refine.process.ProcessManager;
 import com.google.refine.util.ParsingUtilities;
@@ -71,7 +72,7 @@ public class Project {
     }
     
     final public long                       id;
-    final public List<Row>                  rows = new ArrayList<Row>();
+    final public List<CompressedRow>        rows = new ArrayList<CompressedRow>();
     
     final public ColumnModel                columnModel = new ColumnModel();
     final public RecordModel                recordModel = new RecordModel();
@@ -178,7 +179,7 @@ public class Project {
         }
         
         writer.write("rowCount="); writer.write(Integer.toString(rows.size())); writer.write('\n');
-        for (Row row : rows) {
+        for (CompressedRow row : rows) {
             row.save(writer, options); writer.write('\n');
         }
     }
@@ -222,7 +223,7 @@ public class Project {
                     line = reader.readLine();
                     if (line != null) {
                         Row row = Row.load(line, pool);
-                        project.rows.add(row);
+                        project.rows.add(new CompressedRow(row));
                         maxCellCount = Math.max(maxCellCount, row.cells.size());
                     }
                 }

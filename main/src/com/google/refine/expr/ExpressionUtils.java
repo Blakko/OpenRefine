@@ -45,9 +45,9 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 public class ExpressionUtils {
     
@@ -73,7 +73,7 @@ public class ExpressionUtils {
         return bindings;
     }
 
-    static public void bind(Properties bindings, Row row, int rowIndex, String columnName, Cell cell) {
+    static public void bind(Properties bindings, CompressedRow row, int rowIndex, String columnName, Cell cell) {
         Project project = (Project) bindings.get("project");
 
         bindings.put("rowIndex", rowIndex);

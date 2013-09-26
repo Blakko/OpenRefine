@@ -51,6 +51,7 @@ import org.jrdf.util.ClosableIterable;
 import org.json.JSONObject;
 
 import com.google.refine.ProjectMetadata;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.importing.ImportingJob;
 import com.google.refine.model.Cell;
@@ -153,7 +154,9 @@ public class RdfTripleImporter extends ImportingParserBase {
             }
 
             for (Entry<String, List<Row>> entry : subjectToRows.entrySet()) {
-                project.rows.addAll(entry.getValue());
+                for(Row row: entry.getValue()){
+                    project.rows.add(new CompressedRow(row));
+                }
             }
         } catch (ModelException e) {
             exceptions.add(e);

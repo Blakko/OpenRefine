@@ -44,11 +44,11 @@ import org.json.JSONWriter;
 import com.google.refine.browsing.Engine;
 import com.google.refine.browsing.FilteredRows;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.history.HistoryEntry;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassChange;
 import com.google.refine.model.changes.RowFlagChange;
 import com.google.refine.operations.EngineDependentOperation;
@@ -127,8 +127,8 @@ protected HistoryEntry createHistoryEntry(Project project, long historyEntryID) 
             }
             
             @Override
-            public boolean visit(Project project, int rowIndex, Row row) {
-                if (row.flagged != _flagged) {
+            public boolean visit(Project project, int rowIndex, CompressedRow row) {
+                if (row.getFlagged() != _flagged) {
                     RowFlagChange change = new RowFlagChange(rowIndex, _flagged);
                     
                     changes.add(change);

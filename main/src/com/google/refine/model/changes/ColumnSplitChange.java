@@ -46,6 +46,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import com.google.refine.ProjectManager;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
@@ -67,8 +68,8 @@ public class ColumnSplitChange implements Change {
     protected int                       _columnIndex;
     
     protected int                       _firstNewCellIndex = -1;
-    protected List<Row>                 _oldRows;
-    protected List<Row>                 _newRows;
+    protected List<CompressedRow>                 _oldRows;
+    protected List<CompressedRow>                 _newRows;
     
     protected List<ColumnGroup>         _oldColumnGroups;
     
@@ -99,8 +100,8 @@ public class ColumnSplitChange implements Change {
         int                         columnIndex,
         
         int                         firstNewCellIndex,
-        List<Row>                   oldRows,
-        List<Row>                   newRows
+        List<CompressedRow>                   oldRows,
+        List<CompressedRow>                   newRows
     ) {
         _columnName = columnName;
         
@@ -131,8 +132,8 @@ public class ColumnSplitChange implements Change {
                 _column = project.columnModel.getColumnByName(_columnName);
                 _columnIndex = project.columnModel.getColumnIndexByName(_columnName);
                 
-                _oldRows = new ArrayList<Row>(_rowIndices.size());
-                _newRows = new ArrayList<Row>(_rowIndices.size());
+                _oldRows = new ArrayList<CompressedRow>(_rowIndices.size());
+                _newRows = new ArrayList<CompressedRow>(_rowIndices.size());
                 
                 int cellIndex = _column.getCellIndex();
                 
@@ -140,8 +141,8 @@ public class ColumnSplitChange implements Change {
                     int r = _rowIndices.get(i);
                     List<Serializable> tuple = _tuples.get(i);
                 
-                    Row oldRow = project.rows.get(r);
-                    Row newRow = oldRow.dup();
+                    CompressedRow oldRow = project.rows.get(r);
+                    CompressedRow newRow = oldRow.dup();
                     
                     _oldRows.add(oldRow);
                     _newRows.add(newRow);
@@ -204,7 +205,7 @@ public class ColumnSplitChange implements Change {
             
             for (int i = 0; i < _rowIndices.size(); i++) {
                 int r = _rowIndices.get(i);
-                Row newRow = _newRows.get(i);
+                CompressedRow newRow = _newRows.get(i);
                 
                 project.rows.set(r, newRow);
             }
@@ -231,7 +232,7 @@ public class ColumnSplitChange implements Change {
         synchronized (project) {
             for (int i = 0; i < _rowIndices.size(); i++) {
                 int r = _rowIndices.get(i);
-                Row oldRow = _oldRows.get(i);
+                CompressedRow oldRow = _oldRows.get(i);
                 
                 project.rows.set(r, oldRow);
             }
@@ -287,12 +288,12 @@ public class ColumnSplitChange implements Change {
         writer.write("firstNewCellIndex="); writer.write(Integer.toString(_firstNewCellIndex)); writer.write('\n');
         
         writer.write("newRowCount="); writer.write(Integer.toString(_newRows.size())); writer.write('\n');
-        for (Row row : _newRows) {
+        for (CompressedRow row : _newRows) {
             row.save(writer, options);
             writer.write('\n');
         }
         writer.write("oldRowCount="); writer.write(Integer.toString(_oldRows.size())); writer.write('\n');
-        for (Row row : _oldRows) {
+        for (CompressedRow row : _oldRows) {
             row.save(writer, options);
             writer.write('\n');
         }
@@ -311,8 +312,8 @@ public class ColumnSplitChange implements Change {
         int                         columnIndex = -1;
         
         int                         firstNewCellIndex = -1;
-        List<Row>                   oldRows = null;
-        List<Row>                   newRows = null;
+        List<CompressedRow>                   oldRows = null;
+        List<CompressedRow>                   newRows = null;
         
         List<ColumnGroup>           oldColumnGroups = null;
 
@@ -381,21 +382,21 @@ public class ColumnSplitChange implements Change {
             } else if ("oldRowCount".equals(field)) {
                 int count = Integer.parseInt(value);
                 
-                oldRows = new ArrayList<Row>(count);
+                oldRows = new ArrayList<CompressedRow>(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {
-                        oldRows.add(Row.load(line, pool));
+                        oldRows.add(new CompressedRow(Row.load(line, pool)));
                     }
                 }
             } else if ("newRowCount".equals(field)) {
                 int count = Integer.parseInt(value);
                 
-                newRows = new ArrayList<Row>(count);
+                newRows = new ArrayList<CompressedRow>(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {
-                        newRows.add(Row.load(line, pool));
+                        newRows.add(new CompressedRow(Row.load(line, pool)));
                     }
                 }
             } else if ("oldColumnGroupCount".equals(field)) {

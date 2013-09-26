@@ -50,12 +50,12 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.google.refine.browsing.Engine;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.exporters.CsvExporter;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.ModelException;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.tests.RefineTest;
 
 public class TsvExporterTests extends RefineTest {
@@ -129,7 +129,7 @@ public class TsvExporterTests extends RefineTest {
     public void exportTsvWithLineBreaks(){
         CreateGrid(3,3);
 
-        project.rows.get(1).cells.set(1, new Cell("line\n\n\nbreak", null));
+        project.rows.get(1).setCell(1, new Cell("line\n\n\nbreak", null));
         try {
             SUT.export(project, options, engine, writer);
         } catch (IOException e) {
@@ -146,7 +146,7 @@ public class TsvExporterTests extends RefineTest {
     public void exportTsvWithComma(){
         CreateGrid(3,3);
 
-        project.rows.get(1).cells.set(1, new Cell("with\t tab", null));
+        project.rows.get(1).setCell(1, new Cell("with\t tab", null));
         try {
             SUT.export(project, options, engine, writer);
         } catch (IOException e) {
@@ -163,7 +163,7 @@ public class TsvExporterTests extends RefineTest {
     public void exportTsvWithQuote(){
         CreateGrid(3,3);
 
-        project.rows.get(1).cells.set(1, new Cell("line has \"quote\"", null));
+        project.rows.get(1).setCell(1, new Cell("line has \"quote\"", null));
         try {
             SUT.export(project, options, engine, writer);
         } catch (IOException e) {
@@ -180,8 +180,8 @@ public class TsvExporterTests extends RefineTest {
     public void exportTsvWithEmptyCells(){
         CreateGrid(3,3);
 
-        project.rows.get(1).cells.set(1, null);
-        project.rows.get(2).cells.set(0, null);
+        project.rows.get(1).setCell(1, null);
+        project.rows.get(2).setCell(0, null);
         try {
             SUT.export(project, options, engine, writer);
         } catch (IOException e) {
@@ -211,9 +211,9 @@ public class TsvExporterTests extends RefineTest {
         CreateColumns(noOfColumns);
 
         for(int i = 0; i < noOfRows; i++){
-            Row row = new Row(noOfColumns);
+            CompressedRow row = new CompressedRow(noOfColumns);
             for(int j = 0; j < noOfColumns; j++){
-                row.cells.add(new Cell("row" + i + "cell" + j, null));
+                row.addCell(new Cell("row" + i + "cell" + j, null));
             }
             project.rows.add(row);
         }

@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import org.json.JSONWriter;
 
 import com.google.refine.Jsonizable;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Recon.Judgment;
 
@@ -79,7 +80,7 @@ public class ReconStats implements Jsonizable {
         int newTopics = 0;
         int matchedTopics = 0;
         
-        for (Row row : project.rows) {
+        for (CompressedRow row : project.rows) {
             Cell cell = row.getCell(cellIndex);
             if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
                 nonBlanks++;

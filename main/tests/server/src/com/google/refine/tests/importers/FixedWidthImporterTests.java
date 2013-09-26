@@ -75,11 +75,11 @@ public class FixedWidthImporterTests extends ImporterTest {
         }
         
         Assert.assertEquals(project.rows.size(), 3); // Column names count as a row?
-        Assert.assertEquals(project.rows.get(1).cells.size(), 3);
+        Assert.assertEquals(project.rows.get(1).getCells().size(), 3);
         Assert.assertEquals((String)project.rows.get(1).getCellValue(0), "NDB_No");
         Assert.assertEquals((String)project.rows.get(1).getCellValue(1), "Shrt_Desc");
         Assert.assertEquals((String)project.rows.get(1).getCellValue(2), "Water");
-        Assert.assertEquals(project.rows.get(2).cells.size(), 3);
+        Assert.assertEquals(project.rows.get(2).getCells().size(), 3);
         Assert.assertEquals((String)project.rows.get(2).getCellValue(0), "TooSho");
         Assert.assertEquals((String)project.rows.get(2).getCellValue(1), "rt");
         Assert.assertNull(project.rows.get(2).getCellValue(2));

@@ -42,12 +42,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.HistoryEntry;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowChange;
 import com.google.refine.operations.OperationRegistry;
 
@@ -111,11 +111,11 @@ public class MultiValuedCellSplitOperation extends AbstractOperation {
         }
         int keyCellIndex = keyColumn.getCellIndex();
         
-        List<Row> newRows = new ArrayList<Row>();
+        List<CompressedRow> newRows = new ArrayList<CompressedRow>();
         
         int oldRowCount = project.rows.size();
         for (int r = 0; r < oldRowCount; r++) {
-            Row oldRow = project.rows.get(r);
+            CompressedRow oldRow = project.rows.get(r);
             if (oldRow.isCellBlank(cellIndex)) {
                 newRows.add(oldRow.dup());
                 continue;
@@ -137,7 +137,7 @@ public class MultiValuedCellSplitOperation extends AbstractOperation {
             
             // First value goes into the same row
             {
-                Row firstNewRow = oldRow.dup();
+                CompressedRow firstNewRow = oldRow.dup();
                 firstNewRow.setCell(cellIndex, new Cell(values[0].trim(), null));
                 
                 newRows.add(firstNewRow);
@@ -148,11 +148,11 @@ public class MultiValuedCellSplitOperation extends AbstractOperation {
                 Cell newCell = new Cell(values[v].trim(), null);
                 
                 if (r2 < project.rows.size()) {
-                    Row oldRow2 = project.rows.get(r2);
+                    CompressedRow oldRow2 = project.rows.get(r2);
                     if (oldRow2.isCellBlank(cellIndex) && 
                         oldRow2.isCellBlank(keyCellIndex)) {
                         
-                        Row newRow = oldRow2.dup();
+                        CompressedRow newRow = oldRow2.dup();
                         newRow.setCell(cellIndex, newCell);
                         
                         newRows.add(newRow);
@@ -162,7 +162,7 @@ public class MultiValuedCellSplitOperation extends AbstractOperation {
                     }
                 }
                 
-                Row newRow = new Row(cellIndex + 1);
+                CompressedRow newRow = new CompressedRow(cellIndex + 1);
                 newRow.setCell(cellIndex, newCell);
                 
                 newRows.add(newRow);

@@ -41,9 +41,9 @@ import org.json.JSONException;
 
 import com.google.refine.browsing.RowFilter;
 import com.google.refine.browsing.util.RowEvaluable;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 /**
  * Judge if a row matches by evaluating a given expression on the row, based on a particular
@@ -73,7 +73,7 @@ abstract public class ExpressionNumberComparisonRowFilter implements RowFilter {
     }
 
     @Override
-    public boolean filterRow(Project project, int rowIndex, Row row) {
+    public boolean filterRow(Project project, int rowIndex, CompressedRow row) {
         Properties bindings = ExpressionUtils.createBindings(project);
         
         Object value = _rowEvaluable.eval(project, rowIndex, row, bindings);

@@ -41,23 +41,24 @@ import java.util.List;
 import java.util.Properties;
 
 import com.google.refine.ProjectManager;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Project;
 import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class MassRowChange implements Change {
-    final protected List<Row> _newRows;
-    protected List<Row>       _oldRows;
+    final protected List<CompressedRow> _newRows;
+    protected List<CompressedRow>       _oldRows;
     
-    public MassRowChange(List<Row> newRows) {
+    public MassRowChange(List<CompressedRow> newRows) {
         _newRows = newRows;
     }
     
     @Override
     public void apply(Project project) {
         synchronized (project) {
-            _oldRows = new ArrayList<Row>(project.rows);
+            _oldRows = new ArrayList<CompressedRow>(project.rows);
             project.rows.clear();
             project.rows.addAll(_newRows);
             
@@ -81,12 +82,12 @@ public class MassRowChange implements Change {
     @Override
     public void save(Writer writer, Properties options) throws IOException {
         writer.write("newRowCount="); writer.write(Integer.toString(_newRows.size())); writer.write('\n');
-        for (Row row : _newRows) {
+        for (CompressedRow row : _newRows) {
             row.save(writer, options);
             writer.write('\n');
         }
         writer.write("oldRowCount="); writer.write(Integer.toString(_oldRows.size())); writer.write('\n');
-        for (Row row : _oldRows) {
+        for (CompressedRow row : _oldRows) {
             row.save(writer, options);
             writer.write('\n');
         }
@@ -94,8 +95,8 @@ public class MassRowChange implements Change {
     }
     
     static public Change load(LineNumberReader reader, Pool pool) throws Exception {
-        List<Row> oldRows = null;
-        List<Row> newRows = null;
+        List<CompressedRow> oldRows = null;
+        List<CompressedRow> newRows = null;
         
         String line;
         while ((line = reader.readLine()) != null && !"/ec/".equals(line)) {
@@ -105,21 +106,21 @@ public class MassRowChange implements Change {
             if ("oldRowCount".equals(field)) {
                 int count = Integer.parseInt(line.substring(equal + 1));
                 
-                oldRows = new ArrayList<Row>(count);
+                oldRows = new ArrayList<CompressedRow>(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {
-                        oldRows.add(Row.load(line, pool));
+                        oldRows.add(new CompressedRow(Row.load(line, pool)));
                     }
                 }
             } else if ("newRowCount".equals(field)) {
                 int count = Integer.parseInt(line.substring(equal + 1));
                 
-                newRows = new ArrayList<Row>(count);
+                newRows = new ArrayList<CompressedRow>(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {
-                        newRows.add(Row.load(line, pool));
+                        newRows.add(new CompressedRow(Row.load(line, pool)));
                     }
                 }
             }

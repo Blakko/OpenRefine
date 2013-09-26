@@ -35,11 +35,11 @@ package com.google.refine.browsing.util;
 
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.Evaluable;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 public class ExpressionBasedRowEvaluable implements RowEvaluable {
     final protected String         _columnName;
@@ -56,7 +56,7 @@ public class ExpressionBasedRowEvaluable implements RowEvaluable {
 
     @Override
     public Object eval(
-            Project project, int rowIndex, Row row, Properties bindings) {
+            Project project, int rowIndex, CompressedRow row, Properties bindings) {
         
         Cell cell = row.getCell(_cellIndex);
 

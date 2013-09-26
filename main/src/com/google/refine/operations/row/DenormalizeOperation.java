@@ -41,13 +41,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.HistoryEntry;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.RecordModel.CellDependency;
 import com.google.refine.model.RecordModel.RowDependency;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowChange;
 import com.google.refine.operations.OperationRegistry;
 
@@ -77,12 +77,12 @@ public class DenormalizeOperation extends AbstractOperation {
 
     @Override
     protected HistoryEntry createHistoryEntry(Project project, long historyEntryID) throws Exception {
-        List<Row> newRows = new ArrayList<Row>();
+        List<CompressedRow> newRows = new ArrayList<CompressedRow>();
         
-        List<Row> oldRows = project.rows;
+        List<CompressedRow> oldRows = project.rows;
         for (int r = 0; r < oldRows.size(); r++) {
-            Row oldRow = oldRows.get(r);
-            Row newRow = null;
+            CompressedRow oldRow = oldRows.get(r);
+            CompressedRow newRow = null;
             
             RowDependency rd = project.recordModel.getRowDependency(r);
             if (rd.cellDependencies != null) {
@@ -94,7 +94,7 @@ public class DenormalizeOperation extends AbstractOperation {
                         int contextCellIndex = cd.cellIndex;
 
                         if (contextRowIndex >= 0 && contextRowIndex < oldRows.size()) {
-                            Row contextRow = oldRows.get(contextRowIndex);
+                            CompressedRow contextRow = oldRows.get(contextRowIndex);
                             Cell contextCell = contextRow.getCell(contextCellIndex);
 
                             newRow.setCell(contextCellIndex, contextCell);

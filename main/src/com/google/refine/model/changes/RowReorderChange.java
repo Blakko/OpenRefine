@@ -40,9 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class RowReorderChange implements Change {
@@ -55,8 +55,8 @@ public class RowReorderChange implements Change {
     @Override
     public void apply(Project project) {
         synchronized (project) {
-            List<Row> oldRows = project.rows;
-            List<Row> newRows = new ArrayList<Row>(oldRows.size());
+            List<CompressedRow> oldRows = project.rows;
+            List<CompressedRow> newRows = new ArrayList<CompressedRow>(oldRows.size());
 
             for (Integer oldIndex : _rowIndices) {
                 newRows.add(oldRows.get(oldIndex));
@@ -73,8 +73,8 @@ public class RowReorderChange implements Change {
         synchronized (project) {
             int count = project.rows.size();
 
-            List<Row> newRows = project.rows;
-            List<Row> oldRows = new ArrayList<Row>(count);
+            List<CompressedRow> newRows = project.rows;
+            List<CompressedRow> oldRows = new ArrayList<CompressedRow>(count);
 
             for (int r = 0; r < count; r++) {
                 oldRows.add(null);
@@ -82,7 +82,7 @@ public class RowReorderChange implements Change {
 
             for (int newIndex = 0; newIndex < count; newIndex++) {
                 int oldIndex = _rowIndices.get(newIndex);
-                Row row = newRows.get(newIndex);
+                CompressedRow row = newRows.get(newIndex);
                 oldRows.set(oldIndex, row);
             }
 

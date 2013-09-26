@@ -45,11 +45,11 @@ import com.google.refine.browsing.Engine;
 import com.google.refine.browsing.Engine.Mode;
 import com.google.refine.browsing.RecordVisitor;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.HistoryEntry;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Project;
 import com.google.refine.model.Record;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.RowReorderChange;
 import com.google.refine.operations.OperationRegistry;
 import com.google.refine.sorting.SortingRecordVisitor;
@@ -146,7 +146,7 @@ public class RowReorderOperation extends AbstractOperation {
         }
 
         @Override
-        public boolean visit(Project project, int rowIndex, Row row) {
+        public boolean visit(Project project, int rowIndex, CompressedRow row) {
             _indices.add(rowIndex);
             return false;
         }

@@ -1,6 +1,7 @@
 
 package com.google.refine.compression;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,35 +12,40 @@ import com.esotericsoftware.kryo.io.Output;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Recon;
 import com.google.refine.model.ReconCandidate;
+import com.google.refine.model.Row;
 
-public class RowManager {
+public class RowCompressionManager {
 
     private final Kryo kryo;
     private final Output out;
     private Input input;
 
-    public RowManager() {
+    public RowCompressionManager() {
         out = new Output(4096, 12400);
         kryo = new Kryo();
         kryo.register(List.class);
         kryo.register(ArrayList.class);
+        kryo.register(Row.class);
         kryo.register(Cell.class);
         kryo.register(Recon.class);
         kryo.register(ReconCandidate.class);
+        kryo.register(Serializable.class);
     }
 
-    public byte[] serialize(List<Cell> list) {
-        kryo.writeObject(out, list);
-
+    public byte[] serialize(Row row, int compression) {
+        kryo.writeObject(out, row);
+        byte[] result = out.toBytes();
         out.clear();
-        return out.toBytes();
+        if (compression == 1) // basic serialization
+            return result;
+        return null;
     }
 
-    @SuppressWarnings("unchecked")
-    public ArrayList<Cell> deserialize(byte[] byt) {
-        input = new Input(byt);
-        ArrayList<Cell> list = (ArrayList<Cell>) kryo.readObject(input, ArrayList.class);
+    public Row deserialize(byte[] byt, int compression) {
+        if (compression == 1) // basic serialization
+            input = new Input(byt);
+        Row row = kryo.readObject(input, Row.class);
         input.close();
-        return list;
-    }    
+        return row;
+    }
 }

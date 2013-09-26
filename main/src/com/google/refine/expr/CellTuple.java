@@ -35,16 +35,16 @@ package com.google.refine.expr;
 
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 public class CellTuple implements HasFields {
     final public Project project;
-    final public Row row;
+    final public CompressedRow row;
     
-    public CellTuple(Project project, Row row) {
+    public CellTuple(Project project, CompressedRow row) {
         this.project = project;
         this.row = row;
     }

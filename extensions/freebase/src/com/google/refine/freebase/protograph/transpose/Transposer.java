@@ -38,6 +38,7 @@ import java.util.List;
 
 import com.google.refine.browsing.FilteredRows;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.freebase.protograph.AnonymousNode;
 import com.google.refine.freebase.protograph.CellNode;
@@ -52,7 +53,6 @@ import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon.Judgment;
-import com.google.refine.model.Row;
 
 public class Transposer {
     static public void transpose(
@@ -82,7 +82,7 @@ public class Transposer {
             TransposedNodeFactory   nodeFactory;
             
             @Override
-            public boolean visit(Project project, int rowIndex, Row row) {
+            public boolean visit(Project project, int rowIndex, CompressedRow row) {
                 if (rootContext.limit <= 0 || rootContext.count < rootContext.limit) {
                     descend(project, protograph, nodeFactory, rowIndex, row, rootNode, rootContext);
                 }
@@ -122,7 +122,7 @@ public class Transposer {
         Protograph protograph, 
         TransposedNodeFactory nodeFactory,
         int rowIndex, 
-        Row row,
+        CompressedRow row,
         Node node,
         Context context
     ) {
@@ -168,7 +168,7 @@ public class Transposer {
         }
     }
 
-    private static boolean descendCellNode(Project project, TransposedNodeFactory nodeFactory, int rowIndex, Row row,
+    private static boolean descendCellNode(Project project, TransposedNodeFactory nodeFactory, int rowIndex, CompressedRow row,
             Node node, Context context, List<TransposedNode> tnodes, Link link) {
         CellNode node2 = (CellNode) node;
         for (String columnName : node2.columnNames) {

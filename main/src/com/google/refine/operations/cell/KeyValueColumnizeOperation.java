@@ -43,13 +43,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.history.HistoryEntry;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowColumnChange;
 import com.google.refine.operations.OperationRegistry;
 import com.google.refine.util.JSONUtilities;
@@ -125,29 +125,29 @@ public class KeyValueColumnizeOperation extends AbstractOperation {
         List<Column> newNoteColumns = new ArrayList<Column>();
         Map<String, Column> keyValueToColumn = new HashMap<String, Column>();
         Map<String, Column> keyValueToNoteColumn = new HashMap<String, Column>();
-        Map<String, Row> groupByCellValuesToRow = new HashMap<String, Row>();
+        Map<String, CompressedRow> groupByCellValuesToRow = new HashMap<String, CompressedRow>();
         
-        List<Row> newRows = new ArrayList<Row>();
-        List<Row> oldRows = project.rows;
-        Row reusableRow = null;
-        List<Row> currentRows = new ArrayList<Row>();
+        List<CompressedRow> newRows = new ArrayList<CompressedRow>();
+        List<CompressedRow> oldRows = project.rows;
+        CompressedRow reusableRow = null;
+        List<CompressedRow> currentRows = new ArrayList<CompressedRow>();
         String recordKey = null; // key which indicates the start of a record
         if (unchangedColumns.isEmpty()) {
-            reusableRow = new Row(1);
+            reusableRow = new CompressedRow(1);
             newRows.add(reusableRow);
             currentRows.clear();
             currentRows.add(reusableRow);
         }
 
         for (int r = 0; r < oldRows.size(); r++) {
-            Row oldRow = oldRows.get(r);
+            CompressedRow oldRow = oldRows.get(r);
             
             Object key = oldRow.getCellValue(keyColumn.getCellIndex());
             if (!ExpressionUtils.isNonBlankData(key)) {
                 if (unchangedColumns.isEmpty()) {
                     // For degenerate 2 column case (plus optional note column), 
                     // start a new row when we hit a blank line
-                    reusableRow = new Row(newColumns.size());
+                    reusableRow = new CompressedRow(newColumns.size());
                     newRows.add(reusableRow);
                     currentRows.clear();
                     currentRows.add(reusableRow);
@@ -162,7 +162,7 @@ public class KeyValueColumnizeOperation extends AbstractOperation {
             // Start a new row on our beginning of record key
             // TODO: Add support for processing in record mode instead of just by rows
             if (keyString.equals(recordKey) || recordKey == null) {
-                reusableRow = new Row(newColumns.size());
+                reusableRow = new CompressedRow(newColumns.size());
                 newRows.add(reusableRow);
                 currentRows.clear();
                 currentRows.add(reusableRow);
@@ -213,7 +213,7 @@ public class KeyValueColumnizeOperation extends AbstractOperation {
             Cell cell = oldRow.getCell(valueColumn.getCellIndex());
             if (unchangedColumns.size() == 0) {
                 int index = newColumn.getCellIndex();
-                Row row = getAvailableRow(currentRows, newRows, index);
+                CompressedRow row = getAvailableRow(currentRows, newRows, index);
                 row.setCell(index, cell);
             } else {
                 // TODO: support repeating keys in this mode too
@@ -260,21 +260,21 @@ public class KeyValueColumnizeOperation extends AbstractOperation {
         );
     }
 
-    private Row getAvailableRow(List<Row> currentRows, List<Row> newRows, int index) {
-        for (Row row : currentRows) {
+    private CompressedRow getAvailableRow(List<CompressedRow> currentRows, List<CompressedRow> newRows, int index) {
+        for (CompressedRow row : currentRows) {
             if (row.getCell(index) == null) {
                 return row;
             }
         }
         // If we couldn't find a row with an empty spot, we'll need a new row
-        Row row = new Row(index);
+        CompressedRow row = new CompressedRow(index);
         newRows.add(row);
         currentRows.add(row);
         return row;
     }
 
-    private Row buildNewRow(List<Column> unchangedColumns, Row oldRow, int size) {
-        Row reusableRow = new Row(size);
+    private CompressedRow buildNewRow(List<Column> unchangedColumns, CompressedRow oldRow, int size) {
+        CompressedRow reusableRow = new CompressedRow(size);
         for (int c = 0; c < unchangedColumns.size(); c++) {
             Column unchangedColumn = unchangedColumns.get(c);
             int cellIndex = unchangedColumn.getCellIndex();

@@ -47,6 +47,7 @@ import org.json.JSONWriter;
 import com.google.refine.browsing.Engine;
 import com.google.refine.browsing.FilteredRows;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.history.Change;
 import com.google.refine.history.HistoryEntry;
@@ -54,7 +55,6 @@ import com.google.refine.importers.ImporterUtilities;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.ColumnSplitChange;
 import com.google.refine.operations.EngineDependentOperation;
 import com.google.refine.operations.OperationRegistry;
@@ -285,7 +285,7 @@ public class ColumnSplitOperation extends EngineDependentOperation {
         }
         
         @Override
-        public boolean visit(Project project, int rowIndex, Row row) {
+        public boolean visit(Project project, int rowIndex, CompressedRow row) {
             Object value = row.getCellValue(cellIndex);
             if (ExpressionUtils.isNonBlankData(value)) {
                 String s = value instanceof String ? ((String) value) : value.toString();

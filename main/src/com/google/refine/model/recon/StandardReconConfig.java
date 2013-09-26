@@ -54,6 +54,7 @@ import org.json.JSONWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
@@ -61,7 +62,6 @@ import com.google.refine.model.Recon;
 import com.google.refine.model.Recon.Judgment;
 import com.google.refine.model.ReconCandidate;
 import com.google.refine.model.RecordModel.RowDependency;
-import com.google.refine.model.Row;
 import com.google.refine.util.ParsingUtilities;
 
 public class StandardReconConfig extends ReconConfig {
@@ -234,7 +234,7 @@ public class StandardReconConfig extends ReconConfig {
     }
 
     @Override
-    public ReconJob createJob(Project project, int rowIndex, Row row,
+    public ReconJob createJob(Project project, int rowIndex, CompressedRow row,
             String columnName, Cell cell) {
         
         StandardReconJob job = new StandardReconJob();
@@ -265,7 +265,7 @@ public class StandardReconConfig extends ReconConfig {
                             if (rd != null && rd.cellDependencies != null) {
                                 int contextRowIndex = rd.cellDependencies[cellIndex].rowIndex;
                                 if (contextRowIndex >= 0 && contextRowIndex < project.rows.size()) {
-                                    Row row2 = project.rows.get(contextRowIndex);
+                                    CompressedRow row2 = project.rows.get(contextRowIndex);
                                     
                                     cell2 = row2.getCell(detailCellIndex);
                                 }

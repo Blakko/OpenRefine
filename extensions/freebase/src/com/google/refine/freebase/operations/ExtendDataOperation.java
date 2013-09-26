@@ -49,6 +49,7 @@ import org.json.JSONWriter;
 import com.google.refine.browsing.Engine;
 import com.google.refine.browsing.FilteredRows;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.freebase.FreebaseType;
 import com.google.refine.freebase.model.changes.DataExtensionChange;
 import com.google.refine.freebase.util.FreebaseDataExtensionJob;
@@ -60,7 +61,6 @@ import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
 import com.google.refine.model.ReconCandidate;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.CellAtRow;
 import com.google.refine.operations.EngineDependentOperation;
 import com.google.refine.operations.OperationRegistry;
@@ -200,7 +200,7 @@ public class ExtendDataOperation extends EngineDependentOperation {
                 }
                 
                 @Override
-                public boolean visit(Project project, int rowIndex, Row row) {
+                public boolean visit(Project project, int rowIndex, CompressedRow row) {
                     Cell cell = row.getCell(_cellIndex);
                     if (cell != null && cell.recon != null && cell.recon.match != null) {
                         _rowIndices.add(rowIndex);
@@ -223,7 +223,7 @@ public class ExtendDataOperation extends EngineDependentOperation {
             int end;
             for (end = from; end < limit && ids.size() < 10; end++) {
                 int index = rowIndices.get(end);
-                Row row = _project.rows.get(index);
+                CompressedRow row = _project.rows.get(index);
                 Cell cell = row.getCell(_cellIndex);
                 
                 ids.add(cell.recon.match.id);
@@ -238,7 +238,7 @@ public class ExtendDataOperation extends EngineDependentOperation {
             
             for (int i = from; i < end; i++) {
                 int index = rowIndices.get(i);
-                Row row = _project.rows.get(index);
+                CompressedRow row = _project.rows.get(index);
                 Cell cell = row.getCell(_cellIndex);
                 String guid = cell.recon.match.id;
                 

@@ -45,10 +45,10 @@ import java.awt.image.RenderedImage;
 
 import com.google.refine.browsing.RecordVisitor;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.Record;
-import com.google.refine.model.Row;
 
 public class ScatterplotDrawingRowVisitor implements RowVisitor, RecordVisitor {
 
@@ -129,7 +129,7 @@ public class ScatterplotDrawingRowVisitor implements RowVisitor, RecordVisitor {
     }
     
     @Override
-    public boolean visit(Project project, int rowIndex, Row row) {
+    public boolean visit(Project project, int rowIndex, CompressedRow row) {
         Cell cellx = row.getCell(col_x);
         Cell celly = row.getCell(col_y);
         if ((cellx != null && cellx.value != null && cellx.value instanceof Number) &&

@@ -33,8 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.browsing;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 /**
  * Interface for visiting rows one by one. The rows visited are only those that match some
@@ -58,7 +58,7 @@ public interface RowVisitor {
     public boolean visit(
             Project project, 
             int     rowIndex, 
-            Row     row
+            CompressedRow     row
     );
 
     /**

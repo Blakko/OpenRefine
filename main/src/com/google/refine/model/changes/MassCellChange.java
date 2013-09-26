@@ -40,10 +40,10 @@ import java.util.List;
 import java.util.Properties;
 
 import com.google.refine.ProjectManager;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class MassCellChange implements Change {
@@ -85,7 +85,7 @@ public class MassCellChange implements Change {
     @Override
     public void apply(Project project) {
         synchronized (project) {
-            List<Row> rows = project.rows;
+            List<CompressedRow> rows = project.rows;
             
             for (CellChange cellChange : _cellChanges) {
                 rows.get(cellChange.row).setCell(cellChange.cellIndex, cellChange.newCell);
@@ -106,7 +106,7 @@ public class MassCellChange implements Change {
     @Override
     public void revert(Project project) {
         synchronized (project) {
-            List<Row> rows = project.rows;
+            List<CompressedRow> rows = project.rows;
             
             for (CellChange cellChange : _cellChanges) {
                 rows.get(cellChange.row).setCell(cellChange.cellIndex, cellChange.oldCell);

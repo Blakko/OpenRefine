@@ -47,6 +47,7 @@ import org.json.JSONWriter;
 
 import com.google.refine.Jsonizable;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.Evaluable;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.expr.MetaParser;
@@ -54,7 +55,6 @@ import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.CellChange;
 import com.google.refine.operations.EngineDependentMassCellOperation;
 import com.google.refine.operations.OperationRegistry;
@@ -247,7 +247,7 @@ public class MassEditOperation extends EngineDependentMassCellOperation {
             }
             
             @Override
-            public boolean visit(Project project, int rowIndex, Row row) {
+            public boolean visit(Project project, int rowIndex, CompressedRow row) {
                 Cell cell = row.getCell(cellIndex);
                 Cell newCell = null;
                 

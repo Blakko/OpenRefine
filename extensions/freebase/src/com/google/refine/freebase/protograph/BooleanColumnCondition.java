@@ -38,9 +38,9 @@ import java.util.Properties;
 import org.json.JSONException;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 
 public class BooleanColumnCondition implements Condition {
@@ -51,7 +51,7 @@ public class BooleanColumnCondition implements Condition {
     }
     
     @Override
-    public boolean test(Project project, int rowIndex, Row row) {
+    public boolean test(Project project, int rowIndex, CompressedRow row) {
         Column column = project.columnModel.getColumnByName(columnName);
         if (column != null) {
             Object o = row.getCellValue(column.getCellIndex());

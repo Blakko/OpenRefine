@@ -39,8 +39,8 @@ import java.util.List;
 import com.google.refine.browsing.FilteredRows;
 import com.google.refine.browsing.RowFilter;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 /**
  * Encapsulate logic for visiting rows that match all give row filters. Also visit
@@ -60,7 +60,7 @@ public class ConjunctiveFilteredRows implements FilteredRows {
 
             int c = project.rows.size();
             for (int rowIndex = 0; rowIndex < c; rowIndex++) {
-                Row row = project.rows.get(rowIndex);
+                CompressedRow row = project.rows.get(rowIndex);
                 if (matchRow(project, rowIndex, row)) {
                     if (visitRow(project, visitor, rowIndex, row)) {
                         break;
@@ -72,11 +72,11 @@ public class ConjunctiveFilteredRows implements FilteredRows {
         }
     }
     
-    protected boolean visitRow(Project project, RowVisitor visitor, int rowIndex, Row row) {
+    protected boolean visitRow(Project project, RowVisitor visitor, int rowIndex, CompressedRow row) {
         return visitor.visit(project, rowIndex, row);
     }
     
-    protected boolean matchRow(Project project, int rowIndex, Row row) {
+    protected boolean matchRow(Project project, int rowIndex, CompressedRow row) {
         for (RowFilter rowFilter : _rowFilters) {
             if (!rowFilter.filterRow(project, rowIndex, row)) {
                 return false;

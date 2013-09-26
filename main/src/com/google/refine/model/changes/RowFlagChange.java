@@ -38,9 +38,9 @@ import java.io.LineNumberReader;
 import java.io.Writer;
 import java.util.Properties;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.history.Change;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class RowFlagChange implements Change {
@@ -55,18 +55,18 @@ public class RowFlagChange implements Change {
 
     @Override
     public void apply(Project project) {
-        Row row = project.rows.get(rowIndex);
+        CompressedRow row = project.rows.get(rowIndex);
         if (oldFlagged == null) {
-            oldFlagged = row.flagged;
+            oldFlagged = row.getFlagged();
         }
-        row.flagged = newFlagged;
+        row.setFlagged(newFlagged);
     }
 
     @Override
     public void revert(Project project) {
-        Row row = project.rows.get(rowIndex);
+        CompressedRow row = project.rows.get(rowIndex);
         
-        row.flagged = oldFlagged;
+        row.setFlagged(oldFlagged);
     }
     
     @Override

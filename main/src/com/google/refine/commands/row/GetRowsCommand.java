@@ -52,11 +52,11 @@ import com.google.refine.browsing.FilteredRows;
 import com.google.refine.browsing.RecordVisitor;
 import com.google.refine.browsing.RowVisitor;
 import com.google.refine.commands.Command;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.importing.ImportingJob;
 import com.google.refine.importing.ImportingManager;
 import com.google.refine.model.Project;
 import com.google.refine.model.Record;
-import com.google.refine.model.Row;
 import com.google.refine.sorting.SortingRecordVisitor;
 import com.google.refine.sorting.SortingRowVisitor;
 import com.google.refine.util.ParsingUtilities;
@@ -209,7 +209,7 @@ public class GetRowsCommand extends Command {
         }
         
         @Override
-        public boolean visit(Project project, int rowIndex, Row row) {
+        public boolean visit(Project project, int rowIndex, CompressedRow row) {
             if (total >= start && total < start + limit) {
                 internalVisit(project, rowIndex, row);
             }
@@ -228,7 +228,7 @@ public class GetRowsCommand extends Command {
             return false;
         }
         
-        public boolean internalVisit(Project project, int rowIndex, Row row) {
+        public boolean internalVisit(Project project, int rowIndex, CompressedRow row) {
             try {
                 options.put("rowIndex", rowIndex);
                 row.write(writer, options);
@@ -242,7 +242,7 @@ public class GetRowsCommand extends Command {
             
             for (int r = record.fromRowIndex; r < record.toRowIndex; r++) {
                 try {
-                    Row row = project.rows.get(r);
+                    CompressedRow row = project.rows.get(r);
                     
                     options.put("rowIndex", r);
                     

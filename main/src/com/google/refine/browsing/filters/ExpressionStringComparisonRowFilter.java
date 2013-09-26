@@ -40,11 +40,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.google.refine.browsing.RowFilter;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.Evaluable;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 /**
  * Judge if a row matches by evaluating a given expression on the row, based on a particular
@@ -62,7 +62,7 @@ abstract public class ExpressionStringComparisonRowFilter implements RowFilter {
     }
 
     @Override
-    public boolean filterRow(Project project, int rowIndex, Row row) {
+    public boolean filterRow(Project project, int rowIndex, CompressedRow row) {
         Cell cell = _cellIndex < 0 ? null : row.getCell(_cellIndex);
         
         Properties bindings = ExpressionUtils.createBindings(project);

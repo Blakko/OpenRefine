@@ -40,10 +40,10 @@ import java.util.Properties;
 
 import com.google.refine.browsing.RecordVisitor;
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Project;
 import com.google.refine.model.Record;
-import com.google.refine.model.Row;
 
 /**
  * Visit matched rows or records and slot them into bins based on the date computed
@@ -91,7 +91,7 @@ public class ExpressionTimeValueBinner implements RowVisitor, RecordVisitor {
     }
     
     @Override
-    public boolean visit(Project project, int rowIndex, Row row) {
+    public boolean visit(Project project, int rowIndex, CompressedRow row) {
         resetFlags();
         
         Properties bindings = ExpressionUtils.createBindings(project);
@@ -138,7 +138,7 @@ public class ExpressionTimeValueBinner implements RowVisitor, RecordVisitor {
         }
     }
     
-    protected void processRow(Project project, int rowIndex, Row row, Properties bindings) {
+    protected void processRow(Project project, int rowIndex, CompressedRow row, Properties bindings) {
         Object value = _rowEvaluable.eval(project, rowIndex, row, bindings);
         if (value != null) {
             if (value.getClass().isArray()) {

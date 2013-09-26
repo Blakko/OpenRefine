@@ -41,13 +41,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.history.HistoryEntry;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.MassRowChange;
 import com.google.refine.operations.OperationRegistry;
 
@@ -106,11 +106,11 @@ public class MultiValuedCellJoinOperation extends AbstractOperation {
         }
         int keyCellIndex = keyColumn.getCellIndex();
         
-        List<Row> newRows = new ArrayList<Row>();
+        List<CompressedRow> newRows = new ArrayList<CompressedRow>();
         
         int oldRowCount = project.rows.size();
         for (int r = 0; r < oldRowCount; r++) {
-            Row oldRow = project.rows.get(r);
+            CompressedRow oldRow = project.rows.get(r);
             
             if (oldRow.isCellBlank(keyCellIndex)) {
                 newRows.add(oldRow.dup());
@@ -139,7 +139,7 @@ public class MultiValuedCellJoinOperation extends AbstractOperation {
             }
             
             for (int r3 = r; r3 < r2; r3++) {
-                Row newRow = project.rows.get(r3).dup();
+                CompressedRow newRow = project.rows.get(r3).dup();
                 if (r3 == r) {
                     newRow.setCell(cellIndex, new Cell(sb.toString(), null));
                 } else {

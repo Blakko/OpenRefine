@@ -48,10 +48,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.refine.Jsonizable;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
-import com.google.refine.model.Row;
 
 import edu.mit.simile.butterfly.ButterflyModule;
 
@@ -113,7 +113,7 @@ abstract public class ReconConfig implements Jsonizable {
     abstract public ReconJob createJob(
         Project     project, 
         int         rowIndex, 
-        Row         row,
+        CompressedRow         row,
         String      columnName,
         Cell        cell
     );

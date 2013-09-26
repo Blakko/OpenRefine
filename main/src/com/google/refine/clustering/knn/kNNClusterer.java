@@ -55,9 +55,9 @@ import com.google.refine.browsing.Engine;
 import com.google.refine.browsing.FilteredRows;
 import com.google.refine.browsing.RowVisitor;
 import com.google.refine.clustering.Clusterer;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 
 import edu.mit.simile.vicino.clustering.NGramClusterer;
 import edu.mit.simile.vicino.clustering.VPTreeClusterer;
@@ -124,7 +124,7 @@ public class kNNClusterer extends Clusterer {
         }
         
         @Override
-        public boolean visit(Project project, int rowIndex, Row row) {
+        public boolean visit(Project project, int rowIndex, CompressedRow row) {
             Cell cell = row.getCell(_colindex);
             if (cell != null && cell.value != null) {
                 Object v = cell.value;
@@ -176,7 +176,7 @@ public class kNNClusterer extends Clusterer {
         }
         
         @Override
-        public boolean visit(Project project, int rowIndex, Row row) {
+        public boolean visit(Project project, int rowIndex, CompressedRow row) {
             Cell cell = row.getCell(_colindex);
             if (cell != null && cell.value != null) {
                 Object v = cell.value;

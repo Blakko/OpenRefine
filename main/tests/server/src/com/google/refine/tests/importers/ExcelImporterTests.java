@@ -123,7 +123,7 @@ public class ExcelImporterTests extends ImporterTest {
         }
         
         Assert.assertEquals(project.rows.size(), ROWS);
-        Assert.assertEquals(project.rows.get(1).cells.size(), COLUMNS);
+        Assert.assertEquals(project.rows.get(1).getCells().size(), COLUMNS);
         Assert.assertEquals(((Number)project.rows.get(1).getCellValue(0)).doubleValue(),1.1, EPSILON);
         Assert.assertEquals(((Number)project.rows.get(2).getCellValue(0)).doubleValue(),2.2, EPSILON);
 

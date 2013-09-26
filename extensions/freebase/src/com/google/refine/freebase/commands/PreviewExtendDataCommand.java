@@ -50,13 +50,13 @@ import org.json.JSONObject;
 import org.json.JSONWriter;
 
 import com.google.refine.commands.Command;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.freebase.util.FreebaseDataExtensionJob;
 import com.google.refine.freebase.util.FreebaseDataExtensionJob.ColumnInfo;
 import com.google.refine.freebase.util.FreebaseDataExtensionJob.DataExtension;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.ReconCandidate;
-import com.google.refine.model.Row;
 import com.google.refine.util.ParsingUtilities;
 
 public class PreviewExtendDataCommand extends Command {
@@ -88,7 +88,7 @@ public class PreviewExtendDataCommand extends Command {
             for (int i = 0; i < length; i++) {
                 int rowIndex = rowIndices.getInt(i);
                 if (rowIndex >= 0 && rowIndex < project.rows.size()) {
-                    Row row = project.rows.get(rowIndex);
+                    CompressedRow row = project.rows.get(rowIndex);
                     Cell cell = row.getCell(cellIndex);
                     if (cell != null && cell.recon != null && cell.recon.match != null) {
                         topicNames.add(cell.recon.match.name);

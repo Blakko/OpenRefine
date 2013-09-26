@@ -46,6 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.refine.Jsonizable;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 
 public class RecordModel implements Jsonizable {
@@ -133,7 +134,7 @@ public class RecordModel implements Jsonizable {
 
     synchronized public void update(Project project) {
         synchronized (project) {
-            List<Row> rows = project.rows;
+            List<CompressedRow> rows = project.rows;
             int rowCount = rows.size();
 
             ColumnModel columnModel = project.columnModel;
@@ -149,7 +150,7 @@ public class RecordModel implements Jsonizable {
 
             int recordIndex = 0;
             for (int r = 0; r < rowCount; r++) {
-                Row row = rows.get(r);
+                Row row = rows.get(r).getRow();
                 RowDependency rowDependency = new RowDependency();
 
                 for (int g = 0; g < groupCount; g++) {

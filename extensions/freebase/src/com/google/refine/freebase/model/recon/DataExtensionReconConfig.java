@@ -40,11 +40,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.freebase.FreebaseType;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
-import com.google.refine.model.Row;
 import com.google.refine.model.recon.ReconConfig;
 import com.google.refine.model.recon.ReconJob;
 
@@ -69,7 +69,7 @@ public class DataExtensionReconConfig extends StrictReconConfig {
     }
 
     @Override
-    public ReconJob createJob(Project project, int rowIndex, Row row,
+    public ReconJob createJob(Project project, int rowIndex, CompressedRow row,
             String columnName, Cell cell) {
         throw new RuntimeException(WARN);
     }

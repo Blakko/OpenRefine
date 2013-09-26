@@ -48,6 +48,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.importers.JsonImporter;
 import com.google.refine.importers.JsonImporter.JSONTreeReader;
 import com.google.refine.importers.XmlImporter.XmlParser;
@@ -57,7 +58,6 @@ import com.google.refine.importers.tree.ImportRecord;
 import com.google.refine.importers.tree.TreeReader;
 import com.google.refine.importers.tree.TreeReaderException;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.tests.RefineTest;
 
 
@@ -214,7 +214,7 @@ public class XmlImportUtilitiesTests extends RefineTest {
         log(project);
         assertProjectCreated(project, 0, 6);
 
-        Assert.assertEquals(project.rows.get(0).cells.size(), 4);
+        Assert.assertEquals(project.rows.get(0).getCells().size(), 4);
 
         Assert.assertEquals(columnGroup.subgroups.size(), 1);
         Assert.assertNotNull(columnGroup.subgroups.get("book"));
@@ -234,8 +234,8 @@ public class XmlImportUtilitiesTests extends RefineTest {
 
         log(project);
         assertProjectCreated(project, 0, 6);
-        Assert.assertEquals(project.rows.get(0).cells.size(), 4);
-        Assert.assertEquals(project.rows.get(5).cells.size(), 5);
+        Assert.assertEquals(project.rows.get(0).getCells().size(), 4);
+        Assert.assertEquals(project.rows.get(5).getCells().size(), 5);
 
         Assert.assertEquals(columnGroup.subgroups.size(), 1);
         Assert.assertEquals(columnGroup.name, "");
@@ -291,7 +291,7 @@ public class XmlImportUtilitiesTests extends RefineTest {
         log(project);
         assertProjectCreated(project, 0, 6);
 
-        Assert.assertEquals(project.rows.get(0).cells.size(), 4);
+        Assert.assertEquals(project.rows.get(0).getCells().size(), 4);
         //TODO
     }
 
@@ -309,7 +309,7 @@ public class XmlImportUtilitiesTests extends RefineTest {
         log(project);
         Assert.assertNotNull(project.rows);
         Assert.assertEquals(project.rows.size(), 1);
-        Row row = project.rows.get(0);
+        CompressedRow row = project.rows.get(0);
         Assert.assertNotNull(row);
         Assert.assertNotNull(row.getCell(1));
         Assert.assertEquals(row.getCell(1).value, "author1");
@@ -331,9 +331,9 @@ public class XmlImportUtilitiesTests extends RefineTest {
         Assert.assertNotNull(project.rows);
         Assert.assertEquals(project.rows.size(), 2);
 
-        Row row = project.rows.get(0);
+        CompressedRow row = project.rows.get(0);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.cells.size(), 3);
+        Assert.assertEquals(row.getCells().size(), 3);
         Assert.assertNotNull(row.getCell(1));
         Assert.assertEquals(row.getCell(1).value, "author1");
 
@@ -355,9 +355,9 @@ public class XmlImportUtilitiesTests extends RefineTest {
         log(project);
         Assert.assertNotNull(project.rows);
         Assert.assertEquals(project.rows.size(), 1);
-        Row row = project.rows.get(0);
+        CompressedRow row = project.rows.get(0);
         Assert.assertNotNull(row);
-        Assert.assertEquals(row.cells.size(), 4);
+        Assert.assertEquals(row.getCells().size(), 4);
         Assert.assertNotNull(row.getCell(1));
         Assert.assertEquals(row.getCell(1).value, "author1");
         Assert.assertNotNull(row.getCell(2));

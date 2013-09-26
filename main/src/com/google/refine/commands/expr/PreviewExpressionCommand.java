@@ -50,6 +50,7 @@ import org.json.JSONObject;
 import org.json.JSONWriter;
 
 import com.google.refine.commands.Command;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.EvalError;
 import com.google.refine.expr.Evaluable;
 import com.google.refine.expr.ExpressionUtils;
@@ -60,7 +61,6 @@ import com.google.refine.expr.WrappedCell;
 import com.google.refine.expr.WrappedRow;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
-import com.google.refine.model.Row;
 import com.google.refine.util.ParsingUtilities;
 
 public class PreviewExpressionCommand extends Command {
@@ -113,7 +113,7 @@ public class PreviewExpressionCommand extends Command {
                     
                     int rowIndex = rowIndices.getInt(i);
                     if (rowIndex >= 0 && rowIndex < project.rows.size()) {
-                        Row row = project.rows.get(rowIndex);
+                        CompressedRow row = project.rows.get(rowIndex);
                         Cell cell = row.getCell(cellIndex);
                             
                         try {

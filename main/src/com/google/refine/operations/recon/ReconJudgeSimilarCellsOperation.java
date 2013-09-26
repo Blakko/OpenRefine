@@ -44,6 +44,7 @@ import org.json.JSONObject;
 import org.json.JSONWriter;
 
 import com.google.refine.browsing.RowVisitor;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.history.Change;
 import com.google.refine.model.AbstractOperation;
@@ -53,7 +54,6 @@ import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
 import com.google.refine.model.Recon.Judgment;
 import com.google.refine.model.ReconCandidate;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.CellChange;
 import com.google.refine.model.changes.ReconChange;
 import com.google.refine.operations.EngineDependentMassCellOperation;
@@ -211,7 +211,7 @@ public class ReconJudgeSimilarCellsOperation extends EngineDependentMassCellOper
             }
             
             @Override
-            public boolean visit(Project project, int rowIndex, Row row) {
+            public boolean visit(Project project, int rowIndex, CompressedRow row) {
                 Cell cell = row.getCell(_cellIndex);
                 if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
                     String value = cell.value instanceof String ? 

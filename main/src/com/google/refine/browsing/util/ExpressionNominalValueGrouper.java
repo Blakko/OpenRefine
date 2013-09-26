@@ -44,12 +44,12 @@ import com.google.refine.browsing.DecoratedValue;
 import com.google.refine.browsing.RecordVisitor;
 import com.google.refine.browsing.RowVisitor;
 import com.google.refine.browsing.facets.NominalFacetChoice;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.expr.Evaluable;
 import com.google.refine.expr.ExpressionUtils;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Project;
 import com.google.refine.model.Record;
-import com.google.refine.model.Row;
 import com.google.refine.util.StringUtils;
 
 /**
@@ -103,7 +103,7 @@ public class ExpressionNominalValueGrouper implements RowVisitor, RecordVisitor 
     }
 
     @Override
-    public boolean visit(Project project, int rowIndex, Row row) {
+    public boolean visit(Project project, int rowIndex, CompressedRow row) {
         hasError = false;
         hasBlank = false;
 
@@ -129,7 +129,7 @@ public class ExpressionNominalValueGrouper implements RowVisitor, RecordVisitor 
         Properties bindings = ExpressionUtils.createBindings(project);
 
         for (int r = record.fromRowIndex; r < record.toRowIndex; r++) {
-            Row row = project.rows.get(r);
+            CompressedRow row = project.rows.get(r);
             visitRow(project, r, row, bindings, record.recordIndex);
         }
 
@@ -143,7 +143,7 @@ public class ExpressionNominalValueGrouper implements RowVisitor, RecordVisitor 
         return false;
     }
 
-    protected void visitRow(Project project, int rowIndex, Row row, Properties bindings, int index) {
+    protected void visitRow(Project project, int rowIndex, CompressedRow row, Properties bindings, int index) {
         Object value = evalRow(project, rowIndex, row, bindings);
         if (value != null) {
             if (value.getClass().isArray()) {
@@ -163,7 +163,7 @@ public class ExpressionNominalValueGrouper implements RowVisitor, RecordVisitor 
         }
     }
 
-    protected Object evalRow(Project project, int rowIndex, Row row, Properties bindings) {
+    protected Object evalRow(Project project, int rowIndex, CompressedRow row, Properties bindings) {
         Cell cell = _cellIndex < 0 ? null : row.getCell(_cellIndex);
 
         ExpressionUtils.bind(bindings, row, rowIndex, _columnName, cell);
@@ -200,7 +200,7 @@ public class ExpressionNominalValueGrouper implements RowVisitor, RecordVisitor 
     public RowEvaluable getChoiceCountRowEvaluable() {
         return new RowEvaluable() {
             @Override
-            public Object eval(Project project, int rowIndex, Row row, Properties bindings) {
+            public Object eval(Project project, int rowIndex, CompressedRow row, Properties bindings) {
                 Object value = evalRow(project, rowIndex, row, bindings);
                 return getChoiceValueCountMultiple(value);
             }

@@ -44,13 +44,13 @@ import org.json.JSONWriter;
 
 import com.google.refine.browsing.RowVisitor;
 import com.google.refine.history.Change;
+import com.google.refine.compression.CompressedRow;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Column;
 import com.google.refine.model.Project;
 import com.google.refine.model.Recon;
 import com.google.refine.model.Recon.Judgment;
-import com.google.refine.model.Row;
 import com.google.refine.model.changes.CellChange;
 import com.google.refine.model.changes.ReconChange;
 import com.google.refine.operations.EngineDependentMassCellOperation;
@@ -131,7 +131,7 @@ public class ReconDiscardJudgmentsOperation extends EngineDependentMassCellOpera
             }
             
             @Override
-            public boolean visit(Project project, int rowIndex, Row row) {
+            public boolean visit(Project project, int rowIndex, CompressedRow row) {
                 Cell cell = row.getCell(cellIndex);
                 if (cell != null && cell.recon != null) {
                     Recon newRecon = null;
