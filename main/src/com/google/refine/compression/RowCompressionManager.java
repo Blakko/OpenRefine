@@ -49,11 +49,8 @@ public class RowCompressionManager {
         kryo.register(ReconCandidate.class);
         kryo.register(Serializable.class);
         kryo.register(Judgment.class);
-        kryo.register(String.class);
-        kryo.register(boolean.class);
         kryo.register(Map.class);
         kryo.register(HashMap.class);
-        kryo.register(Integer.class);
         kryo.register(Object.class);
         kryo.register(ReconCandidate.class);
     }
