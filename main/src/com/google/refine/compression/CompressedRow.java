@@ -117,10 +117,11 @@ public class CompressedRow {
 
     public void setCell(int cellIndex, Cell cell) {
         if (COMPRESSION_LEVEL == 0)
-            row.cells.set(cellIndex, cell);
+            row.setCell(cellIndex, cell);
         else {
             Row tmprow = getRow();
-            tmprow.cells.set(cellIndex, cell);
+            tmprow.setCell(cellIndex, cell);
+            cellCount = tmprow.cells.size();
             byte[] tmp = manager.serialize(tmprow);
             if (COMPRESSION_LEVEL == 1)
                 compressedRow = tmp;

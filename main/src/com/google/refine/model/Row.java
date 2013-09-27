@@ -80,6 +80,7 @@ public class Row implements HasFields, Jsonizable {
         this.starred = starred;
     }
 
+	// Constructor for Kryo serialization
     public Row() {
         cells = null;
     }

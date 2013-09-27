@@ -119,9 +119,9 @@ public class Recon implements HasFields, Jsonizable {
             FREEBASE_SCHEMA_SPACE);
     }
 
-    // TEST
+    // Constructor for Kryo serialization
     public Recon() {
-        id = System.currentTimeMillis() * 1000000 + Math.round(Math.random() * 1000000);
+        id = 1;
     }
     
     public Recon(long judgmentHistoryEntry, String identifierSpace, String schemaSpace) {

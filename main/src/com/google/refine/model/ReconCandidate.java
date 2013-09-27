@@ -59,7 +59,7 @@ public class ReconCandidate implements HasFields, Jsonizable {
         this.score = score;
     }
 
-    // TEST
+    // Constructor for Kryo serialization
     public ReconCandidate() {
         id = null;
         name = null;

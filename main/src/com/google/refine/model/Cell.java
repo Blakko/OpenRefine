@@ -61,7 +61,7 @@ public class Cell implements HasFields, Jsonizable {
         this.recon = recon;
     }
 
-    // TEST
+    // Constructor for Kryo serialization
     public Cell() {
         this.value = null;
         this.recon = null;
