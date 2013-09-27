@@ -14,6 +14,7 @@ import net.jpountz.lz4.LZ4FastDecompressor;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.CollectionSerializer;
 
 import com.google.refine.model.Cell;
 import com.google.refine.model.Recon;
@@ -40,8 +41,8 @@ public class RowCompressionManager {
 
     synchronized private void init() {
         kryo = new Kryo();
-        kryo.register(List.class);
-        kryo.register(ArrayList.class);
+        kryo.addDefaultSerializer(List.class, CollectionSerializer.class);
+        kryo.addDefaultSerializer(ArrayList.class, CollectionSerializer.class);
         kryo.register(Row.class);
         kryo.register(Cell.class);
         kryo.register(Recon.class);
@@ -75,7 +76,6 @@ public class RowCompressionManager {
         return fastComp.compress(original);
     }
     
-   
     synchronized public byte[] decompressFast(byte[] compressed, int size){
         return fastDeco.decompress(compressed, size);
     }

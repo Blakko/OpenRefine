@@ -59,7 +59,6 @@ public class CompressedRow {
         else if (COMPRESSION_LEVEL == 2) {
             byte[] raw = manager.serialize(row);
             byte[] ret = manager.compressFast(raw);
-            System.out.println("Raw/Fast:   " + raw.length + " - " + ret.length);
             this.rawSize = raw.length;
             this.compressedRow = ret;
         }
