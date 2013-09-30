@@ -33,7 +33,7 @@ public class RowCompressionManager {
 
     public RowCompressionManager() {
         synchronized (this) {
-            out = new Output(4096, 12400);
+            out = new Output(4096, 65540);
             factory = LZ4Factory.fastestInstance();
             fastComp = factory.fastCompressor();
             fastDeco = factory.fastDecompressor();
