@@ -41,6 +41,7 @@ public class RowCompressionManager {
             kryo = new Kryo();
             kryo.addDefaultSerializer(List.class, CollectionSerializer.class);
             kryo.addDefaultSerializer(ArrayList.class, CollectionSerializer.class);
+            kryo.addDefaultSerializer(ReconCandidate.class, ReconCandidateSerializer.class);
             kryo.register(Row.class);
             kryo.register(Cell.class);
             kryo.register(Recon.class);
