@@ -116,9 +116,10 @@ public class CompressedRow {
     }
 
     public void setCell(int cellIndex, Cell cell) {
-        if (COMPRESSION_LEVEL == 0)
+        if (COMPRESSION_LEVEL == 0) {
             row.setCell(cellIndex, cell);
-        else {
+            cellCount = row.cells.size();
+        } else {
             Row tmprow = getRow();
             tmprow.setCell(cellIndex, cell);
             cellCount = tmprow.cells.size();
@@ -185,7 +186,7 @@ public class CompressedRow {
         if (COMPRESSION_LEVEL == 0)
             this.row = tmprow;
         else {
-            byte[] tmp = manager.serialize(row);
+            byte[] tmp = manager.serialize(tmprow);
             if (COMPRESSION_LEVEL == 1)
                 compressedRow = tmp;
             else if (COMPRESSION_LEVEL == 2) {
@@ -206,7 +207,7 @@ public class CompressedRow {
         if (COMPRESSION_LEVEL == 0)
             this.row = tmprow;
         else {
-            byte[] tmp = manager.serialize(row);
+            byte[] tmp = manager.serialize(tmprow);
             if (COMPRESSION_LEVEL == 1)
                 compressedRow = tmp;
             else if (COMPRESSION_LEVEL == 2) {

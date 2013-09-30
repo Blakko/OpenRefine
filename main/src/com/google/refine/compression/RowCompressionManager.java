@@ -32,27 +32,26 @@ public class RowCompressionManager {
     static private LZ4Factory factory;
 
     public RowCompressionManager() {
-        init();
-        out = new Output(4096, 12400);
-        factory = LZ4Factory.fastestInstance();
-        fastComp = factory.fastCompressor();
-        fastDeco = factory.fastDecompressor();
-    }
+        synchronized (this) {
+            out = new Output(4096, 12400);
+            factory = LZ4Factory.fastestInstance();
+            fastComp = factory.fastCompressor();
+            fastDeco = factory.fastDecompressor();
 
-    synchronized private void init() {
-        kryo = new Kryo();
-        kryo.addDefaultSerializer(List.class, CollectionSerializer.class);
-        kryo.addDefaultSerializer(ArrayList.class, CollectionSerializer.class);
-        kryo.register(Row.class);
-        kryo.register(Cell.class);
-        kryo.register(Recon.class);
-        kryo.register(ReconCandidate.class);
-        kryo.register(Serializable.class);
-        kryo.register(Judgment.class);
-        kryo.register(Map.class);
-        kryo.register(HashMap.class);
-        kryo.register(Object.class);
-        kryo.register(ReconCandidate.class);
+            kryo = new Kryo();
+            kryo.addDefaultSerializer(List.class, CollectionSerializer.class);
+            kryo.addDefaultSerializer(ArrayList.class, CollectionSerializer.class);
+            kryo.register(Row.class);
+            kryo.register(Cell.class);
+            kryo.register(Recon.class);
+            kryo.register(ReconCandidate.class);
+            kryo.register(Serializable.class);
+            kryo.register(Judgment.class);
+            kryo.register(Map.class);
+            kryo.register(HashMap.class);
+            kryo.register(Object.class);
+            kryo.register(ReconCandidate.class);
+        }
     }
 
     synchronized public byte[] serialize(Row row) {
@@ -72,8 +71,8 @@ public class RowCompressionManager {
     synchronized public byte[] compressFast(byte[] original) {
         return fastComp.compress(original);
     }
-    
-    synchronized public byte[] decompressFast(byte[] compressed, int size){
+
+    synchronized public byte[] decompressFast(byte[] compressed, int size) {
         return fastDeco.decompress(compressed, size);
     }
 }
