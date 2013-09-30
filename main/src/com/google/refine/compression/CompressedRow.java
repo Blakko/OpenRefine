@@ -203,7 +203,7 @@ public class CompressedRow {
 
     public void setStarred(boolean starred) {
         Row tmprow = getRow();
-        row.starred = starred;
+        tmprow.starred = starred;
         if (COMPRESSION_LEVEL == 0)
             this.row = tmprow;
         else {
