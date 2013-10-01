@@ -13,7 +13,6 @@ public class ReconCandidateSerializer extends Serializer<ReconCandidate> {
     private String id,name;
     private String[] types;
     private double score;
-    private ReconCandidate recon;
 
     @Override
     public void write(Kryo kryo, Output output, ReconCandidate recon) {
@@ -30,8 +29,7 @@ public class ReconCandidateSerializer extends Serializer<ReconCandidate> {
         types = kryo.readObject(input, String[].class);
         score = input.readDouble();
 
-        recon = new ReconCandidate(id, name, types, score);
-        return recon;
+        return new ReconCandidate(id, name, types, score);
     }
 
 }

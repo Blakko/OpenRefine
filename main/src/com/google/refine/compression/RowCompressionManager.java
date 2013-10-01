@@ -1,7 +1,6 @@
 
 package com.google.refine.compression;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import net.jpountz.lz4.LZ4Compressor;
@@ -9,8 +8,8 @@ import net.jpountz.lz4.LZ4Factory;
 import net.jpountz.lz4.LZ4FastDecompressor;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.CollectionSerializer;
 
 import com.google.refine.compression.serializer.CellSerializer;
@@ -25,8 +24,6 @@ import com.google.refine.model.Row;
 public class RowCompressionManager {
 
     private Kryo kryo;
-    private Row row;
-    private byte[] result;
     private final Input input;
     private final Output out;
     private final LZ4Compressor fastComp;
@@ -47,21 +44,18 @@ public class RowCompressionManager {
             kryo.register(Cell.class, new CellSerializer());
             kryo.register(Recon.class, new ReconSerializer());
             kryo.register(ReconCandidate.class, new ReconCandidateSerializer());
-            kryo.register(Serializable.class);
         }
     }
 
     synchronized public byte[] serialize(Row row) {
-        kryo.writeObject(out, row);
-        result = out.toBytes();
         out.clear();
-        return result;
+        kryo.writeObject(out, row);
+        return out.toBytes();
     }
 
     synchronized public Row deserialize(byte[] byt) {
         input.setBuffer(byt);
-        row = kryo.readObject(input, Row.class);
-        return row;
+        return kryo.readObject(input, Row.class);
     }
 
     synchronized public byte[] compressFast(byte[] original) {
