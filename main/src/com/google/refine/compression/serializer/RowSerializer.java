@@ -10,8 +10,10 @@ import com.esotericsoftware.kryo.io.Output;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Row;
 
+public class RowSerializer extends Serializer<Row> {
 
-public class RowSerializer extends Serializer<Row>{
+    private Row newrow;
+    private ArrayList<Cell> cells;
 
     @Override
     public void write(Kryo kryo, Output output, Row row) {
@@ -20,21 +22,19 @@ public class RowSerializer extends Serializer<Row>{
         kryo.writeObject(output, row.cells);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Row read(Kryo kryo, Input input, Class<Row> row) {
         boolean flagged = input.readBoolean();
         boolean starred = input.readBoolean();
-        @SuppressWarnings("unchecked")
-        ArrayList<Cell> cells = kryo.readObject(input, ArrayList.class);;
 
-        Row newrow = new Row(cells.size());
+        cells = kryo.readObject(input, ArrayList.class);
+
+        newrow = new Row(cells.size());
         newrow.cells.addAll(cells);
         newrow.flagged = flagged;
         newrow.starred = starred;
-        
+
         return newrow;
     }
-
-
-
 }

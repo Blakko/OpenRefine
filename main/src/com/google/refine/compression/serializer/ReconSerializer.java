@@ -14,6 +14,15 @@ import com.google.refine.model.ReconCandidate;
 
 public class ReconSerializer extends Serializer<Recon> {
 
+    private long id, judgmentHistoryEntry;
+    private String service, identifierSpace, schemaSpace, judgmentAction;
+    private  Object[] features;
+    private ArrayList<ReconCandidate> candidates;
+    private Judgment judgment;
+    private int judgmentBatchSize, matchRank;
+    private ReconCandidate match;
+    private Recon newrecon;
+
     @Override
     public void write(Kryo kryo, Output output, Recon recon) {
         output.writeLong(recon.id);
@@ -32,25 +41,26 @@ public class ReconSerializer extends Serializer<Recon> {
         output.writeInt(recon.matchRank);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Recon read(Kryo kryo, Input input, Class<Recon> recon) {
-        long id = input.readLong();
-        String service = input.readString();
-        String identifierSpace = input.readString();
-        String schemaSpace = input.readString();
+        id = input.readLong();
+        service = input.readString();
+        identifierSpace = input.readString();
+        schemaSpace = input.readString();
 
-        Object[] features = kryo.readObject(input, Object[].class);
-        @SuppressWarnings("unchecked")
-        ArrayList<ReconCandidate> candidates = kryo.readObject(input, ArrayList.class);
-        Judgment judgment = kryo.readObject(input, Judgment.class);
+        features = kryo.readObject(input, Object[].class);
 
-        String judgmentAction = input.readString();
-        long judgmentHistoryEntry = input.readLong();
-        int judgmentBatchSize = input.readInt();
-        ReconCandidate match = kryo.readObject(input, ReconCandidate.class);
-        int matchRank = input.readInt();
+        candidates = kryo.readObject(input, ArrayList.class);
+        judgment = kryo.readObject(input, Judgment.class);
 
-        Recon newrecon = new Recon(judgmentHistoryEntry, identifierSpace, schemaSpace);
+        judgmentAction = input.readString();
+        judgmentHistoryEntry = input.readLong();
+        judgmentBatchSize = input.readInt();
+        match = kryo.readObject(input, ReconCandidate.class);
+        matchRank = input.readInt();
+
+        newrecon = new Recon(judgmentHistoryEntry, identifierSpace, schemaSpace);
         newrecon.id = id;
         newrecon.service = service;
         newrecon.features = features;
@@ -60,9 +70,8 @@ public class ReconSerializer extends Serializer<Recon> {
         newrecon.judgmentBatchSize = judgmentBatchSize;
         newrecon.match = match;
         newrecon.matchRank = matchRank;
-        
+
         return newrecon;
 
     }
-
 }

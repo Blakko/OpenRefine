@@ -10,6 +10,11 @@ import com.google.refine.model.ReconCandidate;
 
 public class ReconCandidateSerializer extends Serializer<ReconCandidate> {
 
+    private String id, name;
+    private String[] types;
+    private double score;
+    private ReconCandidate recon;
+
     @Override
     public void write(Kryo kryo, Output output, ReconCandidate recon) {
         output.writeString(recon.id);
@@ -20,12 +25,12 @@ public class ReconCandidateSerializer extends Serializer<ReconCandidate> {
 
     @Override
     public ReconCandidate read(Kryo kryo, Input input, Class<ReconCandidate> paramClass) {
-        String id = input.readString();
-        String name = input.readString();
-        String[] types = kryo.readObject(input, String[].class);
-        double score = input.readDouble();
-        
-        ReconCandidate recon = new ReconCandidate(id, name, types, score);
+        id = input.readString();
+        name = input.readString();
+        types = kryo.readObject(input, String[].class);
+        score = input.readDouble();
+
+        recon = new ReconCandidate(id, name, types, score);
         kryo.reference(recon);
         return recon;
     }
