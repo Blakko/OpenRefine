@@ -25,6 +25,7 @@ public class RowCompressionManager {
 
     private Kryo kryo;
     private Input input;
+    private Row row;
     private final Output out;
     private final LZ4Compressor fastComp;
     private final LZ4FastDecompressor fastDeco;
@@ -33,6 +34,7 @@ public class RowCompressionManager {
     public RowCompressionManager() {
         synchronized (this) {
             out = new Output(4096, 65540);
+            input = new Input();
             factory = LZ4Factory.fastestInstance();
             fastComp = factory.fastCompressor();
             fastDeco = factory.fastDecompressor();
@@ -57,9 +59,8 @@ public class RowCompressionManager {
     }
 
     synchronized public Row deserialize(byte[] byt) {
-        input = new Input(byt);
-        Row row = kryo.readObject(input, Row.class);
-        input.close();
+        input.setBuffer(byt);
+        row = kryo.readObject(input, Row.class);
         return row;
     }
 
