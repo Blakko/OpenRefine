@@ -1,3 +1,4 @@
+
 package com.google.refine.compression.serializer;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class RowSerializer extends Serializer<Row> {
 
     private Row newrow;
     private ArrayList<Cell> cells;
+    private boolean flagged, starred;
 
     @Override
     public void write(Kryo kryo, Output output, Row row) {
@@ -25,8 +27,8 @@ public class RowSerializer extends Serializer<Row> {
     @SuppressWarnings("unchecked")
     @Override
     public Row read(Kryo kryo, Input input, Class<Row> row) {
-        boolean flagged = input.readBoolean();
-        boolean starred = input.readBoolean();
+        flagged = input.readBoolean();
+        starred = input.readBoolean();
 
         cells = kryo.readObject(input, ArrayList.class);
 

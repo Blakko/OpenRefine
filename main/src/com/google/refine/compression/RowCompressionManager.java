@@ -25,7 +25,8 @@ public class RowCompressionManager {
 
     private Kryo kryo;
     private Row row;
-	private final Input input;
+    private byte[] result;
+    private final Input input;
     private final Output out;
     private final LZ4Compressor fastComp;
     private final LZ4FastDecompressor fastDeco;
@@ -51,7 +52,7 @@ public class RowCompressionManager {
 
     synchronized public byte[] serialize(Row row) {
         kryo.writeObject(out, row);
-        byte[] result = out.toBytes();
+        result = out.toBytes();
         out.clear();
         return result;
     }
