@@ -3,13 +3,14 @@ package com.google.refine.compression;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import net.jpountz.lz4.LZ4Compressor;
 import net.jpountz.lz4.LZ4Factory;
 import net.jpountz.lz4.LZ4FastDecompressor;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.serializers.CollectionSerializer;
 
 import com.google.refine.compression.serializer.ReconCandidateSerializer;
@@ -17,15 +18,14 @@ import com.google.refine.compression.serializer.ReconSerializer;
 import com.google.refine.compression.serializer.RowSerializer;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Recon;
-import com.google.refine.model.Recon.Judgment;
 import com.google.refine.model.ReconCandidate;
 import com.google.refine.model.Row;
 
 public class RowCompressionManager {
 
     private Kryo kryo;
-    private Input input;
     private Row row;
+	private final Input input;
     private final Output out;
     private final LZ4Compressor fastComp;
     private final LZ4FastDecompressor fastDeco;
@@ -46,8 +46,6 @@ public class RowCompressionManager {
             kryo.register(Recon.class, new ReconSerializer());
             kryo.register(ReconCandidate.class, new ReconCandidateSerializer());
             kryo.register(Serializable.class);
-            kryo.register(Judgment.class);
-            kryo.register(Object.class);
         }
     }
 

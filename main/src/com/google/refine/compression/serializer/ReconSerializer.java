@@ -16,7 +16,7 @@ public class ReconSerializer extends Serializer<Recon> {
 
     private long id, judgmentHistoryEntry;
     private String service, identifierSpace, schemaSpace, judgmentAction;
-    private  Object[] features;
+    private Object[] features;
     private ArrayList<ReconCandidate> candidates;
     private Judgment judgment;
     private int judgmentBatchSize, matchRank;
@@ -50,7 +50,6 @@ public class ReconSerializer extends Serializer<Recon> {
         schemaSpace = input.readString();
 
         features = kryo.readObject(input, Object[].class);
-
         candidates = kryo.readObject(input, ArrayList.class);
         judgment = kryo.readObject(input, Judgment.class);
 

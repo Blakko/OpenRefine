@@ -10,7 +10,7 @@ import com.google.refine.model.ReconCandidate;
 
 public class ReconCandidateSerializer extends Serializer<ReconCandidate> {
 
-    private String id, name;
+    private String id,name;
     private String[] types;
     private double score;
     private ReconCandidate recon;
