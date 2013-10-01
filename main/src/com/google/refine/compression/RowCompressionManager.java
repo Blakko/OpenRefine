@@ -13,6 +13,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.serializers.CollectionSerializer;
 
+import com.google.refine.compression.serializer.CellSerializer;
 import com.google.refine.compression.serializer.ReconCandidateSerializer;
 import com.google.refine.compression.serializer.ReconSerializer;
 import com.google.refine.compression.serializer.RowSerializer;
@@ -43,7 +44,7 @@ public class RowCompressionManager {
             kryo = new Kryo();
             kryo.addDefaultSerializer(ArrayList.class, CollectionSerializer.class);
             kryo.register(Row.class, new RowSerializer());
-            kryo.register(Cell.class);
+            kryo.register(Cell.class, new CellSerializer());
             kryo.register(Recon.class, new ReconSerializer());
             kryo.register(ReconCandidate.class, new ReconCandidateSerializer());
             kryo.register(Serializable.class);

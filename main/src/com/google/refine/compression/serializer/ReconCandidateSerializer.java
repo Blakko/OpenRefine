@@ -31,7 +31,6 @@ public class ReconCandidateSerializer extends Serializer<ReconCandidate> {
         score = input.readDouble();
 
         recon = new ReconCandidate(id, name, types, score);
-        kryo.reference(recon);
         return recon;
     }
 

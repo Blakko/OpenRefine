@@ -15,27 +15,23 @@ public class RowSerializer extends Serializer<Row> {
 
     private Row newrow;
     private ArrayList<Cell> cells;
-    private boolean flagged, starred;
 
     @Override
     public void write(Kryo kryo, Output output, Row row) {
+        kryo.writeObject(output, row.cells);
         output.writeBoolean(row.flagged);
         output.writeBoolean(row.starred);
-        kryo.writeObject(output, row.cells);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Row read(Kryo kryo, Input input, Class<Row> row) {
-        flagged = input.readBoolean();
-        starred = input.readBoolean();
-
         cells = kryo.readObject(input, ArrayList.class);
 
         newrow = new Row(cells.size());
         newrow.cells.addAll(cells);
-        newrow.flagged = flagged;
-        newrow.starred = starred;
+        newrow.flagged = input.readBoolean();
+        newrow.starred = input.readBoolean();
 
         return newrow;
     }
