@@ -96,7 +96,7 @@ public class Recon implements HasFields, Jsonizable {
         s_featureMap.put("qaResult", Feature_qaResult);
     }
     
-    final public long            id;
+    public long            id;
     public String                service = "unknown";
     public String                identifierSpace = null;
     public String                schemaSpace = null;

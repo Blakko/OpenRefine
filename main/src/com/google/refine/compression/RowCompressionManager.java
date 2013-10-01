@@ -3,10 +3,6 @@ package com.google.refine.compression;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.jpountz.lz4.LZ4Compressor;
 import net.jpountz.lz4.LZ4Factory;
 import net.jpountz.lz4.LZ4FastDecompressor;
@@ -16,6 +12,9 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.CollectionSerializer;
 
+import com.google.refine.compression.serializer.ReconCandidateSerializer;
+import com.google.refine.compression.serializer.ReconSerializer;
+import com.google.refine.compression.serializer.RowSerializer;
 import com.google.refine.model.Cell;
 import com.google.refine.model.Recon;
 import com.google.refine.model.Recon.Judgment;
@@ -39,19 +38,14 @@ public class RowCompressionManager {
             fastDeco = factory.fastDecompressor();
 
             kryo = new Kryo();
-            kryo.addDefaultSerializer(List.class, CollectionSerializer.class);
             kryo.addDefaultSerializer(ArrayList.class, CollectionSerializer.class);
-            kryo.addDefaultSerializer(ReconCandidate.class, ReconCandidateSerializer.class);
-            kryo.register(Row.class);
+            kryo.register(Row.class, new RowSerializer());
             kryo.register(Cell.class);
-            kryo.register(Recon.class);
-            kryo.register(ReconCandidate.class);
+            kryo.register(Recon.class, new ReconSerializer());
+            kryo.register(ReconCandidate.class, new ReconCandidateSerializer());
             kryo.register(Serializable.class);
             kryo.register(Judgment.class);
-            kryo.register(Map.class);
-            kryo.register(HashMap.class);
             kryo.register(Object.class);
-            kryo.register(ReconCandidate.class);
         }
     }
 
