@@ -13,13 +13,14 @@ public class ReconCandidateSerializer extends Serializer<ReconCandidate> {
     private String id,name;
     private String[] types;
     private double score;
+    private final double precision = 4;
 
     @Override
     public void write(Kryo kryo, Output output, ReconCandidate recon) {
         output.writeString(recon.id);
         output.writeString(recon.name);
         kryo.writeObject(output, recon.types);
-        output.writeDouble(recon.score);
+        output.writeDouble(recon.score, precision, true);
     }
 
     @Override
@@ -27,7 +28,7 @@ public class ReconCandidateSerializer extends Serializer<ReconCandidate> {
         id = input.readString();
         name = input.readString();
         types = kryo.readObject(input, String[].class);
-        score = input.readDouble();
+        score = input.readDouble(precision, true);
 
         return new ReconCandidate(id, name, types, score);
     }

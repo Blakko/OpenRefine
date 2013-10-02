@@ -30,14 +30,14 @@ public class CellSerializer extends Serializer<Cell> {
     @Override
     public Cell read(Kryo kryo, Input input, Class<Cell> cell) {
         valueType = kryo.readObjectOrNull(input, Class.class);
-        
-        if (valueType == null)
-            value = null;
-        else
-            value = (Serializable)kryo.readObjectOrNull(input, valueType);
-        
+
+        /*
+         * if (valueType == null) value = null; else
+         */
+        value = (Serializable) kryo.readObjectOrNull(input, valueType);
+
         recon = kryo.readObjectOrNull(input, Recon.class);
-        
+
         return new Cell(value, recon);
     }
 }
