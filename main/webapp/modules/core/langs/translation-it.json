@@ -96,11 +96,18 @@
 		"warning-data-file": "Devi specificare un file da caricare oppure una URL da cui recuperare dati.",
 		"browse": "Naviga la cartella del workspace"
 	},
-	"core-index-lang": {
-		"lang-settings": "Impostazioni Lingua",
-		"label": "Seleziona la lingua preferita",
-		"send-req": "Invia Richiesta",
-		"page-reload": "Attenzione, la pagina verrà ricaricata per applicare la modifica"
+	"core-index-pref": {
+		"label": "Impostazioni",
+		"lang-label": "Seleziona la lingua preferita",
+		"lang-change": "Cambia Lingua",
+		"page-reload": "Attenzione, la pagina verrà ricaricata per applicare la modifica",
+		"comp-label": "Seleziona il livello di compressione preferito",
+		"comp-change": "Cambia Compressione",
+		"comp-set": "La compressione è stata configurata",
+		"comp-lvl-0": "Nessuna (veloce)",
+		"comp-lvl-1": "Minima",
+		"comp-lvl-2": "Massima (lento)",
+		"comp-current": "Attualmente impostata a"
 	},
 	"core-index-parser":{
 		"ignore-first": "Ignora la/e prima/e",
