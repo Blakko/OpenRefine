@@ -144,7 +144,7 @@ abstract public class TabularImportingParserBase extends ImportingParserBase {
                             // add column even if cell is blank
                             columnName = "";
                         } else if (cell instanceof Cell) {
-                            columnName = ((Cell) cell).value.toString().trim();
+                            columnName = ((Cell) cell).getValue().toString().trim();
                         } else {
                             columnName = cell.toString().trim();
                         }

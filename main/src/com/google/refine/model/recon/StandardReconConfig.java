@@ -35,6 +35,7 @@ package com.google.refine.model.recon;
 
 import java.io.DataOutputStream;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -244,7 +245,8 @@ public class StandardReconConfig extends ReconConfig {
             JSONWriter jsonWriter = new JSONWriter(stringWriter);
             
             jsonWriter.object();
-                jsonWriter.key("query"); jsonWriter.value(cell.value.toString());
+            Serializable tmpValue = cell.getValue();
+                jsonWriter.key("query"); jsonWriter.value(tmpValue.toString());
                 if (typeID != null) {
                     jsonWriter.key("type"); jsonWriter.value(typeID);
                     jsonWriter.key("type_strict"); jsonWriter.value("should");
@@ -258,7 +260,7 @@ public class StandardReconConfig extends ReconConfig {
                         int detailCellIndex = project.columnModel.getColumnByName(c.columnName).getCellIndex();
                         
                         Cell cell2 = row.getCell(detailCellIndex);
-                        if (cell2 == null || !ExpressionUtils.isNonBlankData(cell2.value)) {
+                        if (cell2 == null || !ExpressionUtils.isNonBlankData(cell2.getValue())) {
                             int cellIndex = project.columnModel.getColumnByName(columnName).getCellIndex();
                             
                             RowDependency rd = project.recordModel.getRowDependency(rowIndex);
@@ -272,22 +274,24 @@ public class StandardReconConfig extends ReconConfig {
                             }
                         }
                         
-                        if (cell2 != null && ExpressionUtils.isNonBlankData(cell2.value)) {
+                        if (cell2 != null && ExpressionUtils.isNonBlankData(cell2.getValue())) {
                             jsonWriter.object();
                             
                             jsonWriter.key("pid"); jsonWriter.value(c.propertyID);
                             jsonWriter.key("v");
+                            
+                            Serializable tempValue = cell2.getValue();
                             if (cell2.recon != null && cell2.recon.match != null) {
                                 jsonWriter.object();
                                 jsonWriter.key("id"); jsonWriter.value(cell2.recon.match.id);
                                 jsonWriter.key("name"); jsonWriter.value(cell2.recon.match.name);
                                 jsonWriter.endObject();
-                            } else if (cell2.value instanceof Calendar) {
-                                jsonWriter.value(ParsingUtilities.dateToString(((Calendar) cell2.value).getTime()));
-                            } else if (cell2.value instanceof Date) {
-                                jsonWriter.value(ParsingUtilities.dateToString((Date) cell2.value));
+                            } else if (tempValue instanceof Calendar) {
+                                jsonWriter.value(ParsingUtilities.dateToString(((Calendar) tempValue).getTime()));
+                            } else if (tempValue instanceof Date) {
+                                jsonWriter.value(ParsingUtilities.dateToString((Date) tempValue));
                             } else {
-                                jsonWriter.value(cell2.value.toString());
+                                jsonWriter.value(tempValue.toString());
                             }
                             
                             jsonWriter.endObject();
@@ -305,7 +309,7 @@ public class StandardReconConfig extends ReconConfig {
                 
             jsonWriter.endObject();
             
-            job.text = cell.value.toString();
+            job.text = tmpValue.toString();
             job.code = stringWriter.toString();
         } catch (JSONException e) {
             //

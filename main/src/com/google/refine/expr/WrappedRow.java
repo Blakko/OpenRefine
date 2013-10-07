@@ -122,7 +122,7 @@ public class WrappedRow implements HasFields {
                 for (int r = _record.fromRowIndex; r < _record.toRowIndex; r++) {
                     Row row = project.rows.get(r);
                     Cell cell = row.getCell(cellIndex);
-                    if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
+                    if (cell != null && ExpressionUtils.isNonBlankData(cell.getValue())) {
                         cells.add(new WrappedCell(project, name, cell));
                     }
                 }

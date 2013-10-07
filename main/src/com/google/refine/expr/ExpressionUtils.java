@@ -89,10 +89,10 @@ public class ExpressionUtils {
             bindings.remove("value");
         } else {
             bindings.put("cell", new WrappedCell(project, columnName, cell));
-            if (cell.value == null) {
+            if (cell.getValue() == null) {
                 bindings.remove("value");
             } else {
-                bindings.put("value", cell.value);
+                bindings.put("value", cell.getValue());
             }
         }
 

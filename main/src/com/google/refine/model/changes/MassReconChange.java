@@ -80,7 +80,7 @@ public class MassReconChange implements Change {
                         Recon recon = cell.recon;
                         
                         if (reconMap.containsKey(recon.id)) {
-                            row.setCell(c, new Cell(cell.value, reconMap.get(recon.id)));
+                            row.setCell(c, new Cell(cell.getValue(), reconMap.get(recon.id)));
                         }
                     }
                 }

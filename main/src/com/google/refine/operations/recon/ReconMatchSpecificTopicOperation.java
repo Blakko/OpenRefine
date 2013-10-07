@@ -197,7 +197,7 @@ public class ReconMatchSpecificTopicOperation extends EngineDependentMassCellOpe
                     }
                     
                     Cell newCell = new Cell(
-                        cell.value,
+                        cell.getValue(),
                         newRecon
                     );
                     

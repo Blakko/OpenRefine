@@ -177,7 +177,7 @@ public class Transposer {
                 int cellIndex = column.getCellIndex();
                 
                 Cell cell = row.getCell(cellIndex);
-                if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
+                if (cell != null && ExpressionUtils.isNonBlankData(cell.getValue())) {
                     if (node2 instanceof CellTopicNode &&
                         (cell.recon == null || cell.recon.judgment == Judgment.None)) {
                             return false;

@@ -213,9 +213,9 @@ public class ReconJudgeSimilarCellsOperation extends EngineDependentMassCellOper
             @Override
             public boolean visit(Project project, int rowIndex, Row row) {
                 Cell cell = row.getCell(_cellIndex);
-                if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
-                    String value = cell.value instanceof String ? 
-                            ((String) cell.value) : cell.value.toString();
+                if (cell != null && ExpressionUtils.isNonBlankData(cell.getValue())) {
+                    String value = cell.getValue() instanceof String ? 
+                            ((String) cell.getValue()) : cell.getValue().toString();
                             
                     if (_similarValue.equals(value)) {
                         Recon recon = null;
@@ -263,7 +263,7 @@ public class ReconJudgeSimilarCellsOperation extends EngineDependentMassCellOper
                             }
                         }
                         
-                        Cell newCell = new Cell(cell.value, recon);
+                        Cell newCell = new Cell(cell.getValue(), recon);
                         
                         CellChange cellChange = new CellChange(rowIndex, _cellIndex, cell, newCell);
                         _cellChanges.add(cellChange);

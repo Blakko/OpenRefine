@@ -108,7 +108,7 @@ public class Row implements HasFields, Jsonizable {
     
     public boolean isEmpty() {
         for (Cell cell : cells) {
-            if (cell != null && cell.value != null && !isValueBlank(cell.value)) {
+            if (cell != null && cell.getValue() != null && !isValueBlank(cell.getValue())) {
                 return false;
             }
         }
@@ -131,7 +131,7 @@ public class Row implements HasFields, Jsonizable {
         if (cellIndex >= 0 && cellIndex < cells.size()) {
             Cell cell = cells.get(cellIndex);
             if (cell != null) {
-                return cell.value;
+                return cell.getValue();
             }
         }
         return null;

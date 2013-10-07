@@ -81,7 +81,7 @@ public class ReconStats implements Jsonizable {
         
         for (Row row : project.rows) {
             Cell cell = row.getCell(cellIndex);
-            if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
+            if (cell != null && ExpressionUtils.isNonBlankData(cell.getValue())) {
                 nonBlanks++;
                 
                 if (cell.recon != null) {

@@ -151,7 +151,7 @@ public class ReconDiscardJudgmentsOperation extends EngineDependentMassCellOpera
                         }
                     }
                     
-                    Cell newCell = new Cell(cell.value, newRecon);
+                    Cell newCell = new Cell(cell.getValue(), newRecon);
                     
                     CellChange cellChange = new CellChange(rowIndex, cellIndex, cell, newCell);
                     cellChanges.add(cellChange);

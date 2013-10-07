@@ -207,7 +207,7 @@ public class ColumnAdditionOperation extends EngineDependentOperation {
                             if (_onError == OnError.SetToBlank) {
                                 return false;
                             } else if (_onError == OnError.KeepOriginal) {
-                                v = cell != null ? cell.value : null;
+                                v = cell != null ? cell.getValue() : null;
                             }
                         }
                         

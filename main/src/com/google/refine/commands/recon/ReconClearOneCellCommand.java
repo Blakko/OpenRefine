@@ -121,7 +121,7 @@ public class ReconClearOneCellCommand extends Command {
         @Override
         protected HistoryEntry createHistoryEntry(long historyEntryID) throws Exception {
             Cell cell = _project.rows.get(rowIndex).getCell(cellIndex);
-            if (cell == null || !ExpressionUtils.isNonBlankData(cell.value)) {
+            if (cell == null || !ExpressionUtils.isNonBlankData(cell.getValue())) {
                 throw new Exception("Cell is blank or error");
             }
 
@@ -132,7 +132,7 @@ public class ReconClearOneCellCommand extends Command {
 
             Judgment oldJudgment = cell.recon == null ? Judgment.None : cell.recon.judgment;
 
-            newCell = new Cell(cell.value, null);
+            newCell = new Cell(cell.getValue(), null);
 
             ReconStats stats = column.getReconStats();
             if (stats == null) {
@@ -157,7 +157,7 @@ public class ReconClearOneCellCommand extends Command {
             String description =
                 "Clear recon data for single cell on row " + (rowIndex + 1) +
                 ", column " + column.getName() +
-                ", containing \"" + cell.value + "\"";
+                ", containing \"" + cell.getValue() + "\"";
 
             Change change = new ReconChange(
                 new CellChange(rowIndex, cellIndex, cell, newCell),

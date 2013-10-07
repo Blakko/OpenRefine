@@ -197,7 +197,7 @@ public class TripleLoaderTransposedNodeFactory implements TransposedNodeFactory 
             {
                 StringBuffer sb2 = new StringBuffer();
                 
-                String s = cell.value instanceof String ? (String) cell.value : cell.value.toString();
+                String s = cell.getValue() instanceof String ? (String) cell.getValue() : cell.getValue().toString();
                     
                 sb2.append("{ \"s\" : \"rec"); 
                 sb2.append(Long.toString(recon.id)); 
@@ -470,7 +470,7 @@ public class TripleLoaderTransposedNodeFactory implements TransposedNodeFactory 
                         id = "$" + columnName.replaceAll("\\W+", "_") + "_" + var;
                         
                         writeLine(id, "type", typeID, project, rowIndex, cellIndex, cell, -1, -1, (Cell) null, !load);
-                        writeLine(id, "name", cell.value, project, -1, -1, (Cell) null, -1, -1, (Cell) null, !load);
+                        writeLine(id, "name", cell.getValue(), project, -1, -1, (Cell) null, -1, -1, (Cell) null, !load);
                         
                         getAssertedReconIDSet(typeID).add(cell.recon.id);
                         
@@ -513,7 +513,7 @@ public class TripleLoaderTransposedNodeFactory implements TransposedNodeFactory 
         
         @Override
         public Object internalWrite(String subject, String predicate, Project project, int subjectRowIndex, int subjectCellIndex, Cell subjectCell) {
-            Object value = cell.value;
+            Object value = cell.getValue();
             if (value != null) {
                 if ("/type/text".equals(node.valueType)) {
                     value = value.toString();
@@ -550,7 +550,7 @@ public class TripleLoaderTransposedNodeFactory implements TransposedNodeFactory 
         
         @Override
         public Object internalWrite(String subject, String predicate, Project project, int subjectRowIndex, int subjectCellIndex, Cell subjectCell) {
-            writeLine(subject, "key", node.namespace.id + "/" + cell.value, project, 
+            writeLine(subject, "key", node.namespace.id + "/" + cell.getValue(), project, 
                 subjectRowIndex, subjectCellIndex, subjectCell, 
                 -1, -1, null, !load);
             
@@ -768,7 +768,7 @@ public class TripleLoaderTransposedNodeFactory implements TransposedNodeFactory 
         
         try {
             if (cell != null) {
-                o.put("v", cell.value);
+                o.put("v", cell.getValue());
                 if (cell.recon != null) {
                     o.put("recon", "rec" + cell.recon.id);
                     

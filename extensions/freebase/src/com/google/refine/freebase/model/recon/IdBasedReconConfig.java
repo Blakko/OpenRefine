@@ -79,7 +79,7 @@ public class IdBasedReconConfig extends StrictReconConfig {
             String columnName, Cell cell) {
         
         IdBasedReconJob job = new IdBasedReconJob();
-        String s = cell.value.toString();
+        String s = cell.getValue().toString();
         
         if (!s.startsWith("/")) {
             if (s.startsWith("92")) {

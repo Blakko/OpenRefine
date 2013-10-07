@@ -68,7 +68,7 @@ public class Cross implements Function {
                         (String) toColumnName
                         );
                 
-                return join.getRows(((WrappedCell) wrappedCell).cell.value);
+                return join.getRows(((WrappedCell) wrappedCell).cell.getValue());
             }
         }
         return new EvalError(ControlFunctionRegistry.getFunctionName(this) + " expects a cell, a project name to join with, and a column name in that project");

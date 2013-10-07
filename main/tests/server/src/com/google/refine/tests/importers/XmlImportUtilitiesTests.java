@@ -312,7 +312,7 @@ public class XmlImportUtilitiesTests extends RefineTest {
         Row row = project.rows.get(0);
         Assert.assertNotNull(row);
         Assert.assertNotNull(row.getCell(1));
-        Assert.assertEquals(row.getCell(1).value, "author1");
+        Assert.assertEquals(row.getCell(1).getValue(), "author1");
 
     }
 
@@ -335,10 +335,10 @@ public class XmlImportUtilitiesTests extends RefineTest {
         Assert.assertNotNull(row);
         Assert.assertEquals(row.cells.size(), 3);
         Assert.assertNotNull(row.getCell(1));
-        Assert.assertEquals(row.getCell(1).value, "author1");
+        Assert.assertEquals(row.getCell(1).getValue(), "author1");
 
         row = project.rows.get(1);
-        Assert.assertEquals(row.getCell(1).value, "author2");
+        Assert.assertEquals(row.getCell(1).getValue(), "author2");
     }
 
     @Test
@@ -359,9 +359,9 @@ public class XmlImportUtilitiesTests extends RefineTest {
         Assert.assertNotNull(row);
         Assert.assertEquals(row.cells.size(), 4);
         Assert.assertNotNull(row.getCell(1));
-        Assert.assertEquals(row.getCell(1).value, "author1");
+        Assert.assertEquals(row.getCell(1).getValue(), "author1");
         Assert.assertNotNull(row.getCell(2));
-        Assert.assertEquals(row.getCell(2).value, "a date");
+        Assert.assertEquals(row.getCell(2).getValue(), "a date");
     }
 
 
@@ -410,7 +410,7 @@ public class XmlImportUtilitiesTests extends RefineTest {
         //Assert.assertNotNull(record.columnEmptyRowIndices.get(1));
         Assert.assertEquals(record.rows.get(0).size(), 1);
         Assert.assertNotNull(record.rows.get(0).get(0));
-        Assert.assertEquals(record.rows.get(0).get(0).value, "Author1, The");
+        Assert.assertEquals(record.rows.get(0).get(0).getValue(), "Author1, The");
         //Assert.assertEquals(record.columnEmptyRowIndices.get(0).intValue(),0);
         //Assert.assertEquals(record.columnEmptyRowIndices.get(1).intValue(),1);
 

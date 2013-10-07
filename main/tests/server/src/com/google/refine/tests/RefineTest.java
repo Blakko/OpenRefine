@@ -102,7 +102,7 @@ public class RefineTest {
             for(int i = 0; i < r.cells.size(); i++){
                 Cell c = r.getCell(i);
                 if(c != null){
-                   sb.append(c.value);
+                   sb.append(c.getValue());
                    sb.append("; ");
                 }else{
                     sb.append("null; ");

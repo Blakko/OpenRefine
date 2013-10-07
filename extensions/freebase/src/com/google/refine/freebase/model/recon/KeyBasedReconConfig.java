@@ -91,7 +91,7 @@ public class KeyBasedReconConfig extends StrictReconConfig {
         
         KeyBasedReconJob job = new KeyBasedReconJob();
         
-        job.key = cell.value.toString().replace(' ', '_');
+        job.key = cell.getValue().toString().replace(' ', '_');
         
         return job;
     }

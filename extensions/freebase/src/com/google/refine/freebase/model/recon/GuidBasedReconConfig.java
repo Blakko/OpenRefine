@@ -79,7 +79,7 @@ public class GuidBasedReconConfig extends StrictReconConfig {
             String columnName, Cell cell) {
         
         GuidBasedReconJob job = new GuidBasedReconJob();
-        String s = cell.value.toString();
+        String s = cell.getValue().toString();
         
         if (s.startsWith("/guid/")) {
             s = "#" + s.substring(6);

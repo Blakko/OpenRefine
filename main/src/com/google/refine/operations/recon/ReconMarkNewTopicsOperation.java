@@ -139,7 +139,7 @@ public class ReconMarkNewTopicsOperation extends EngineDependentMassCellOperatio
                 if (cell != null) {
                     Recon recon = null;
                     if (_shareNewTopics) {
-                        String s = cell.value == null ? "" : cell.value.toString();
+                        String s = cell.getValue() == null ? "" : cell.getValue().toString();
                         if (sharedRecons.containsKey(s)) {
                             recon = sharedRecons.get(s);
                             recon.judgmentBatchSize++;
@@ -160,7 +160,7 @@ public class ReconMarkNewTopicsOperation extends EngineDependentMassCellOperatio
                         recon.judgmentAction = "mass";
                     }
                     
-                    Cell newCell = new Cell(cell.value, recon);
+                    Cell newCell = new Cell(cell.getValue(), recon);
                     
                     CellChange cellChange = new CellChange(rowIndex, cellIndex, cell, newCell);
                     cellChanges.add(cellChange);

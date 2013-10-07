@@ -128,7 +128,7 @@ public class TransposeRowsIntoColumnsOperation extends AbstractOperation {
                     Column column = oldColumns.get(c);
                     Cell cell = oldRow.getCell(column.getCellIndex());
                     
-                    if (cell != null && cell.value != null) {
+                    if (cell != null && cell.getValue() != null) {
                         if (c == columnIndex) {
                             firstNewRow.setCell(columnIndex + r2, cell);
                         } else if (c < columnIndex) {

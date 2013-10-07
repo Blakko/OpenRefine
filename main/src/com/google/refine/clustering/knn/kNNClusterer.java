@@ -126,8 +126,8 @@ public class kNNClusterer extends Clusterer {
         @Override
         public boolean visit(Project project, int rowIndex, Row row) {
             Cell cell = row.getCell(_colindex);
-            if (cell != null && cell.value != null) {
-                Object v = cell.value;
+            if (cell != null && cell.getValue() != null) {
+                Object v = cell.getValue();
                 String s = (v instanceof String) ? ((String) v) : v.toString();
                 _clusterer.populate(s);
                 count(s);
@@ -178,8 +178,8 @@ public class kNNClusterer extends Clusterer {
         @Override
         public boolean visit(Project project, int rowIndex, Row row) {
             Cell cell = row.getCell(_colindex);
-            if (cell != null && cell.value != null) {
-                Object v = cell.value;
+            if (cell != null && cell.getValue() != null) {
+                Object v = cell.getValue();
                 String s = (v instanceof String) ? ((String) v) : v.toString().intern();
                 _clusterer.populate(s);
                 count(s);

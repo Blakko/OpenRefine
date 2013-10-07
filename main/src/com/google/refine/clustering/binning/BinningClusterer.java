@@ -114,8 +114,8 @@ public class BinningClusterer extends Clusterer {
         @Override
         public boolean visit(Project project, int rowIndex, Row row) {
             Cell cell = row.getCell(_colindex);
-            if (cell != null && cell.value != null) {
-                Object v = cell.value;
+            if (cell != null && cell.getValue() != null) {
+                Object v = cell.getValue();
                 String s = (v instanceof String) ? ((String) v) : v.toString();
                 String key = _keyer.key(s,_params);
                 if (_map.containsKey(key)) {

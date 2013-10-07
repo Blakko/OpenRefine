@@ -121,11 +121,11 @@ public class ReconClearSimilarCellsOperation extends EngineDependentMassCellOper
             public boolean visit(Project project, int rowIndex, Row row) {
                 Cell cell = cellIndex < 0 ? null : row.getCell(cellIndex);
                 if (cell != null && cell.recon != null) {
-                    String value = cell.value instanceof String ? 
-                            ((String) cell.value) : cell.value.toString();
+                    String value = cell.getValue() instanceof String ? 
+                            ((String) cell.getValue()) : cell.getValue().toString();
                             
                     if (_similarValue.equals(value)) {
-                        Cell newCell = new Cell(cell.value, null);
+                        Cell newCell = new Cell(cell.getValue(), null);
                         
                         CellChange cellChange = new CellChange(rowIndex, cellIndex, cell, newCell);
                         cellChanges.add(cellChange);

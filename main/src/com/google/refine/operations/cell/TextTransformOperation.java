@@ -174,7 +174,7 @@ public class TextTransformOperation extends EngineDependentMassCellOperation {
                 Cell cell = row.getCell(cellIndex);
                 Cell newCell = null;
 
-                Object oldValue = cell != null ? cell.value : null;
+                Object oldValue = cell != null ? cell.getValue() : null;
 
                 ExpressionUtils.bind(bindings, row, rowIndex, _columnName, cell);
 
@@ -209,7 +209,7 @@ public class TextTransformOperation extends EngineDependentMassCellOperation {
                                     newValue = ExpressionUtils.wrapStorable(eval.evaluate(bindings));
                                     if (ExpressionUtils.isError(newValue)) {
                                         break;
-                                    } else if (ExpressionUtils.sameValue(newCell.value, newValue)) {
+                                    } else if (ExpressionUtils.sameValue(newCell.getValue(), newValue)) {
                                         break;
                                     }
                                     

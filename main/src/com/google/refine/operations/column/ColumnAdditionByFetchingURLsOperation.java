@@ -260,7 +260,7 @@ public class ColumnAdditionByFetchingURLsOperation extends EngineDependentOperat
         }
         
         CellAtRow fetch(CellAtRow urlData) {
-            String urlString = urlData.cell.value.toString();
+            String urlString = urlData.cell.getValue().toString();
             URL url = null;
             
             try {

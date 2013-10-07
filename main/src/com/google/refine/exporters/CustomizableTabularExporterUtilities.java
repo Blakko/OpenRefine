@@ -339,7 +339,7 @@ abstract public class CustomizableTabularExporterUtilities {
                     }
                 }
                 
-                Object value = cell.value;
+                Object value = cell.getValue();
                 if (value != null) {
                     if (text == null) {
                         if (value instanceof String) {

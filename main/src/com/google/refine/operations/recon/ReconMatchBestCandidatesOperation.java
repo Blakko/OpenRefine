@@ -146,7 +146,7 @@ public class ReconMatchBestCandidatesOperation extends EngineDependentMassCellOp
                                 dupReconMap.put(cell.recon.id, newRecon);
                             }
                             Cell newCell = new Cell(
-                                cell.value,
+                                cell.getValue(),
                                 newRecon
                             );
                             

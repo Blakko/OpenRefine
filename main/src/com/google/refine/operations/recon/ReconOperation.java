@@ -234,7 +234,7 @@ public class ReconOperation extends EngineDependentOperation {
                 public boolean visit(Project project, int rowIndex, Row row) {
                     if (_cellIndex < row.cells.size()) {
                         Cell cell = row.cells.get(_cellIndex);
-                        if (cell != null && ExpressionUtils.isNonBlankData(cell.value)) {
+                        if (cell != null && ExpressionUtils.isNonBlankData(cell.getValue())) {
                             _entries.add(new ReconEntry(rowIndex, cell));
                         }
                     }
@@ -299,10 +299,10 @@ public class ReconOperation extends EngineDependentOperation {
                     if (recon == null) {
                         group.trials++;
                         if (group.trials < 3) {
-                            logger.warn("Re-trying job including cell containing: " + entries.get(0).cell.value);
+                            logger.warn("Re-trying job including cell containing: " + entries.get(0).cell.getValue());
                             continue; // try again next time
                         }
-                        logger.warn("Failed after 3 trials for job including cell containing: " + entries.get(0).cell.value);
+                        logger.warn("Failed after 3 trials for job including cell containing: " + entries.get(0).cell.getValue());
                     }
                     
                     jobToGroup.remove(job);
@@ -316,7 +316,7 @@ public class ReconOperation extends EngineDependentOperation {
                     
                     for (ReconEntry entry : entries) {
                         Cell oldCell = entry.cell;
-                        Cell newCell = new Cell(oldCell.value, recon);
+                        Cell newCell = new Cell(oldCell.getValue(), recon);
                         
                         CellChange cellChange = new CellChange(
                             entry.rowIndex, 

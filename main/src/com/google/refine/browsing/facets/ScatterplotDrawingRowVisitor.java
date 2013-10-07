@@ -42,6 +42,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.io.Serializable;
 
 import com.google.refine.browsing.RecordVisitor;
 import com.google.refine.browsing.RowVisitor;
@@ -132,11 +133,13 @@ public class ScatterplotDrawingRowVisitor implements RowVisitor, RecordVisitor {
     public boolean visit(Project project, int rowIndex, Row row) {
         Cell cellx = row.getCell(col_x);
         Cell celly = row.getCell(col_y);
-        if ((cellx != null && cellx.value != null && cellx.value instanceof Number) &&
-            (celly != null && celly.value != null && celly.value instanceof Number)) 
+        Serializable valuex = cellx.getValue();
+        Serializable valuey = celly.getValue();
+        if ((cellx != null && valuex != null && valuex instanceof Number) &&
+            (celly != null && valuey != null && valuey instanceof Number)) 
         {
-            double xv = ((Number) cellx.value).doubleValue();
-            double yv = ((Number) celly.value).doubleValue();
+            double xv = ((Number) valuex).doubleValue();
+            double yv = ((Number) valuey).doubleValue();
 
             Point2D.Double p = new Point2D.Double(xv,yv);
             

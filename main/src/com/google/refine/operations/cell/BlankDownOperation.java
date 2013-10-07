@@ -124,7 +124,7 @@ public class BlankDownOperation extends EngineDependentMassCellOperation {
                 Object value = row.getCellValue(cellIndex);
                 if (ExpressionUtils.isNonBlankData(value)) {
                     Cell cell = row.getCell(cellIndex);
-                    if (previousCell != null && cell.value.equals(previousCell.value)) {
+                    if (previousCell != null && cell.getValue().equals(previousCell.getValue())) {
                         CellChange cellChange = new CellChange(rowIndex, cellIndex, cell, null);
                         cellChanges.add(cellChange);
                     }

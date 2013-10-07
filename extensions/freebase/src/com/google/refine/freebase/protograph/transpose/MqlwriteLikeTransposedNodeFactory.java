@@ -162,7 +162,7 @@ public class MqlwriteLikeTransposedNodeFactory implements TransposedNodeFactory 
                         obj.put(ID, cell.recon.match.id);
                     } else {
                         obj.put(ID, (String) null);
-                        obj.put(NAME, cell.value.toString());
+                        obj.put(NAME, cell.getValue().toString());
                         obj.put(TYPE, node.type.id);
                         obj.put(CREATE, "unless_exists");
                     }
@@ -189,7 +189,7 @@ public class MqlwriteLikeTransposedNodeFactory implements TransposedNodeFactory 
             if (obj == null) {
                 obj = new JSONObject();
                 try {
-                    JSONUtilities.putField(obj, VALUE, cell.value);
+                    JSONUtilities.putField(obj, VALUE, cell.getValue());
                     
                     obj.put(TYPE, node.valueType);
                     if ("/type/text".equals(node.valueType)) {
@@ -220,7 +220,7 @@ public class MqlwriteLikeTransposedNodeFactory implements TransposedNodeFactory 
             if (obj == null) {
                 obj = new JSONObject();
                 try {
-                    obj.put(VALUE, cell.value.toString());
+                    obj.put(VALUE, cell.getValue().toString());
                     
                     JSONObject nsObj = new JSONObject();
                     nsObj.put(ID, node.namespace.id);

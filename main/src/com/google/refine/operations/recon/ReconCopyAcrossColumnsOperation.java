@@ -158,9 +158,9 @@ public class ReconCopyAcrossColumnsOperation extends EngineDependentOperation {
                     @Override
                     public boolean visit(Project project, int rowIndex, Row row) {
                         Cell cell = row.getCell(fromColumn.getCellIndex());
-                        if (cell != null && cell.value != null && cell.recon != null) {
+                        if (cell != null && cell.getValue() != null && cell.recon != null) {
                             if (judgments.contains(cell.recon.judgment)) {
-                                cellValueToRecon.put(cell.value, cell.recon);
+                                cellValueToRecon.put(cell.getValue(), cell.recon);
                             }
                         }
                         return false;
@@ -183,12 +183,12 @@ public class ReconCopyAcrossColumnsOperation extends EngineDependentOperation {
                         for (Column column : toColumns) {
                             int cellIndex = column.getCellIndex();
                             Cell cell = row.getCell(cellIndex);
-                            if (cell != null && cell.value != null) {
-                                Recon reconToCopy = cellValueToRecon.get(cell.value);
+                            if (cell != null && cell.getValue() != null) {
+                                Recon reconToCopy = cellValueToRecon.get(cell.getValue());
                                 boolean judged = cell.recon != null && cell.recon.judgment != Judgment.None;
                                 
                                 if (reconToCopy != null && (!judged || _applyToJudgedCells)) {
-                                    Cell newCell = new Cell(cell.value, reconToCopy);
+                                    Cell newCell = new Cell(cell.getValue(), reconToCopy);
                                     CellChange cellChange = new CellChange(rowIndex, cellIndex, cell, newCell);
                                     cellChanges.add(cellChange);
                                 }
