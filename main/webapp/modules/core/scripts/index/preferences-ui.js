@@ -8,10 +8,10 @@ Refine.SetLanguageUI = function(elmt) {
 			+ ":");
 	this._elmts.set_lan_btn.attr("value",
 			$.i18n._('core-index-pref')["lang-change"]);
-	this._elmts.or_comp_label.text($.i18n._('core-index-pref')["comp-label"]
+	this._elmts.or_opt_label.text($.i18n._('core-index-pref')["opt-label"]
 			+ ":");
-	this._elmts.set_comp_btn.attr("value",
-			$.i18n._('core-index-pref')["comp-change"]);
+	this._elmts.set_opt_btn.attr("value",
+			$.i18n._('core-index-pref')["opt-change"]);
 
 	$.ajax({
 		url : "/command/core/get-languages?",
@@ -35,11 +35,11 @@ Refine.SetLanguageUI = function(elmt) {
 		type : "GET",
 		async : false,
 		data : {
-			name : "compression"
+			name : "optimization"
 		},
 		success : function(data) {
 			$("#or-comp-current").text(
-					$.i18n._('core-index-pref')["comp-current"] + ": "
+					$.i18n._('core-index-pref')["opt-current"] + ": "
 							+ data.value);
 		}
 	});
@@ -47,7 +47,7 @@ Refine.SetLanguageUI = function(elmt) {
 	// Adding compression levels
 	for ( var i = 0; i < 3; i++) {
 		$('<option>').val(i).text(
-				i + " - " + $.i18n._('core-index-pref')["comp-lvl-" + i])
+				i + " - " + $.i18n._('core-index-pref')["opt-lvl-" + i])
 				.appendTo('#compDD');
 	}
 
@@ -74,14 +74,14 @@ Refine.SetLanguageUI = function(elmt) {
 			type : "POST",
 			async : false,
 			data : {
-				name : "compression",
+				name : "optimization",
 				value : val
 			},
 			success : function(data) {
-				$("#or-comp-current").text(
-						$.i18n._('core-index-pref')["comp-current"] + ": "
+				$("#or-opt-current").text(
+						$.i18n._('core-index-pref')["opt-current"] + ": "
 								+ val);
-				alert($.i18n._('core-index-pref')["comp-set"]);
+				alert($.i18n._('core-index-pref')["opt-set"]);
 			}
 		});
 	});

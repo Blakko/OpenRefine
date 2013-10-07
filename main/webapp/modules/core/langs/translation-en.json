@@ -101,13 +101,13 @@
 		"lang-label": "Select preferred language",
 		"lang-change": "Change Language",
 		"page-reload": "The page will be refreshed to apply the change.",
-		"comp-label": "Select preferred compression level",
-		"comp-change": "Change Compression",
-		"comp-set": "The compression has been set",
-		"comp-lvl-0": "None (fast)",
-		"comp-lvl-1": "Minimum",
-		"comp-lvl-2": "Average (slow)",
-		"comp-current": "Currently set to"
+		"opt-label": "Select preferred optimization level",
+		"opt-change": "Change Optimization level",
+		"opt-set": "Optimization level has been set",
+		"opt-lvl-0": "None (fast)",
+		"opt-lvl-1": "Minimum",
+		"opt-lvl-2": "Average (slow)",
+		"opt-current": "Currently set to"
 	},
 	"core-index-parser":{
 		"ignore-first": "Ignore first",
