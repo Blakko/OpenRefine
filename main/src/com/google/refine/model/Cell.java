@@ -58,15 +58,18 @@ public class Cell implements HasFields, Jsonizable {
 
     final private static ValueBiMapManager valueBiMap = new ValueBiMapManager();
     final private boolean compression;
-    
+
     private int valueIndex;
 
     final private Serializable value;
     final public Recon recon;
 
     public Cell(Serializable value, Recon recon) {
-        compression = ((Integer) (ProjectManager.singleton.getPreferenceStore().get("compression") == null ? 0
-                : ProjectManager.singleton.getPreferenceStore().get("compression"))).byteValue()==0?false:true;
+        Object optimiz = ProjectManager.singleton.getPreferenceStore().get("optimization");
+        if (optimiz != null && !optimiz.equals("null")) {
+            compression = ((Integer)optimiz) == 0 ? false : true;
+        } else
+            compression = false;
 
         if (!compression) {
             this.value = value;
@@ -77,9 +80,9 @@ public class Cell implements HasFields, Jsonizable {
             this.value = null;
         }
     }
-    
-    public Serializable getValue(){
-        if(!compression)
+
+    public Serializable getValue() {
+        if (!compression)
             return value;
         else {
             return valueBiMap.getValue(valueIndex);
@@ -89,7 +92,7 @@ public class Cell implements HasFields, Jsonizable {
     @Override
     public Object getField(String name, Properties bindings) {
         if ("value".equals(name)) {
-                return getValue();
+            return getValue();
         } else if ("recon".equals(name)) {
             return recon;
         }
@@ -120,10 +123,12 @@ public class Cell implements HasFields, Jsonizable {
                     writer.value(ParsingUtilities.dateToString((Date) tempValue));
                     writer.key("t");
                     writer.value("date");
-                } else if (tempValue instanceof Double && (((Double) tempValue).isNaN() || ((Double) tempValue).isInfinite())) {
+                } else if (tempValue instanceof Double
+                        && (((Double) tempValue).isNaN() || ((Double) tempValue).isInfinite())) {
                     // write as a string
                     writer.value(((Double) tempValue).toString());
-                } else if (tempValue instanceof Float && (((Float) tempValue).isNaN() || ((Float) tempValue).isInfinite())) {
+                } else if (tempValue instanceof Float
+                        && (((Float) tempValue).isNaN() || ((Float) tempValue).isInfinite())) {
                     // TODO: Skip? Write as string?
                     writer.value(((Float) tempValue).toString());
                 } else {

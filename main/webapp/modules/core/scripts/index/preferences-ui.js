@@ -38,17 +38,17 @@ Refine.SetLanguageUI = function(elmt) {
 			name : "optimization"
 		},
 		success : function(data) {
-			$("#or-comp-current").text(
+			$("#or-opt-current").text(
 					$.i18n._('core-index-pref')["opt-current"] + ": "
 							+ data.value);
 		}
 	});
 
-	// Adding compression levels
+	// Adding optimization levels
 	for ( var i = 0; i < 3; i++) {
 		$('<option>').val(i).text(
 				i + " - " + $.i18n._('core-index-pref')["opt-lvl-" + i])
-				.appendTo('#compDD');
+				.appendTo('#optDD');
 	}
 
 	this._elmts.set_lan_btn.bind('click', function(e) {
@@ -67,8 +67,8 @@ Refine.SetLanguageUI = function(elmt) {
 		});
 	});
 
-	this._elmts.set_comp_btn.bind('click', function(e) {
-		var val = $("#compDD option:selected").val();
+	this._elmts.set_opt_btn.bind('click', function(e) {
+		var val = $("#optDD option:selected").val();
 		$.ajax({
 			url : "/command/core/set-preference?",
 			type : "POST",
