@@ -33,6 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.model;
 
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Writer;
@@ -58,7 +61,7 @@ public class ColumnModel implements Jsonizable {
     private int _keyColumnIndex;
     
     transient protected Map<String, Column>  _nameToColumn;
-    transient protected Map<Integer, Column> _cellIndexToColumn;
+    transient protected TIntObjectMap<Column> _cellIndexToColumn;
     transient protected List<ColumnGroup>    _rootColumnGroups;
     transient protected List<String>         _columnNames;
     
@@ -281,7 +284,7 @@ public class ColumnModel implements Jsonizable {
     
     protected void generateMaps() {
         _nameToColumn = new HashMap<String, Column>();
-        _cellIndexToColumn = new HashMap<Integer, Column>();
+        _cellIndexToColumn = new TIntObjectHashMap<Column>();
         _columnNames = new ArrayList<String>();
         int maxCellIndex = -1;
         for (Column column : columns) {

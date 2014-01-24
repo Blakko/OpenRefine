@@ -33,9 +33,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.operations.recon;
 
-import java.util.HashMap;
+import gnu.trove.map.TLongObjectMap;
+import gnu.trove.map.hash.TLongObjectHashMap;
+
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.json.JSONException;
@@ -110,7 +111,7 @@ public class ReconDiscardJudgmentsOperation extends EngineDependentMassCellOpera
         return new RowVisitor() {
             int cellIndex;
             List<CellChange> cellChanges;
-            Map<Long, Recon> dupReconMap = new HashMap<Long, Recon>();
+            TLongObjectMap<Recon> dupReconMap = new TLongObjectHashMap<Recon>();
             long historyEntryID;
             
             public RowVisitor init(int cellIndex, List<CellChange> cellChanges, long historyEntryID) {

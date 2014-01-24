@@ -33,6 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.importers;
 
+import gnu.trove.map.TCharObjectMap;
+import gnu.trove.map.hash.TCharObjectHashMap;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -45,9 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.json.JSONObject;
@@ -177,7 +178,7 @@ public class SeparatorBasedImporter extends TabularImportingParserBase {
 
             try {
                 List<Separator> separators = new ArrayList<SeparatorBasedImporter.Separator>();
-                Map<Character, Separator> separatorMap = new HashMap<Character, SeparatorBasedImporter.Separator>();
+                TCharObjectMap<Separator> separatorMap = new TCharObjectHashMap<SeparatorBasedImporter.Separator>();
                 
                 int totalChars = 0;
                 int lineCount = 0;

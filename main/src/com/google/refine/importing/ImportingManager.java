@@ -33,9 +33,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.importing;
 
+import edu.mit.simile.butterfly.ButterflyModule;
+import gnu.trove.TCollections;
+import gnu.trove.TLongCollection;
+import gnu.trove.iterator.TLongIterator;
+import gnu.trove.list.array.TLongArrayList;
+import gnu.trove.map.TLongObjectMap;
+import gnu.trove.map.hash.TLongObjectHashMap;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -54,11 +61,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.refine.RefineServlet;
-
-import edu.mit.simile.butterfly.ButterflyModule;
-import gnu.trove.TLongCollection;
-import gnu.trove.iterator.TLongIterator;
-import gnu.trove.list.array.TLongArrayList;
 
 public class ImportingManager {
     static public class Format {
@@ -87,7 +89,7 @@ public class ImportingManager {
     
     static private RefineServlet servlet;
     static private File importDir;
-    final static private Map<Long, ImportingJob> jobs = Collections.synchronizedMap(new HashMap<Long, ImportingJob>());
+    final static private TLongObjectMap<ImportingJob> jobs = TCollections.synchronizedMap(new TLongObjectHashMap<ImportingJob>());
     
     // Mapping from format to label, e.g., "text" to "Text files", "text/xml" to "XML files"
     final static public Map<String, Format> formatToRecord = new HashMap<String, Format>();

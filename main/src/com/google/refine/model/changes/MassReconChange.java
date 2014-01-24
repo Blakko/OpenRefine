@@ -33,11 +33,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.model.changes;
 
+import gnu.trove.map.TLongObjectMap;
+import gnu.trove.map.hash.TLongObjectHashMap;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import org.json.JSONException;
@@ -51,10 +52,10 @@ import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class MassReconChange implements Change {
-    final protected Map<Long, Recon> _newRecons;
-    final protected Map<Long, Recon> _oldRecons;
+    final protected TLongObjectMap<Recon> _newRecons;
+    final protected TLongObjectMap<Recon> _oldRecons;
     
-    public MassReconChange(Map<Long, Recon> newRecons, Map<Long, Recon> oldRecons) {
+    public MassReconChange(TLongObjectMap<Recon> newRecons, TLongObjectMap<Recon> oldRecons) {
         _newRecons = newRecons;
         _oldRecons = oldRecons;
     }
@@ -69,7 +70,7 @@ public class MassReconChange implements Change {
         switchRecons(project, _oldRecons);
     }
     
-    protected void switchRecons(Project project, Map<Long, Recon> reconMap) {
+    protected void switchRecons(Project project, TLongObjectMap<Recon> reconMap) {
         synchronized (project) {
             for (int r = 0; r < project.rows.size(); r++) {
                 Row row = project.rows.get(r);
@@ -95,9 +96,9 @@ public class MassReconChange implements Change {
         writer.write("/ec/\n"); // end of change marker
     }
     
-    protected void writeRecons(Writer writer, Properties options, Map<Long, Recon> recons, String key) throws IOException {
+    protected void writeRecons(Writer writer, Properties options, TLongObjectMap<Recon> recons, String key) throws IOException {
         writer.write(key + "="); writer.write(Integer.toString(recons.size())); writer.write('\n');
-        for (Recon recon : recons.values()) {
+        for (Recon recon : recons.valueCollection()) {
             Pool pool = (Pool) options.get("pool");
             pool.poolReconCandidates(recon);
 
@@ -112,8 +113,8 @@ public class MassReconChange implements Change {
     }
     
     static public Change load(LineNumberReader reader, Pool pool) throws Exception {
-        Map<Long, Recon> oldRecons = new HashMap<Long, Recon>();
-        Map<Long, Recon> newRecons = new HashMap<Long, Recon>();
+        TLongObjectMap<Recon> oldRecons = new TLongObjectHashMap<Recon>();
+        TLongObjectMap<Recon> newRecons = new TLongObjectHashMap<Recon>();
         
         String line;
         while ((line = reader.readLine()) != null && !"/ec/".equals(line)) {
@@ -133,7 +134,7 @@ public class MassReconChange implements Change {
         return change;
     }
     
-    static protected void loadRecons(LineNumberReader reader, Pool pool, Map<Long, Recon> recons, String countString) throws Exception {
+    static protected void loadRecons(LineNumberReader reader, Pool pool, TLongObjectMap<Recon> recons, String countString) throws Exception {
         int count = Integer.parseInt(countString);
         
         for (int i = 0; i < count; i++) {

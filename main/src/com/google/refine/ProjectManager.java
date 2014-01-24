@@ -33,16 +33,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine;
 
+import gnu.trove.iterator.TLongObjectIterator;
+import gnu.trove.map.TLongObjectMap;
+import gnu.trove.map.hash.TLongObjectHashMap;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.tools.tar.TarOutputStream;
 import org.slf4j.Logger;
@@ -69,7 +70,7 @@ public abstract class ProjectManager {
     static protected final int QUICK_SAVE_MAX_TIME = 1000 * 30; // 30 secs
 
 
-    protected Map<Long, ProjectMetadata> _projectsMetadata;
+    protected TLongObjectMap<ProjectMetadata> _projectsMetadata;
     protected PreferenceStore            _preferenceStore;
 
     final static Logger logger = LoggerFactory.getLogger("ProjectManager");
@@ -90,14 +91,14 @@ public abstract class ProjectManager {
      *  metadata is tiny compared to raw project data. This hash map from project ID to project
      *  is more like a last accessed-last out cache.
      */
-    transient protected Map<Long, Project> _projects;
+    transient protected TLongObjectMap<Project> _projects;
 
     static public ProjectManager singleton;
 
     protected ProjectManager(){
-        _projectsMetadata = new HashMap<Long, ProjectMetadata>();
+        _projectsMetadata = new TLongObjectHashMap<ProjectMetadata>();
         _preferenceStore = new PreferenceStore();
-        _projects = new HashMap<Long, Project>();
+        _projects = new TLongObjectHashMap<Project>();
 
         preparePreferenceStore(_preferenceStore);
     }
@@ -105,7 +106,7 @@ public abstract class ProjectManager {
     public void dispose() {
         save(true); // complete save
 
-        for (Project project : _projects.values()) {
+        for (Project project : _projects.valueCollection()) {
             if (project != null) {
                 project.dispose();
             }
@@ -241,7 +242,7 @@ public abstract class ProjectManager {
         Date startTimeOfSave = new Date();
         
         synchronized (this) {
-            for (long id : _projectsMetadata.keySet()) {
+            for (long id : _projectsMetadata.keys()) {
                 ProjectMetadata metadata = getProjectMetadata(id);
                 Project project = _projects.get(id); // don't call getProject() as that will load the project.
 
@@ -310,7 +311,7 @@ public abstract class ProjectManager {
      */
     protected void disposeUnmodifiedProjects() {
         synchronized (this) {
-            for (long id : _projectsMetadata.keySet()) {
+            for (long id : _projectsMetadata.keys()) {
                 ProjectMetadata metadata = getProjectMetadata(id);
                 Project project = _projects.get(id);
                 if (project != null && !project.getProcessManager().hasPending() 
@@ -346,7 +347,7 @@ public abstract class ProjectManager {
      * @return
      */
     public ProjectMetadata getProjectMetadata(String name) {
-        for (ProjectMetadata pm : _projectsMetadata.values()) {
+        for (ProjectMetadata pm : _projectsMetadata.valueCollection()) {
             if (pm.getName().equals(name)) {
                 return pm;
             }
@@ -363,10 +364,12 @@ public abstract class ProjectManager {
      *     The id of the project, or -1 if it cannot be found
      */
     public long getProjectID(String name) {
-        for (Entry<Long, ProjectMetadata> entry : _projectsMetadata.entrySet()) {
-            if (entry.getValue().getName().equals(name)) {
-                return entry.getKey();
-            }
+    TLongObjectIterator<ProjectMetadata> iterator = _projectsMetadata.iterator();
+        while(iterator.hasNext()){
+            iterator.advance();
+            if (iterator.value().getName().equals(name)) {
+                    return iterator.key();
+                }
         }
         return -1;
     }
@@ -376,7 +379,7 @@ public abstract class ProjectManager {
      * Gets all the project Metadata currently held in memory
      * @return
      */
-    public Map<Long, ProjectMetadata> getAllProjectMetadata() {
+    public TLongObjectMap<ProjectMetadata> getAllProjectMetadata() {
         return _projectsMetadata;
     }
 

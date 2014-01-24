@@ -33,9 +33,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.commands.workspace;
 
+import gnu.trove.iterator.TLongObjectIterator;
+import gnu.trove.map.TLongObjectMap;
+
 import java.io.IOException;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
@@ -64,12 +65,14 @@ public class GetAllProjectMetadataCommand extends Command {
             writer.object();
             writer.key("projects");
                 writer.object();
-                Map<Long, ProjectMetadata> m = ProjectManager.singleton.getAllProjectMetadata();
-                for (Entry<Long,ProjectMetadata> e : m.entrySet()) {
-                    ProjectMetadata pm = e.getValue();
+                TLongObjectMap<ProjectMetadata> m = ProjectManager.singleton.getAllProjectMetadata();
+                TLongObjectIterator<ProjectMetadata> iterator = m.iterator();
+                while(iterator.hasNext()){
+                    iterator.advance();
+                    ProjectMetadata pm = iterator.value();
                     if (pm != null) {
-                        writer.key(e.getKey().toString());
-                        e.getValue().write(writer, options);
+                        writer.key(String.valueOf(iterator.key()));
+                        pm.write(writer, options);
                     }
                 }
                 writer.endObject();

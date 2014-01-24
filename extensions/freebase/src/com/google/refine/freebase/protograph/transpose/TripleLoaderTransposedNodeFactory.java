@@ -35,6 +35,8 @@ package com.google.refine.freebase.protograph.transpose;
 
 import gnu.trove.list.TIntList;
 import gnu.trove.list.linked.TIntLinkedList;
+import gnu.trove.map.TLongObjectMap;
+import gnu.trove.map.hash.TLongObjectHashMap;
 import gnu.trove.set.TLongSet;
 import gnu.trove.set.hash.TLongHashSet;
 
@@ -78,7 +80,7 @@ public class TripleLoaderTransposedNodeFactory implements TransposedNodeFactory 
     protected Writer writer;
     protected WritingTransposedNode lastRootNode;
     protected Map<String, Long> varPool = new HashMap<String, Long>();
-    protected Map<Long, String> newTopicVars = new HashMap<Long, String>();
+    protected TLongObjectMap<String> newTopicVars = new TLongObjectHashMap<String>();
     protected TLongSet serializedRecons = new TLongHashSet();
     
     protected long contextID = 0;

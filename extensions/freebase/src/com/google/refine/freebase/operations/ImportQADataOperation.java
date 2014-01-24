@@ -33,12 +33,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.freebase.operations;
 
+import gnu.trove.map.TLongObjectMap;
+import gnu.trove.map.hash.TLongObjectHashMap;
+
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import org.json.JSONException;
@@ -86,7 +87,7 @@ public class ImportQADataOperation extends AbstractOperation {
             throw new InternalError("Project is not associated with any data loading job.");
         }
 
-        Map<Long, String> reconIDToResult = new HashMap<Long, String>();
+        TLongObjectMap<String> reconIDToResult = new TLongObjectHashMap<String>();
         
         URL url = new URL("http://refinery.freebaseapps.com/get_answers/" + jobID);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -105,8 +106,8 @@ public class ImportQADataOperation extends AbstractOperation {
             reader.close();
         }
         
-        Map<Long, Recon> oldRecons = new HashMap<Long, Recon>();
-        Map<Long, Recon> newRecons = new HashMap<Long, Recon>();
+        TLongObjectMap<Recon> oldRecons = new TLongObjectHashMap<Recon>();
+        TLongObjectMap<Recon> newRecons = new TLongObjectHashMap<Recon>();
         
         for (int r = 0; r < project.rows.size(); r++) {
             Row row = project.rows.get(r);

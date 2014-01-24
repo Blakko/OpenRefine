@@ -33,9 +33,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.operations.recon;
 
- import java.util.HashMap;
+ import gnu.trove.map.TLongObjectMap;
+import gnu.trove.map.hash.TLongObjectHashMap;
+
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.json.JSONArray;
@@ -190,7 +191,7 @@ public class ReconJudgeSimilarCellsOperation extends EngineDependentMassCellOper
             int                 _cellIndex;
             List<CellChange>    _cellChanges;
             Recon               _sharedNewRecon = null;
-            Map<Long, Recon>    _dupReconMap = new HashMap<Long, Recon>();
+            TLongObjectMap<Recon>_dupReconMap = new TLongObjectHashMap<Recon>();
             long                _historyEntryID;
             
             public RowVisitor init(int cellIndex, List<CellChange> cellChanges, long historyEntryID) {

@@ -278,7 +278,7 @@ public class FileProjectManager extends ProjectManager {
             jsonWriter.object();
             jsonWriter.key("projectIDs");
             jsonWriter.array();
-            for (Long id : _projectsMetadata.keySet()) {
+            for (Long id : _projectsMetadata.keys()) {
                 ProjectMetadata metadata = _projectsMetadata.get(id);
                 if (metadata != null) {
                     jsonWriter.value(id);
