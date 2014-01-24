@@ -35,6 +35,8 @@ package com.google.refine.freebase.protograph.transpose;
 
 import gnu.trove.list.TIntList;
 import gnu.trove.list.linked.TIntLinkedList;
+import gnu.trove.set.TLongSet;
+import gnu.trove.set.hash.TLongHashSet;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -43,11 +45,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,7 +79,7 @@ public class TripleLoaderTransposedNodeFactory implements TransposedNodeFactory 
     protected WritingTransposedNode lastRootNode;
     protected Map<String, Long> varPool = new HashMap<String, Long>();
     protected Map<Long, String> newTopicVars = new HashMap<Long, String>();
-    protected Set<Long> serializedRecons = new HashSet<Long>();
+    protected TLongSet serializedRecons = new TLongHashSet();
     
     protected long contextID = 0;
     protected int contextRowIndex;
@@ -88,17 +88,17 @@ public class TripleLoaderTransposedNodeFactory implements TransposedNodeFactory 
     
     protected SchemaHelper schemaHelper = new SchemaHelper();
     
-    protected Map<String, Set<Long>> typeIDToAssertedReconIDs = new HashMap<String, Set<Long>>();
-    protected Set<Long> getAssertedReconIDSet(String typeID) {
-        Set<Long> assertedReconIDSet = typeIDToAssertedReconIDs.get(typeID);
+    protected Map<String, TLongSet> typeIDToAssertedReconIDs = new HashMap<String, TLongSet>();
+    protected TLongSet getAssertedReconIDSet(String typeID) {
+        TLongSet assertedReconIDSet = typeIDToAssertedReconIDs.get(typeID);
         if (assertedReconIDSet == null) {
-            assertedReconIDSet = new HashSet<Long>();
+            assertedReconIDSet = new TLongHashSet();
             typeIDToAssertedReconIDs.put(typeID, assertedReconIDSet);
         }
         return assertedReconIDSet;
     }
     protected void ensureOneTypeAsserted(Recon recon, String typeID) {
-        Set<Long> assertedReconIDSet = getAssertedReconIDSet(typeID);
+        TLongSet assertedReconIDSet = getAssertedReconIDSet(typeID);
         if (!assertedReconIDSet.contains(recon.id)) {
             assertedReconIDSet.add(recon.id);
             
