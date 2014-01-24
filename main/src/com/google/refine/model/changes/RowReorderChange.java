@@ -33,6 +33,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.model.changes;
 
+import gnu.trove.iterator.TIntIterator;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Writer;
@@ -46,9 +50,9 @@ import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class RowReorderChange implements Change {
-    final protected List<Integer> _rowIndices;
+    final protected TIntList _rowIndices;
     
-    public RowReorderChange(List<Integer> rowIndices) {
+    public RowReorderChange(TIntList rowIndices) {
         _rowIndices = rowIndices;
     }
     
@@ -58,15 +62,16 @@ public class RowReorderChange implements Change {
             List<Row> oldRows = project.rows;
             List<Row> newRows = new ArrayList<Row>(oldRows.size());
 
-            for (Integer oldIndex : _rowIndices) {
-                newRows.add(oldRows.get(oldIndex));
+            TIntIterator iterator = _rowIndices.iterator();
+            while(iterator.hasNext()){
+                newRows.add(oldRows.get(iterator.next()));
             }
-
             project.rows.clear();
             project.rows.addAll(newRows);
             project.update();
         }
     }
+    
 
     @Override
     public void revert(Project project) {
@@ -95,15 +100,16 @@ public class RowReorderChange implements Change {
     @Override
     public void save(Writer writer, Properties options) throws IOException {
         writer.write("rowIndexCount="); writer.write(Integer.toString(_rowIndices.size())); writer.write('\n');
-        for (Integer index : _rowIndices) {
-            writer.write(index.toString());
+        TIntIterator iterator = _rowIndices.iterator();
+        while(iterator.hasNext()){
+            writer.write(String.valueOf(iterator.next()));
             writer.write('\n');
         }
         writer.write("/ec/\n"); // end of change marker
     }
     
     static public Change load(LineNumberReader reader, Pool pool) throws Exception {
-        List<Integer> rowIndices = null;
+        TIntList rowIndices = null;
         
         String line;
         while ((line = reader.readLine()) != null && !"/ec/".equals(line)) {
@@ -113,7 +119,7 @@ public class RowReorderChange implements Change {
             if ("rowIndexCount".equals(field)) {
                 int count = Integer.parseInt(line.substring(equal + 1));
                 
-                rowIndices = new ArrayList<Integer>(count);
+                rowIndices = new TIntArrayList(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {

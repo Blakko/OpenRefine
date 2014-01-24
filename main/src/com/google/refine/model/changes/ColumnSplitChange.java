@@ -33,6 +33,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.model.changes;
 
+import gnu.trove.iterator.TIntIterator;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Serializable;
@@ -58,7 +62,7 @@ public class ColumnSplitChange implements Change {
     final protected String              _columnName;
     
     final protected List<String>        _columnNames;
-    final protected List<Integer>       _rowIndices;
+    final protected TIntList            _rowIndices;
     final protected List<List<Serializable>> _tuples;
     
     final protected boolean             _removeOriginalColumn; 
@@ -75,7 +79,7 @@ public class ColumnSplitChange implements Change {
     public ColumnSplitChange(
         String                columnName, 
         List<String>          columnNames,
-        List<Integer>         rowIndices,
+        TIntList              rowIndices,
         List<List<Serializable>> tuples,
         boolean               removeOriginalColumn
     ) {
@@ -91,7 +95,7 @@ public class ColumnSplitChange implements Change {
     protected ColumnSplitChange(
         String                      columnName, 
         List<String>                columnNames,
-        List<Integer>               rowIndices,
+        TIntList                    rowIndices,
         List<List<Serializable>>    tuples,
         boolean                     removeOriginalColumn,
 
@@ -261,8 +265,10 @@ public class ColumnSplitChange implements Change {
             writer.write(name); writer.write('\n');
         }
         writer.write("rowIndexCount="); writer.write(Integer.toString(_rowIndices.size())); writer.write('\n');
-        for (Integer rowIndex : _rowIndices) {
-            writer.write(rowIndex.toString()); writer.write('\n');
+        TIntIterator iterator = _rowIndices.iterator();
+        while(iterator.hasNext()){
+            writer.write(String.valueOf(iterator.next()));
+            writer.write('\n');
         }
         writer.write("tupleCount="); writer.write(Integer.toString(_tuples.size())); writer.write('\n');
         for (List<Serializable> tuple : _tuples) {
@@ -303,7 +309,7 @@ public class ColumnSplitChange implements Change {
     static public Change load(LineNumberReader reader, Pool pool) throws Exception {
         String                      columnName = null;
         List<String>                columnNames = null;
-        List<Integer>               rowIndices = null;
+        TIntList                    rowIndices = null;
         List<List<Serializable>>    tuples = null;
         boolean                     removeOriginalColumn = false;
 
@@ -337,7 +343,7 @@ public class ColumnSplitChange implements Change {
             } else if ("rowIndexCount".equals(field)) {
                 int count = Integer.parseInt(value);
                 
-                rowIndices = new ArrayList<Integer>(count);
+                rowIndices = new TIntArrayList(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {

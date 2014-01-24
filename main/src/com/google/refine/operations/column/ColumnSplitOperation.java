@@ -33,6 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.operations.column;
 
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +186,7 @@ public class ColumnSplitOperation extends EngineDependentOperation {
         }
         
         List<String> columnNames = new ArrayList<String>();
-        List<Integer> rowIndices = new ArrayList<Integer>(project.rows.size());
+        TIntList rowIndices = new TIntArrayList(project.rows.size());
         List<List<Serializable>> tuples = new ArrayList<List<Serializable>>(project.rows.size());
         
         FilteredRows filteredRows = engine.getAllFilteredRows();
@@ -257,7 +260,7 @@ public class ColumnSplitOperation extends EngineDependentOperation {
 
         int cellIndex;
         List<String> columnNames;
-        List<Integer> rowIndices;
+        TIntList rowIndices;
         List<List<Serializable>> tuples;
         
         int columnNameIndex = 1;
@@ -265,7 +268,7 @@ public class ColumnSplitOperation extends EngineDependentOperation {
         ColumnSplitRowVisitor(
             int cellIndex,
             List<String> columnNames,
-            List<Integer> rowIndices,
+            TIntList rowIndices,
             List<List<Serializable>> tuples
         ) {
             this.cellIndex = cellIndex;

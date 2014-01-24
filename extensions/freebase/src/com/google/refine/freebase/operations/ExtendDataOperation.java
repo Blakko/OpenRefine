@@ -33,6 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.freebase.operations;
 
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -169,7 +172,7 @@ public class ExtendDataOperation extends EngineDependentOperation {
             return this;
         }
         
-        protected void populateRowsWithMatches(List<Integer> rowIndices) throws Exception {
+        protected void populateRowsWithMatches(TIntList rowIndices) throws Exception {
             Engine engine = new Engine(_project);
             engine.initializeFromJSON(_engineConfig);
             
@@ -182,9 +185,9 @@ public class ExtendDataOperation extends EngineDependentOperation {
             
             FilteredRows filteredRows = engine.getAllFilteredRows();
             filteredRows.accept(_project, new RowVisitor() {
-                List<Integer> _rowIndices;
+                TIntList _rowIndices;
                 
-                public RowVisitor init(List<Integer> rowIndices) {
+                public RowVisitor init(TIntList rowIndices) {
                     _rowIndices = rowIndices;
                     return this;
                 }
@@ -212,7 +215,7 @@ public class ExtendDataOperation extends EngineDependentOperation {
         }
         
         protected int extendRows(
-            List<Integer> rowIndices, 
+                TIntList rowIndices, 
             List<DataExtension> dataExtensions, 
             int from, 
             int limit,
@@ -254,7 +257,7 @@ public class ExtendDataOperation extends EngineDependentOperation {
         
         @Override
         public void run() {
-            List<Integer> rowIndices = new ArrayList<Integer>();
+            TIntList rowIndices = new TIntArrayList();
             List<DataExtension> dataExtensions = new ArrayList<DataExtension>();
             
             try {

@@ -33,6 +33,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.freebase.model.changes;
 
+import gnu.trove.iterator.TIntIterator;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Serializable;
@@ -70,7 +74,7 @@ public class DataExtensionChange implements Change {
     final protected List<String>        _columnNames;
     final protected List<FreebaseType>  _columnTypes;
     
-    final protected List<Integer>       _rowIndices;
+    final protected TIntList            _rowIndices;
     final protected List<DataExtension> _dataExtensions;
     
     protected long                      _historyEntryID;
@@ -83,7 +87,7 @@ public class DataExtensionChange implements Change {
         int columnInsertIndex, 
         List<String> columnNames,
         List<FreebaseType> columnTypes,
-        List<Integer> rowIndices,
+        TIntList rowIndices,
         List<DataExtension> dataExtensions,
         long historyEntryID
     ) {
@@ -106,7 +110,7 @@ public class DataExtensionChange implements Change {
         List<String>        columnNames,
         List<FreebaseType> columnTypes,
         
-        List<Integer>       rowIndices,
+        TIntList       rowIndices,
         List<DataExtension> dataExtensions,
         int                 firstNewCellIndex,
         List<Row>           oldRows,
@@ -292,8 +296,10 @@ public class DataExtensionChange implements Change {
             writer.write('\n');
         }
         writer.write("rowIndexCount="); writer.write(Integer.toString(_rowIndices.size())); writer.write('\n');
-        for (Integer rowIndex : _rowIndices) {
-            writer.write(rowIndex.toString()); writer.write('\n');
+        TIntIterator iterator = _rowIndices.iterator();
+        while(iterator.hasNext()){
+            writer.write(String.valueOf(iterator.next()));
+            writer.write('\n');
         }
         writer.write("dataExtensionCount="); writer.write(Integer.toString(_dataExtensions.size())); writer.write('\n');
         for (DataExtension dataExtension : _dataExtensions) {
@@ -347,7 +353,7 @@ public class DataExtensionChange implements Change {
         List<String> columnNames = null;
         List<FreebaseType> columnTypes = null;
         
-        List<Integer> rowIndices = null;
+        TIntList rowIndices = null;
         List<DataExtension> dataExtensions = null;
         
         List<Row> oldRows = null;
@@ -370,7 +376,7 @@ public class DataExtensionChange implements Change {
             } else if ("rowIndexCount".equals(field)) {
                 int count = Integer.parseInt(value);
                 
-                rowIndices = new ArrayList<Integer>(count);
+                rowIndices = new TIntArrayList(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {

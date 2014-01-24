@@ -1,5 +1,8 @@
 package com.google.refine.importers;
 
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -185,7 +188,7 @@ public class FixedWidthImporter extends TabularImportingParserBase {
                 }
                 
                 if (counts != null && lineCount > 2) {
-                    List<Integer> widths = new ArrayList<Integer>();
+                    TIntList widths = new TIntArrayList();
                     
                     int startIndex = 0;
                     for (int c = 0; c < counts.length; c++) {

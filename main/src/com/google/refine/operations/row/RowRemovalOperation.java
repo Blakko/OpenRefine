@@ -33,8 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.operations.row;
 
- import java.util.ArrayList;
-import java.util.List;
+ import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.util.Properties;
 
 import org.json.JSONException;
@@ -85,7 +86,7 @@ public class RowRemovalOperation extends EngineDependentOperation {
 protected HistoryEntry createHistoryEntry(Project project, long historyEntryID) throws Exception {
         Engine engine = createEngine(project);
         
-        List<Integer> rowIndices = new ArrayList<Integer>();
+        TIntList rowIndices = new TIntArrayList();
         
         FilteredRows filteredRows = engine.getAllFilteredRows();
         filteredRows.accept(project, createRowVisitor(project, rowIndices));
@@ -99,11 +100,11 @@ protected HistoryEntry createHistoryEntry(Project project, long historyEntryID) 
         );
     }
 
-    protected RowVisitor createRowVisitor(Project project, List<Integer> rowIndices) throws Exception {
+    protected RowVisitor createRowVisitor(Project project, TIntList rowIndices) throws Exception {
         return new RowVisitor() {
-            List<Integer> rowIndices;
+            TIntList rowIndices;
             
-            public RowVisitor init(List<Integer> rowIndices) {
+            public RowVisitor init(TIntList rowIndices) {
                 this.rowIndices = rowIndices;
                 return this;
             }

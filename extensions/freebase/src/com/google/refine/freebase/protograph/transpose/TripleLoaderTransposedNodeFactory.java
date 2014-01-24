@@ -33,6 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.freebase.protograph.transpose;
 
+import gnu.trove.list.TIntList;
+import gnu.trove.list.linked.TIntLinkedList;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.text.DateFormat;
@@ -323,7 +326,7 @@ public class TripleLoaderTransposedNodeFactory implements TransposedNodeFactory 
     
     abstract protected class TransposedNodeWithChildren extends WritingTransposedNode {
         public List<Link> links = new LinkedList<Link>();
-        public List<Integer> rowIndices = new LinkedList<Integer>();
+        public TIntList rowIndices = new TIntLinkedList();
         public List<WritingTransposedNode> children = new LinkedList<WritingTransposedNode>();
         
         protected void writeChildren(

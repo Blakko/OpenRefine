@@ -38,7 +38,6 @@ import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.procedure.TDoubleProcedure;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 
 import com.google.refine.expr.ExpressionUtils;

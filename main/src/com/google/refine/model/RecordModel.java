@@ -33,6 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.model;
 
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,7 +72,7 @@ public class RecordModel implements Jsonizable {
     final static public class RowDependency {
         public int recordIndex;
         public CellDependency[] cellDependencies;
-        public List<Integer> contextRows;
+        public TIntList contextRows;
         
         @Override
         public String toString() {
@@ -177,13 +180,13 @@ public class RecordModel implements Jsonizable {
 
                 if (rowDependency.cellDependencies != null && rowDependency.cellDependencies.length > 0) {
                     rowDependency.recordIndex = -1;
-                    rowDependency.contextRows = new ArrayList<Integer>();
+                    rowDependency.contextRows = new TIntArrayList();
                     for (CellDependency cd : rowDependency.cellDependencies) {
                         if (cd != null) {
                             rowDependency.contextRows.add(cd.rowIndex);
                         }
                     }
-                    Collections.sort(rowDependency.contextRows);
+                    rowDependency.contextRows.sort();
                 } else {
                     rowDependency.recordIndex = recordIndex++;
                 }

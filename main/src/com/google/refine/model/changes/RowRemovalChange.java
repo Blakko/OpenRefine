@@ -33,6 +33,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.model.changes;
 
+import gnu.trove.iterator.TIntIterator;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Writer;
@@ -47,10 +51,10 @@ import com.google.refine.model.Row;
 import com.google.refine.util.Pool;
 
 public class RowRemovalChange implements Change {
-    final protected List<Integer> _rowIndices;
+    final protected TIntList _rowIndices;
     protected List<Row> _rows;
     
-    public RowRemovalChange(List<Integer> rowIndices) {
+    public RowRemovalChange(TIntList rowIndices) {
         _rowIndices = rowIndices;
     }
     
@@ -97,8 +101,9 @@ public class RowRemovalChange implements Change {
     @Override
     public void save(Writer writer, Properties options) throws IOException {
         writer.write("rowIndexCount="); writer.write(Integer.toString(_rowIndices.size())); writer.write('\n');
-        for (Integer index : _rowIndices) {
-            writer.write(index.toString());
+        TIntIterator iterator = _rowIndices.iterator();
+        while(iterator.hasNext()){
+            writer.write(String.valueOf(iterator.next()));
             writer.write('\n');
         }
         writer.write("rowCount="); writer.write(Integer.toString(_rows.size())); writer.write('\n');
@@ -110,7 +115,7 @@ public class RowRemovalChange implements Change {
     }
     
     static public Change load(LineNumberReader reader, Pool pool) throws Exception {
-        List<Integer> rowIndices = null;
+        TIntList rowIndices = null;
         List<Row> rows = null;
         
         String line;
@@ -121,7 +126,7 @@ public class RowRemovalChange implements Change {
             if ("rowIndexCount".equals(field)) {
                 int count = Integer.parseInt(line.substring(equal + 1));
                 
-                rowIndices = new ArrayList<Integer>(count);
+                rowIndices = new TIntArrayList(count);
                 for (int i = 0; i < count; i++) {
                     line = reader.readLine();
                     if (line != null) {

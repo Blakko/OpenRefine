@@ -33,8 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.operations.row;
 
- import java.util.ArrayList;
-import java.util.List;
+ import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.util.Properties;
 
 import org.json.JSONException;
@@ -94,7 +95,7 @@ public class RowReorderOperation extends AbstractOperation {
         Engine engine = new Engine(project);
         engine.setMode(_mode);
 
-        List<Integer> rowIndices = new ArrayList<Integer>();
+        TIntList rowIndices = new TIntArrayList();
         if (_mode == Mode.RowBased) {
             RowVisitor visitor = new IndexingVisitor(rowIndices);
             if (_sorting != null) {
@@ -131,9 +132,9 @@ public class RowReorderOperation extends AbstractOperation {
     }
 
     static protected class IndexingVisitor implements RowVisitor, RecordVisitor {
-        List<Integer> _indices;
+        TIntList _indices;
 
-        IndexingVisitor(List<Integer> indices) {
+        IndexingVisitor(TIntList indices) {
             _indices = indices;
         }
 

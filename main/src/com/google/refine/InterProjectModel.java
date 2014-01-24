@@ -33,10 +33,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine;
 
-import java.util.ArrayList;
+import gnu.trove.iterator.TIntIterator;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -54,8 +56,8 @@ public class InterProjectModel {
         final public long   toProjectID;
         final public String toProjectColumnName;
         
-        final public Map<Object, List<Integer>> valueToRowIndices = 
-            new HashMap<Object, List<Integer>>();
+        final public Map<Object, TIntList> valueToRowIndices = 
+            new HashMap<Object, TIntList>();
         
         ProjectJoin(
             long   fromProjectID,
@@ -74,9 +76,12 @@ public class InterProjectModel {
                 Project toProject = ProjectManager.singleton.getProject(toProjectID);
                 if (toProject != null) {
                     HasFieldsListImpl rows = new HasFieldsListImpl();
-                    for (Integer r : valueToRowIndices.get(value)) {
-                        Row row = toProject.rows.get(r);
-                        rows.add(new WrappedRow(toProject, r, row));
+                    TIntList tIntList = valueToRowIndices.get(value);
+                    TIntIterator iterator = tIntList.iterator();
+                    while(iterator.hasNext()){
+                        int next = iterator.next();
+                        Row row = toProject.rows.get(next);
+                        rows.add(new WrappedRow(toProject, next, row));
                     }
                     
                     return rows;
@@ -153,7 +158,7 @@ public class InterProjectModel {
         for (Row fromRow : fromProject.rows) {
             Object value = fromRow.getCellValue(fromColumn.getCellIndex());
             if (ExpressionUtils.isNonBlankData(value) && !join.valueToRowIndices.containsKey(value)) {
-                join.valueToRowIndices.put(value, new ArrayList<Integer>());
+                join.valueToRowIndices.put(value, new TIntArrayList());
             }
         }
         

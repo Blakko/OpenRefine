@@ -33,7 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.browsing.util;
 
-import java.util.ArrayList;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -212,7 +214,7 @@ public class ExpressionNominalValueGrouper implements RowVisitor, RecordVisitor 
         if (value != null) {
             if (value.getClass().isArray()) {
                 Object[] choiceValues = (Object[]) value;
-                List<Integer> counts = new ArrayList<Integer>(choiceValues.length);
+                TIntList counts = new TIntArrayList(choiceValues.length);
 
                 for (Object choiceValue : choiceValues) {
                     counts.add(getChoiceValueCount(choiceValue));
@@ -220,7 +222,7 @@ public class ExpressionNominalValueGrouper implements RowVisitor, RecordVisitor 
                 return counts;
             } else if (value instanceof Collection<?>) {
                 List<Object> choiceValues = ExpressionUtils.toObjectList(value);
-                List<Integer> counts = new ArrayList<Integer>(choiceValues.size());
+                TIntList counts = new TIntArrayList(choiceValues.size());
 
                 int count = choiceValues.size();
                 for (int i = 0; i < count; i++) {
