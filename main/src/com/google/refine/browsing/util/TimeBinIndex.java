@@ -33,11 +33,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.browsing.util;
 
-import java.util.ArrayList;
+import gnu.trove.iterator.TLongIterator;
+import gnu.trove.list.TLongList;
+import gnu.trove.list.array.TLongArrayList;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 import com.google.refine.expr.ExpressionUtils;
@@ -87,13 +89,13 @@ abstract public class TimeBinIndex {
             1000l*31556952l*1000l, // millennium 
     };
                       
-    abstract protected void iterate(Project project, RowEvaluable rowEvaluable, List<Long> allValues);
+    abstract protected void iterate(Project project, RowEvaluable rowEvaluable, TLongList allValues);
     
     public TimeBinIndex(Project project, RowEvaluable rowEvaluable) {
         _min = Long.MAX_VALUE;
         _max = Long.MIN_VALUE;
         
-        List<Long> allValues = new ArrayList<Long>();
+        TLongList allValues = new TLongArrayList();
         
         iterate(project, rowEvaluable, allValues);
         
@@ -118,8 +120,9 @@ abstract public class TimeBinIndex {
         }
 
         _bins = new int[(int) (diff / _step) + 1];
-        for (long d : allValues) {
-            int bin = (int) Math.max((d - _min) / _step,0);
+        TLongIterator iterator = allValues.iterator();
+        while(iterator.hasNext()){
+            int bin = (int) Math.max((iterator.next() - _min) / _step,0);
             _bins[bin]++;
         }
     }
@@ -163,7 +166,7 @@ abstract public class TimeBinIndex {
     protected void processRow(
         Project         project, 
         RowEvaluable    rowEvaluable,
-        List<Long>     allValues,
+        TLongList     allValues,
         int             rowIndex,
         Row             row,
         Properties         bindings
@@ -257,7 +260,7 @@ abstract public class TimeBinIndex {
         }
     }
 
-    protected void processValue(long v, List<Long> allValues) {
+    protected void processValue(long v, TLongList allValues) {
         _min = Math.min(_min, v);
         _max = Math.max(_max, v);
         allValues.add(v);

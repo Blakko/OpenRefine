@@ -35,8 +35,6 @@ package com.google.refine.importing;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,6 +56,9 @@ import org.slf4j.LoggerFactory;
 import com.google.refine.RefineServlet;
 
 import edu.mit.simile.butterfly.ButterflyModule;
+import gnu.trove.TLongCollection;
+import gnu.trove.iterator.TLongIterator;
+import gnu.trove.list.array.TLongArrayList;
 
 public class ImportingManager {
     static public class Format {
@@ -288,11 +289,14 @@ public class ImportingManager {
     
     static private void cleanUpStaleJobs() {
         long now = System.currentTimeMillis();
-        Collection<Long> keys;
+        TLongCollection keys;
         synchronized(jobs) {
-            keys = new ArrayList<Long>(jobs.keySet());
+            keys = new TLongArrayList();
+            keys.addAll(jobs.keySet());
         }
-        for (Long id : keys) {
+        TLongIterator iterator = keys.iterator();
+        while(iterator.hasNext()){
+            long id = iterator.next();
             ImportingJob job = jobs.get(id);
             if (job != null && !job.updating && now - job.lastTouched > STALE_PERIOD) {
                 job.dispose();

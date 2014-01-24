@@ -33,7 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.browsing.util;
 
-import java.util.List;
+import gnu.trove.list.TLongList;
+
 import java.util.Properties;
 
 import com.google.refine.expr.ExpressionUtils;
@@ -47,7 +48,7 @@ public class TimeBinRowIndex extends TimeBinIndex {
     }
 
     @Override
-    protected void iterate(Project project, RowEvaluable rowEvaluable, List<Long> allValues) {
+    protected void iterate(Project project, RowEvaluable rowEvaluable, TLongList allValues) {
         
         Properties bindings = ExpressionUtils.createBindings(project);
         
