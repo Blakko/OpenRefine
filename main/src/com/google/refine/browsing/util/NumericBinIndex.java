@@ -33,7 +33,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.browsing.util;
 
-import java.util.ArrayList;
+import gnu.trove.list.TDoubleList;
+import gnu.trove.list.array.TDoubleArrayList;
+import gnu.trove.procedure.TDoubleProcedure;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
@@ -71,14 +74,14 @@ abstract public class NumericBinIndex {
     protected boolean _hasNumeric = false;
     protected boolean _hasBlank = false;
     
-    abstract protected void iterate(Project project, RowEvaluable rowEvaluable, List<Double> allValues);
+    abstract protected void iterate(Project project, RowEvaluable rowEvaluable, TDoubleList  allValues);
     
     public NumericBinIndex(Project project, RowEvaluable rowEvaluable) {
         _min = Double.POSITIVE_INFINITY;
         _max = Double.NEGATIVE_INFINITY;
         
         // TODO: An array of doubles would be more memmory efficient - double[] allValues
-        List<Double> allValues = new ArrayList<Double>();
+        TDoubleList  allValues = new TDoubleArrayList ();
         
         iterate(project, rowEvaluable, allValues);
         
@@ -122,10 +125,18 @@ abstract public class NumericBinIndex {
         }
         
         _bins = new int[(int) Math.round(binCount)];
-        for (double d : allValues) {
-            int bin = Math.max((int) Math.floor((d - _min) / _step),0);
+        allValues.forEach(new MaxProcedure());
+    }
+    
+    class MaxProcedure implements TDoubleProcedure {
+
+        @Override
+        public boolean execute(double value) {
+            int bin = Math.max((int) Math.floor((value - _min) / _step),0);
             _bins[bin]++;
+            return false;
         }
+        
     }
     
     public boolean isNumeric() {
@@ -167,7 +178,7 @@ abstract public class NumericBinIndex {
     protected void processRow(
         Project         project, 
         RowEvaluable    rowEvaluable,
-        List<Double>     allValues,
+        TDoubleList     allValues,
         int             rowIndex,
         Row             row,
         Properties         bindings
@@ -258,7 +269,7 @@ abstract public class NumericBinIndex {
         }
     }
 
-    protected boolean processValue(double v, List<Double> allValues) {
+    protected boolean processValue(double v, TDoubleList allValues) {
         if (!Double.isInfinite(v) && !Double.isNaN(v)) {
             _min = Math.min(_min, v);
             _max = Math.max(_max, v);

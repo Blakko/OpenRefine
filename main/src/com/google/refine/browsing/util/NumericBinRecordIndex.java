@@ -33,7 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.browsing.util;
 
-import java.util.List;
+import gnu.trove.list.TDoubleList;
+
 import java.util.Properties;
 
 import com.google.refine.expr.ExpressionUtils;
@@ -48,7 +49,7 @@ public class NumericBinRecordIndex extends NumericBinIndex {
 
     @Override
     protected void iterate(
-        Project project, RowEvaluable rowEvaluable, List<Double> allValues) {
+        Project project, RowEvaluable rowEvaluable, TDoubleList allValues) {
         
         Properties bindings = ExpressionUtils.createBindings(project);
         int count = project.recordModel.getRecordCount();
