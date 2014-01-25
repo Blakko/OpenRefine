@@ -33,15 +33,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.pcaxis;
 
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import com.google.refine.importers.TabularImportingParserBase.TableDataReader;
 
@@ -107,7 +108,7 @@ public class PCAxisTableDataReader implements TableDataReader {
             _line = _lnReader.readLine();
         }
         
-        final Map<String, Integer> dimensionNameToOrder = new HashMap<String, Integer>();
+        final TObjectIntMap<String> dimensionNameToOrder = new TObjectIntHashMap<String>();
         for (int i = 0; i < dimensionNames.size(); i++) {
             dimensionNameToOrder.put(dimensionNames.get(i), dimensionNames.size() - i - 1);
         }
@@ -115,8 +116,9 @@ public class PCAxisTableDataReader implements TableDataReader {
         Collections.sort(_dimensions, new Comparator<Dimension>() {
             @Override
             public int compare(Dimension d0, Dimension d1) {
-                return dimensionNameToOrder.get(d0.name)
-                    .compareTo(dimensionNameToOrder.get(d1.name));
+                int thisVal = dimensionNameToOrder.get(d0.name);
+                int anotherVal = dimensionNameToOrder.get(d1.name);
+                return (thisVal<anotherVal ? -1 : (thisVal==anotherVal ? 0 : 1));
             }
         });
         

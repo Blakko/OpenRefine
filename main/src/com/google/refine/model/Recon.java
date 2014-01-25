@@ -33,10 +33,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.model;
 
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.codehaus.jackson.JsonFactory;
@@ -87,7 +88,7 @@ public class Recon implements HasFields, Jsonizable {
     static final public int Feature_qaResult = 4;
     static final public int Feature_max = 5;
 
-    static final protected Map<String, Integer> s_featureMap = new HashMap<String, Integer>();
+    static final protected TObjectIntMap<String> s_featureMap = new TObjectIntHashMap<String>();
     static {
         s_featureMap.put("typeMatch", Feature_typeMatch);
         s_featureMap.put("nameMatch", Feature_nameMatch);

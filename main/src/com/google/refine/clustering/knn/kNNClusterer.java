@@ -34,6 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package com.google.refine.clustering.knn;
 
 import java.io.Serializable;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -70,6 +71,8 @@ import edu.mit.simile.vicino.distances.JaroWinklerDistance;
 import edu.mit.simile.vicino.distances.JaroWinklerTFIDFDistance;
 import edu.mit.simile.vicino.distances.LevenshteinDistance;
 import edu.mit.simile.vicino.distances.PPMDistance;
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 
 public class kNNClusterer extends Clusterer {
 
@@ -79,7 +82,7 @@ public class kNNClusterer extends Clusterer {
 
     List<Set<Serializable>> _clusters;
 
-    Map<Serializable, Integer> _counts = new HashMap<Serializable, Integer>();
+    TObjectIntMap<Serializable> _counts = new TObjectIntHashMap<Serializable>();
 
     final static Logger logger = LoggerFactory.getLogger("kNN_clusterer");
     
@@ -220,12 +223,13 @@ public class kNNClusterer extends Clusterer {
     public void write(JSONWriter writer, Properties options) throws JSONException {
         writer.array();        
         for (Set<Serializable> m : _clusters) {
-            if (m.size() > 1) {
-                Map<Serializable,Integer> internal_counts = new HashMap<Serializable,Integer>();
+            int size = m.size();
+            if (size > 1) {
+                TObjectIntMap<Serializable> internal_counts = new TObjectIntHashMap<Serializable>(size);
                 for (Serializable s : m) {
                     internal_counts.put(s,_counts.get(s));
                 }
-                List<Entry<Serializable,Integer>> values = new ArrayList<Entry<Serializable,Integer>>(internal_counts.entrySet());
+                List<Entry<Serializable,Integer>> values = buildEntryList(internal_counts);
                 Collections.sort(values, new ValuesComparator());
                 writer.array();        
                 for (Entry<Serializable,Integer> e : values) {
@@ -238,6 +242,15 @@ public class kNNClusterer extends Clusterer {
             }
         }
         writer.endArray();
+    }
+    
+    private List<Entry<Serializable,Integer>> buildEntryList(TObjectIntMap<Serializable> m){
+        int size = m.size();
+        List<Entry<Serializable,Integer>> list = new ArrayList<Entry<Serializable,Integer>>(size);
+        for(Serializable key : m.keys(new Serializable[size])){
+            list.add(new AbstractMap.SimpleEntry<Serializable, Integer>(key, m.get(key)));
+        }
+        return list;
     }
     
     private void count(Serializable s) {

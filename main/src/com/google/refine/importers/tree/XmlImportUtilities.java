@@ -33,14 +33,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.importers.tree;
 
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 
@@ -168,7 +168,7 @@ public class XmlImportUtilities extends TreeImportUtilities {
         }
         List<RecordElementCandidate> descendantCandidates = new ArrayList<RecordElementCandidate>();
 
-        Map<String, Integer> immediateChildCandidateMap = new HashMap<String, Integer>();
+        TObjectIntMap<String> immediateChildCandidateMap = new TObjectIntHashMap<String>();
 
         try {
             while (parser.hasNext()) {
@@ -198,14 +198,15 @@ public class XmlImportUtilities extends TreeImportUtilities {
              e.printStackTrace();
         }
 
-        if (immediateChildCandidateMap.size() > 0) {
-            List<RecordElementCandidate> immediateChildCandidates = new ArrayList<RecordElementCandidate>(immediateChildCandidateMap.size());
-            for (Entry<String, Integer> entry : immediateChildCandidateMap.entrySet()) {
-                int count = entry.getValue();
+        int size = immediateChildCandidateMap.size();
+        if (size > 0) {
+            List<RecordElementCandidate> immediateChildCandidates = new ArrayList<RecordElementCandidate>(size);
+            for (String key : immediateChildCandidateMap.keys(new String[size])){
+                int count = immediateChildCandidateMap.get(key);
                 if (count > 1) {
                     String[] path2 = new String[path.length + 1];
                     System.arraycopy(path, 0, path2, 0, path.length);
-                    path2[path.length] = entry.getKey();
+                    path2[path.length] = key;
 
                     RecordElementCandidate candidate = new RecordElementCandidate();
                     candidate.path = path2;

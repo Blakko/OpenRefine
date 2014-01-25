@@ -33,7 +33,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.clustering.binning;
 
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
+
 import java.io.Serializable;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.TreeMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +69,7 @@ public class BinningClusterer extends Clusterer {
 
     final static Logger logger = LoggerFactory.getLogger("binning_clusterer");
     
-    List<Map<String,Integer>> _clusters;
+    List<TObjectIntMap<String>> _clusters;
      
     static {
         _keyers.put("fingerprint", new FingerprintKeyer());
@@ -84,7 +87,7 @@ public class BinningClusterer extends Clusterer {
         Object[] _params;
         JSONObject _config;
         
-        Map<String,Map<String,Integer>> _map = new HashMap<String,Map<String,Integer>>();
+        Map<String,TObjectIntMap<String>> _map = new HashMap<String,TObjectIntMap<String>>();
         
         public BinningRowVisitor(Keyer k, JSONObject o) {
             _keyer = k;
@@ -119,14 +122,14 @@ public class BinningClusterer extends Clusterer {
                 String s = (v instanceof String) ? ((String) v) : v.toString();
                 String key = _keyer.key(s,_params);
                 if (_map.containsKey(key)) {
-                    Map<String,Integer> m = _map.get(key);
+                    TObjectIntMap<String> m = _map.get(key);
                     if (m.containsKey(s)) {
                         m.put(s, m.get(s) + 1);
                     } else {
                         m.put(s,1);
                     }
                 } else {
-                    Map<String,Integer> m = new TreeMap<String,Integer>();
+                    TObjectIntMap<String> m = new TObjectIntHashMap<String>();
                     m.put(s,1);
                     _map.put(key, m);
                 }
@@ -134,15 +137,15 @@ public class BinningClusterer extends Clusterer {
             return false;
         }
         
-        public Map<String,Map<String,Integer>> getMap() {
+        public Map<String,TObjectIntMap<String>> getMap() {
             return _map;
         }
     }
             
-    public static class SizeComparator implements Comparator<Map<String,Integer>>, Serializable {
+    public static class SizeComparator implements Comparator<TObjectIntMap<String>>, Serializable {
         private static final long serialVersionUID = -1390696157208674054L;
         @Override
-        public int compare(Map<String,Integer> o1, Map<String,Integer> o2) {
+        public int compare(TObjectIntMap<String> o1, TObjectIntMap<String> o2) {
             int s1 = o1.size();
             int s2 = o2.size();
             if (o1 == o2) {
@@ -181,8 +184,8 @@ public class BinningClusterer extends Clusterer {
         FilteredRows filteredRows = engine.getAllFilteredRows();
         filteredRows.accept(_project, visitor);
      
-        Map<String,Map<String,Integer>> map = visitor.getMap();
-        _clusters = new ArrayList<Map<String,Integer>>(map.values());
+        Map<String,TObjectIntMap<String>> map = visitor.getMap();
+        _clusters = new ArrayList<TObjectIntMap<String>>(map.values());
         Collections.sort(_clusters, new SizeComparator());
     }
     
@@ -191,10 +194,10 @@ public class BinningClusterer extends Clusterer {
         EntriesComparator c = new EntriesComparator();
         
         writer.array();        
-        for (Map<String,Integer> m : _clusters) {
+        for (TObjectIntMap<String> m : _clusters) {
             if (m.size() > 1) {
                 writer.array();        
-                List<Entry<String,Integer>> entries = new ArrayList<Entry<String,Integer>>(m.entrySet());
+                List<Entry<String,Integer>> entries = buildEntryList(m);
                 Collections.sort(entries,c);
                 for (Entry<String,Integer> e : entries) {
                     writer.object();
@@ -206,5 +209,14 @@ public class BinningClusterer extends Clusterer {
             }
         }
         writer.endArray();
+    }
+    
+    private List<Entry<String,Integer>> buildEntryList(TObjectIntMap<String> m){
+        int size = m.size();
+        List<Entry<String,Integer>> list = new ArrayList<Entry<String,Integer>>(size);
+        for(String key : m.keys(new String[size])){
+            list.add(new AbstractMap.SimpleEntry<String, Integer>(key, m.get(key)));
+        }
+        return list;
     }
 }

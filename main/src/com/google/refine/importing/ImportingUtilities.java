@@ -33,6 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.importing;
 
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -757,7 +760,7 @@ public class ImportingUtilities {
      * @return best (highest frequency) format
      */
     static public String autoSelectFiles(ImportingJob job, JSONObject retrievalRecord, JSONArray fileSelectionIndexes) {
-        final Map<String, Integer> formatToCount = new HashMap<String, Integer>();
+        final TObjectIntMap<String> formatToCount = new TObjectIntHashMap<String>();
         List<String> formats = new ArrayList<String>();
         
         JSONArray fileRecords = JSONUtilities.getArray(retrievalRecord, "files");
@@ -812,7 +815,7 @@ public class ImportingUtilities {
     static public String getCommonFormatForSelectedFiles(ImportingJob job, JSONArray fileSelectionIndexes) {
         JSONObject retrievalRecord = job.getRetrievalRecord();
         
-        final Map<String, Integer> formatToCount = new HashMap<String, Integer>();
+        final TObjectIntMap<String> formatToCount = new TObjectIntHashMap<String>();
         List<String> formats = new ArrayList<String>();
         
         JSONArray fileRecords = JSONUtilities.getArray(retrievalRecord, "files");

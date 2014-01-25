@@ -33,14 +33,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.importers;
 
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.json.JSONObject;
@@ -159,7 +160,7 @@ public class ImporterUtilities {
     }
 
     static public void setupColumns(Project project, List<String> columnNames) {
-        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
+        TObjectIntMap<String> nameToIndex = new TObjectIntHashMap<String>();
         for (int c = 0; c < columnNames.size(); c++) {
             String cell = columnNames.get(c).trim();
             if (cell.isEmpty()) {
